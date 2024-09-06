@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart.js Example</title>
+    <script src="
+    https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js
+    "></script>
+       <!-- Load Moment.js -->
+       <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+       <!-- Load the Moment.js adapter for Chart.js -->
+       <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0"></script>
+       <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.1.1/dist/chartjs-plugin-zoom.min.js"></script>
+    <style>
+        /* Ensure the canvas and its container have proper sizes */
+        #chart-container {
+            width: 600px;
+            height: 400px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="chart-container">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <script>
+        // Static data example
+        const data = [
+            {x: 1725617097690, y: 5},
+            {x: 1725617098698, y: 7},
+            {x: 1725617099706, y: 18},
+            {x: 1725617100707, y: 19},
+            {x: 1725617101707, y: 19}
+        ];
+
+        // Get the canvas context
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+        // Create a new chart instance
+        const myChart = new Chart(ctx, {
+            type: 'line',  // You can change to 'scatter' if you want a scatter plot instead of a line chart
+            data: {
+                datasets: [{
+                    label: 'GPU Utilization',
+                    data: data,
+                    borderColor: 'hsla(120, 100%, 50%, 1)', // Line color
+                    backgroundColor: 'hsla(120, 100%, 50%, 0.3)', // Fill color (optional)
+                    fill: false, // No filling under the line (can set to true if you want)
+                    showLine: true,  // Show line connecting data points
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'time',  // Time-based x-axis
+                        time: {
+                            unit: 'millisecond',  // Use milliseconds for the x-axis unit
+                            tooltipFormat: 'MMM D, YYYY h:mm:ss.SSS a',  // Format for the tooltip
+                        },
+                        title: {
+                            display: true,
+                            text: 'Timestamp'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Value'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
