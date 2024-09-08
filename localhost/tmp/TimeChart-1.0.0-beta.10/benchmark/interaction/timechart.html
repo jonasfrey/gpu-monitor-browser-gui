@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Benchmark TimeChart interaction</title>
+</head>
+
+<body>
+    <div id="chart" style="width: 960px; height: 720px;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-color@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-format@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-interpolate@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-time@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-time-format@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-scale@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-selection@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-axis@3"></script>
+
+    <script src="../../dist/timechart.min.js"></script>
+    <script src="../utils.js"></script>
+    <script>
+        const xRange = 2 * 1000 * 1000
+        const data = getData(xRange);
+
+        const el = document.getElementById('chart');
+        const chart = new TimeChart(el, {
+            pixelRatio: 1,
+            series: [{ data }],
+            xRange: {
+                min: 0,
+                max: xRange * 1000,
+            },
+        });
+
+        simulateInteraction(xRange, 1000, 1000, range => {
+            chart.options.xRange.max = range * 1000;
+            chart.update();
+        });
+    </script>
+</body>
+
+</html>

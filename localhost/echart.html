@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECharts Example</title>
+    <!-- Include ECharts from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+    <style>
+        /* Set the size of the chart container */
+        #chart {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Chart container -->
+    <div id="chart"></div>
+
+    <script>
+        // Initialize the chart
+        var chartDom = document.getElementById('chart');
+        var myChart = echarts.init(chartDom);
+
+        // Initial data
+        var xData = [];
+        var yData = [];
+
+        // Populate with initial data
+        for (let i = 0; i < 500; i++) {
+            xData.push(i);
+            yData.push(Math.random() * 100);
+        }
+
+        // Option to configure the chart
+        var option = {
+            title: {
+                text: 'Real-time Data Chart'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: xData
+            },
+            yAxis: {
+                type: 'value',
+                min: 0,
+                max: 100
+            },
+            series: [{
+                name: 'Random Data',
+                type: 'line',
+                data: yData,
+                smooth: true,  // Makes the line smooth
+                lineStyle: {
+                    color: 'blue'
+                }
+            }]
+        };
+
+        // Set the initial option to the chart
+        myChart.setOption(option);
+
+        // Function to dynamically add new data points
+        function updateChartData() {
+            const newX = xData[xData.length - 1] + 1;  // Increment x-axis
+            const newY = Math.random() * 100;  // Random new y-value
+
+            // Add the new data points to the xData and yData arrays
+            xData.push(newX);
+            yData.push(newY);
+
+            // Keep the length fixed to the last 50 points
+            if (xData.length > 50) {
+                xData.shift();  // Remove the oldest x-value
+                yData.shift();  // Remove the oldest y-value
+            }
+
+            // Update the chart with the new data
+            myChart.setOption({
+                xAxis: {
+                    data: xData  // Update x-axis data
+                },
+                series: [{
+                    data: yData  // Update series data
+                }]
+            });
+        }
+
+        // Update the chart every second with new data
+        setInterval(updateChartData, 1000);
+    </script>
+</body>
+</html>

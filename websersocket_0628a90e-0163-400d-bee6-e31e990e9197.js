@@ -126,7 +126,8 @@ let f_handler = async function(o_request){
             n_ts_ms,
             s_ymd_hms 
         )
-        await o_kv.set([`o_nvidia_smi_info_${s_ymd_hms}`], o_nvidia_smi_info);
+        
+        // await o_kv.set([`o_nvidia_smi_info_${s_ymd_hms}`], o_nvidia_smi_info);
 
         return new Response(
             JSON.stringify(o_nvidia_smi_info),

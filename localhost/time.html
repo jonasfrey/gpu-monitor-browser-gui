@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeChart Example</title>
+    <!-- Use a different CDN from unpkg -->
+    <script src="https://unpkg.com/timechart@0.4.0/dist/timechart.min.js"></script>
+    <style>
+        /* Set the size of the chart container */
+        #chart {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Chart container -->
+    <div id="chart"></div>
+
+    <script>
+        // Ensure TimeChart is loaded correctly
+        if (typeof TimeChart !== 'undefined') {
+            // Initialize TimeChart
+            const chart = new TimeChart({
+                dom: document.getElementById('chart'),
+                series: [
+                    { name: 'Dataset 1', data: [], color: 'blue' }  // Initial empty dataset
+                ],
+                duration: 5000,  // Show the last 5 seconds of data
+            });
+
+            // Function to generate a new data point every second
+            function addNewDataPoint() {
+                const now = Date.now();  // Current timestamp
+                const randomValue = Math.random() * 100;  // Random value between 0 and 100
+
+                // Add new data point to the chart
+                chart.addData({
+                    'Dataset 1': [[now, randomValue]]  // Add to 'Dataset 1'
+                });
+            }
+
+            // Update the chart every second
+            setInterval(addNewDataPoint, 1000);
+        } else {
+            console.error('TimeChart is not defined.');
+        }
+    </script>
+</body>
+</html>

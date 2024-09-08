@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TimeChart Demo (Basic)</title>
+</head>
+<body>
+    <div id="chart" style="width: 100%; height: 640px;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3-array@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-color@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-format@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-interpolate@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-time@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-time-format@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-scale@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-selection@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-axis@3"></script>
+
+    <script src="../dist/timechart.min.js"></script>
+    <script>
+        const el = document.getElementById('chart');
+        const data = [];
+        for (let x = 0; x < 100; x++) {
+            data.push({x, y: Math.random()});
+        }
+        const chart = new TimeChart(el, {
+            series: [{ data, name: 'Random' }],
+        });
+    </script>
+</body>
+</html>

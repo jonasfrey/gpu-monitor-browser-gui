@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotly.js Example</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div id="chart" style="width: 100%; height: 600px;"></div>
+
+    <script>
+        // Generate initial data
+        const xData = [];
+        const yData = [];
+
+        // Populate with some random initial data
+        for (let i = 0; i < 600; i++) {
+            xData.push(i);
+            yData.push(Math.random() * 100);
+        }
+
+        // Define the trace for the initial dataset
+        const trace1 = {
+            x: xData,
+            y: yData,
+            mode: 'lines',
+            type: 'scattergl',
+            name: 'Line 1',
+            line: {color: 'blue'}
+        };
+
+        const trace2 = {
+            x: xData,
+            y: yData.map(n=>100-n),
+            mode: 'lines',
+            type: 'scattergl',
+            name: 'Line 2',
+            line: {color: 'red'}
+        };
+
+        // Layout configuration
+        const layout = {
+            title: 'Dynamic Line Chart with Plotly',
+            xaxis: {title: 'X-Axis'},
+            yaxis: {title: 'Y-Axis (Values)'},
+            showlegend: true
+        };
+
+        // Render the initial chart
+        Plotly.newPlot('chart', [trace1, trace2], layout);
+
+        // Function to dynamically update data
+        function updateData() {
+            // Shift the data to simulate scrolling effect
+            xData.push(xData[xData.length - 1] + 1);
+            yData.push(Math.random() * 100); // Random new data point
+            if (xData.length > 50) { // Keep the dataset length fixed
+                xData.shift();
+                yData.shift();
+            }
+
+            // Update the plot
+            Plotly.update('chart', {
+                x: [xData],
+                y: [yData]
+            });
+        }
+
+        // Update the chart every second
+        setInterval(updateData, 1000);
+    </script>
+</body>
+</html>

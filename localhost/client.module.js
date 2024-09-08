@@ -66,14 +66,16 @@ let o_state = {
     o_nvidia_smi_info: null, 
     a_o_nvidia_smi_info: [], 
     a_o_dataset: [], 
-    n_ms_interval: 100,
+    n_ms_interval: 500,
     n_ms_interval_min: 100,
     n_ms_interval_max: 2000,
     n_id_interval: 0,
-    n_datapoints_x: 100,
+    n_datapoints_x: 20,
     n_datapoints_x_min: 1,
     n_datapoints_x_max: 500,
-    a_o_chart: []
+    a_o_chart: [
+        
+    ]
 }
 let f_update_interval = function(){
 
@@ -297,148 +299,162 @@ let f_n_nor2 = function(
 let a_o_prop = [
     
     // { f_n_nor: f_n_nor1, s_prop: 'fb_memory_usage.total', showLine: true },
-    {   f_n_nor: f_n_nor1, s_prop: 'fb_memory_usage.reserved', 
-        showLine: true, 
-        hidden: true
+    {   
+        f_n_nor: f_n_nor1, 
+        s_prop: 'fb_memory_usage.reserved', 
+        s_title: 'Frame Buffer Memory Reserved',
+        s_description: 'How much memory is reserved for the frame buffer. This memory is allocated but not necessarily used for immediate rendering.'
     },
-    {   f_n_nor: f_n_nor1, s_prop: 'fb_memory_usage.used', 
-        showLine: true, 
-        hidden: true
+    {   
+        f_n_nor: f_n_nor1, 
+        s_prop: 'fb_memory_usage.used', 
+        s_title: 'Frame Buffer Memory Used',
+        s_description: 'The amount of frame buffer memory actively being used by the GPU for rendering tasks and operations.'
     },
-    {   f_n_nor: f_n_nor1, s_prop: 'fb_memory_usage.free', 
-        showLine: true, 
-        hidden: true
-    },
-
-    {   f_n_nor: f_n_nor1, s_prop: 'bar1_memory_usage.used', 
-        showLine: true, 
-        hidden: true
-    },
-    {   f_n_nor: f_n_nor1, s_prop: 'bar1_memory_usage.free', 
-        showLine: true, 
-        hidden: true
+    {   
+        f_n_nor: f_n_nor1, 
+        s_prop: 'fb_memory_usage.free', 
+        s_title: 'Frame Buffer Memory Free',
+        s_description: 'The available frame buffer memory that can be allocated for future rendering operations.'
     },
 
-
-    {   f_n_nor: f_n_nor1, s_prop: 'cc_protected_memory_usage.used', 
-        showLine: true, 
-        hidden: true
+    {   
+        f_n_nor: f_n_nor1, 
+        s_prop: 'bar1_memory_usage.used', 
+        s_title: 'BAR1 Memory Used',
+        s_description: 'The amount of memory used by BAR1, which is used for communication between the CPU and GPU. It maps parts of GPU memory for CPU access.'
     },
-    {   f_n_nor: f_n_nor1, s_prop: 'cc_protected_memory_usage.free', 
-        showLine: true, 
-        hidden: true
+    {   
+        f_n_nor: f_n_nor1, 
+        s_prop: 'bar1_memory_usage.free', 
+        s_title: 'BAR1 Memory Free',
+        s_description: 'The available BAR1 memory that the CPU can map and use for communication with the GPU.'
+    },
+
+    {   
+        f_n_nor: f_n_nor1, 
+        s_prop: 'cc_protected_memory_usage.used', 
+        s_title: 'CC Protected Memory Used',
+        s_description: 'The amount of memory used for protected content, which is secured by Content and Context Protection (CCP).'
+    },
+    {   
+        f_n_nor: f_n_nor1, 
+        s_prop: 'cc_protected_memory_usage.free', 
+        s_title: 'CC Protected Memory Free',
+        s_description: 'The available memory for protected content secured under Content and Context Protection (CCP).'
     },
 
     {   
         f_n_nor: f_n_nor2,
         s_prop: 'utilization.gpu_util', 
-        showLine: true, 
-        hidden: false
+        s_title: 'GPU Utilization',
+        s_description: 'The percentage of GPU utilization, showing how much of the GPU’s processing power is currently in use.'
     },
     {   
         f_n_nor: f_n_nor2,
         s_prop: 'utilization.memory_util', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Memory Utilization',
+        s_description: 'The percentage of memory utilization, showing how much of the GPU’s memory is currently in use.'
     },
     {   
         f_n_nor: f_n_nor2,
         s_prop: 'utilization.encoder_util', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Encoder Utilization',
+        s_description: 'The percentage of utilization for the GPU’s video encoder, showing how much of the encoder’s resources are being used.'
     },
     {   
         f_n_nor: f_n_nor2,
         s_prop: 'utilization.decoder_util', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Decoder Utilization',
+        s_description: 'The percentage of utilization for the GPU’s video decoder, showing how much of the decoder’s resources are being used.'
     },
     {   
         f_n_nor: f_n_nor2,
         s_prop: 'utilization.jpeg_util', 
-        showLine: true, 
-        hidden: true
+        s_title: 'JPEG Decoder Utilization',
+        s_description: 'The percentage of utilization for the GPU’s JPEG decoding engine, showing how much of the JPEG decoder’s resources are being used.'
     },
     {   
         f_n_nor: f_n_nor2,
         s_prop: 'utilization.ofa_util', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Optical Flow Accelerator Utilization',
+        s_description: 'The percentage of utilization for the GPU’s Optical Flow Accelerator (OFA), which is used for motion estimation and similar tasks.'
     },
 
     {   
         s_prop: 'temperature.gpu_temp', 
-        showLine: true, 
-        hidden: true
+        s_title: 'GPU Temperature',
+        s_description: 'The current temperature of the GPU in degrees Celsius.'
     },
     {   
         s_prop: 'temperature.gpu_temp_max_threshold', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Max GPU Temperature Threshold',
+        s_description: 'The maximum safe operating temperature for the GPU, beyond which it may throttle or shut down to prevent damage.'
     },
     {   
         s_prop: 'temperature.gpu_temp_slow_threshold', 
-        showLine: true, 
-        hidden: true
+        s_title: 'GPU Slowdown Temperature Threshold',
+        s_description: 'The temperature at which the GPU will start to reduce its clock speeds (throttle) to prevent overheating.'
     },
     {   
         s_prop: 'temperature.gpu_temp_max_gpu_threshold', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Max GPU Temperature',
+        s_description: 'The highest temperature the GPU has reached during operation.'
     },
 
     {   
         s_prop: 'gpu_power_readings.power_draw', 
-        showLine: true, 
-        hidden: true
+        s_title: 'GPU Power Draw',
+        s_description: 'The current power consumption of the GPU in watts.'
     },
     {   
         s_prop: 'gpu_power_readings.current_power_limit', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Current Power Limit',
+        s_description: 'The current power limit set for the GPU, which can be dynamically adjusted based on workload or system configuration.'
     },
     {   
         s_prop: 'gpu_power_readings.requested_power_limit', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Requested Power Limit',
+        s_description: 'The power limit requested by the system or software for the GPU.'
     },
     {   
         s_prop: 'gpu_power_readings.default_power_limit', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Default Power Limit',
+        s_description: 'The default power limit set by the manufacturer for the GPU.'
     },
     {   
         s_prop: 'gpu_power_readings.min_power_limit', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Minimum Power Limit',
+        s_description: 'The minimum power limit the GPU can operate under without shutting down or malfunctioning.'
     },
     {   
         s_prop: 'gpu_power_readings.max_power_limit', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Maximum Power Limit',
+        s_description: 'The maximum power limit the GPU can draw without exceeding safety limits.'
     },
+
     {   
         s_prop: 'clocks.graphics_clock', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Graphics Clock Speed',
+        s_description: 'The current clock speed of the GPU’s graphics core, measured in MHz.'
     },
     {   
         s_prop: 'clocks.sm_clock', 
-        showLine: true, 
-        hidden: true
+        s_title: 'SM Clock Speed',
+        s_description: 'The clock speed of the GPU’s streaming multiprocessor (SM), which handles parallel workloads.'
     },
     {   
         s_prop: 'clocks.mem_clock', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Memory Clock Speed',
+        s_description: 'The current clock speed of the GPU’s memory, measured in MHz.'
     },
     {   
         s_prop: 'clocks.video_clock', 
-        showLine: true, 
-        hidden: true
+        s_title: 'Video Clock Speed',
+        s_description: 'The clock speed of the GPU’s video processing engine, measured in MHz.'
     },
-
 ]
+
 
 
 
@@ -467,39 +483,49 @@ let f_update_a_o_chart = function(){
                 //     {x: 1725617100707, y: 19},
                      
                 //     {x: 1725617101707, y: 19}]
-                data: o_state.a_o_nvidia_smi_info.slice(
-                    o_state.a_o_nvidia_smi_info.length-o_state.n_datapoints_x
-                ).map(o_nvidia_smi_info=>{
-                    
-                    if(!o.f_n_nor){
-                        return false;
-                    }
-                    let o_parent = o_nvidia_smi_info._o_xml.querySelector(o.s_prop.split('.').shift());
-                    let o_child = o_parent.querySelector(o.s_prop.split('.').slice(1).join(' '));
-                    let n_total = parseInt(o_parent.querySelector('total')?.innerHTML);
-                    let n_nor = o.f_n_nor(o_child, o_parent);
-                    
-                    
-                    let a_s_unit_possible = [
-                        'MiB',
-                        '%',
-                        'C',
-                        'W',
-                        'MHz',
-                        'mV'
-                    ];
-
-                    return {
-                        x: o_nvidia_smi_info.n_ts_ms,
-                        y: parseFloat(n_nor*100).toFixed(2)
-                    }
-                }).filter(v=>v)
+                data: [
+                    ...new Array(Math.max(o_state.n_datapoints_x-o_state.a_o_nvidia_smi_info.length, 0)).fill(0).map((n, n_idx)=>{
+                        console.log(n_idx*o_state.n_ms_interval)
+                        let o = {
+                            x: (new Date().getTime())-n_idx*o_state.n_ms_interval,
+                            y: 0, 
+                        }
+                        console.log(o);
+                        return o
+                    }),
+                    ...o_state.a_o_nvidia_smi_info.slice(
+                        Math.max(0, o_state.a_o_nvidia_smi_info.length-o_state.n_datapoints_x)
+                    ).map(o_nvidia_smi_info=>{
+                        
+                        if(!o.f_n_nor){
+                            return false;
+                        }
+                        let o_parent = o_nvidia_smi_info._o_xml.querySelector(o.s_prop.split('.').shift());
+                        let o_child = o_parent.querySelector(o.s_prop.split('.').slice(1).join(' '));
+                        let n_total = parseInt(o_parent.querySelector('total')?.innerHTML);
+                        let n_nor = o.f_n_nor(o_child, o_parent);
+                        
+                        
+                        let a_s_unit_possible = [
+                            'MiB',
+                            '%',
+                            'C',
+                            'W',
+                            'MHz',
+                            'mV'
+                        ];
+    
+                        return {
+                            x: o_nvidia_smi_info.n_ts_ms,
+                            y: parseFloat(n_nor*100).toFixed(2)
+                        }
+                    }).filter(v=>v)
+                ] 
             }, 
             o, 
             o_col
         )
     })
-
     for(let o_chart of o_state.a_o_chart){
 
         o_state.a_o_dataset.forEach(
@@ -575,7 +601,7 @@ let f_add_o_chart = async function(){
             },
             options: {
                 maintainAspectRatio: false,
-                animation: true,  // Disable animation
+                animation: false, // true,  // Disable animation
                 scales: {
                     x: {
                         type: 'linear',  // Use linear scale to control the delta display
