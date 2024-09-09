@@ -28,7 +28,7 @@
         var yData = [];
 
         // Populate with initial data
-        for (let i = 0; i < 500; i++) {
+        for (let i = 0; i < 100; i++) {
             xData.push(i);
             yData.push(Math.random() * 100);
         }
@@ -55,7 +55,7 @@
                 name: 'Random Data',
                 type: 'line',
                 data: yData,
-                smooth: true,  // Makes the line smooth
+                // smooth: true,  // Makes the line smooth
                 lineStyle: {
                     color: 'blue'
                 }
@@ -86,8 +86,16 @@
                     data: xData  // Update x-axis data
                 },
                 series: [{
-                    data: yData  // Update series data
-                }]
+                name: 'Random Data',
+                type: 'line',
+                data: yData,
+                // smooth: true,  // Makes the line smooth
+                lineStyle: {
+                    color: 'blue'
+                },
+                animation: false // Disable all animations globally
+
+            }]
             });
         }
 

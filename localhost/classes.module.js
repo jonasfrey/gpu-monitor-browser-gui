@@ -72,11 +72,13 @@ class O_graph{
         n_ms_interval, 
         n_datapoints_x, 
         a_o_gpu_property_value_visualization, 
+        n_tickinterval
     ){
         this.s_name_brand_model_gpu = s_name_brand_model_gpu 
         this.n_ms_interval = n_ms_interval 
         this.n_datapoints_x = n_datapoints_x 
         this.a_o_gpu_property_value_visualization = a_o_gpu_property_value_visualization 
+        this.n_tickinterval = n_tickinterval
         this.o_echart = null
     }
 }

@@ -6,7 +6,10 @@ import {
     f_s_css_from_o_variables
 } from "https://deno.land/x/f_add_css@1.1/mod.js"
 
-
+import {
+    f_s_timestring_from_n_ms
+}
+from "https://deno.land/x/date_functions@1.4/mod.js"
 
 import {
     f_o_html__and_make_renderable,
@@ -78,6 +81,22 @@ let o_state = {
     a_o_graph: [], 
     o_state__notifier: {}
 }
+let f_clear_echart_instances = function(){
+    for(let o of o_state.a_o_graph){
+        if(o.o_echart){
+            o.o_echart.dispose();
+            o.o_echart = null;
+        }
+    }
+}
+let f_resize_echart_graphs = function(){
+    for(let o of o_state.a_o_graph){
+        if(o.o_echart){
+            o.o_echart.resize();
+        }
+    }
+}
+window.onresize = function(){f_resize_echart_graphs()}
 let f_update_interval = function(){
 
     clearInterval(o_state.n_id_interval);
@@ -92,65 +111,160 @@ let f_update_interval = function(){
             o_data
         );
 
+        let a_o_div = Array.from(document.querySelectorAll('.canvas_container'));
+        // console.log(a_o_div)
         // check if there are new graphs
-        for(let n_idx in o_state.a_o_graph){
-            let o_graph = o_state.a_o_graph[n_idx];
-            let o_div = Array.from(document.querySelectorAll('.canvas_container'))[n_idx]
 
+
+        for(let n_idx in o_state.a_o_graph){
+
+            let o_graph = o_state.a_o_graph[n_idx];
+            let o_div = a_o_div[n_idx]
+
+            let n_remaining = Math.max(o_graph.n_datapoints_x-o_state.a_o_gpu_readout_info.length, 0);
+            let a_o_gpu_readout_info = [
+                ...new Array(
+                    n_remaining,
+                ).fill(0).map(o=>{
+                    return o_state.a_o_gpu_readout_info[0]
+                }),
+                ...o_state.a_o_gpu_readout_info.slice(
+                    Math.max(o_state.a_o_gpu_readout_info.length-o_graph.n_datapoints_x, 0)
+                )
+            ];
+            // console.log(a_o_gpu_readout_info)
+            let n_ts_ms_now = new Date().getTime();
+            let a_n_x = a_o_gpu_readout_info.map((o_gpu_readout_info, n_idx)=>{
+                n_idx = parseInt(n_idx)
+                let n_ms_diff = Math.floor(parseInt(o_gpu_readout_info.n_ts_ms - n_ts_ms_now)/100)*100
+                console.log(n_ms_diff);
+                let s_timestring = `-`+f_s_timestring_from_n_ms(Math.abs(n_ms_diff));
+                return s_timestring
+            });
             if(!o_graph.o_echart){
                 o_graph.o_echart = echarts.init(o_div);
-        
-                // Initial data
-                var xData = [];
-                var yData = [];
-        
-                // Populate with initial data
-                for (let i = 0; i < 500; i++) {
-                    xData.push(i);
-                    yData.push(Math.random() * 100);
-                }
-        
-                // Option to configure the chart
+
                 var option = {
+                    backgroundColor: '#1e1e1e', // Set the background to dark
                     title: {
-                        text: 'Real-time Data Chart'
+                        text: '',
+                        textStyle: {
+                            color: '#ffffff' // White title text for better contrast
+                        }
                     },
                     tooltip: {
-                        trigger: 'axis'
+                        trigger: 'axis',
+                        backgroundColor: '#333', // Dark background for tooltips
+                        textStyle: {
+                            color: '#ffffff' // White tooltip text
+                        }
+                    },
+                    grid: {
+                        top: 40,     // Adjust top padding
+                        left: 40,    // Adjust left padding
+                        right: 40,   // Adjust right padding
+                        bottom: 40   // Adjust bottom padding
                     },
                     xAxis: {
+                        interval: o_graph.n_tickinterval,
                         type: 'category',
                         boundaryGap: false,
-                        data: new Array(100).fill(0).map(n=>n)
+                        data: [],
+                        axisLabel: {
+                            color: '#ffffff',  // Optional: Set text color for the labels
+                            fontSize: 9,      // Optional: Set font size
+                            // rotate: 45         // Optional: Rotate labels (if needed)
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#ffffff' // White axis line
+                            }
+                        },
+                        splitLine: {
+                            show: false // Disable grid lines if not necessary
+                        }
                     },
                     yAxis: {
                         type: 'value',
                         min: 0,
-                        max: 100
-                    },
-                    series: [{
-                        name: 'Random Data',
-                        type: 'line',
-                        data: new Array(100).fill(0).map(n=>Math.random()),
-                        smooth: true,  // Makes the line smooth
-                        lineStyle: {
-                            color: 'blue'
+                        max: 1,
+                        axisLine: {
+                            lineStyle: {
+                                color: '#ffffff' // White axis line
+                            }
+                        },
+                        axisLabel: {
+                            color: '#ffffff' // White axis labels
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: '#444' // Darker color for grid lines to blend with background
+                            }
                         }
-                    }]
+                    },
+                    series: [], 
+                    animation: false // Disable all animations globally
+
                 };
-                        // Set the initial option to the chart
+                
+                // Set the initial option to the chart
                 o_graph.o_echart.setOption(option);
+                o_graph.o_echart.resize();
+                
 
             }else{
 
                 // Update the chart with the new data
                 o_graph.o_echart.setOption({
                     xAxis: {
-                        data: new Array(100).fill(0).map(n=>n)  // Update x-axis data
+                        data: a_n_x,
+                        // new Array(100).fill(0).map(n=>n)  // Update x-axis data
                     },
-                    series: [{
-                        data: new Array(100).fill(0).map(n=>Math.random())  // Update series data
-                    }]
+                    // series: [{
+                    //     name: 'Data Series',
+                    //     type: 'line',
+                    //     data: [10, 15, 13, 18, 22, 30, 40], // Corresponding data points for each label
+                    //     lineStyle: {
+                    //         color: 'blue'
+                    //     }
+                    // }]
+                    series: [
+                        ...o_graph.a_o_gpu_property_value_visualization.map(
+                            o_gpu_property_value_visualization => {
+                                // console.log(o_gpu_property_value_visualization)
+                                // console.log(a_o_gpu_readout_info)
+                                let a_n_y = a_o_gpu_readout_info.map(
+                                    o_gpu_readout_info=>{
+                                        // console.log(o_gpu_readout_info.a_o_gpu_info)
+                                        let o_gpu_info = o_gpu_readout_info.a_o_gpu_info.find(
+                                            o_gpu_info=>{
+                                                return o_gpu_info.s_name_brand_model_gpu == o_graph.s_name_brand_model_gpu
+                                            }
+                                        );
+                                        // console.log(o_gpu_info)
+                                        let o_gpu_property_value = o_gpu_info.a_o_gpu_property_value.find(o=>{
+                                            return o.o_gpu_property.s_property_accessor_nvidia_smi == o_gpu_property_value_visualization.o_gpu_property.s_property_accessor_nvidia_smi
+                                        });
+                                        console.log(o_gpu_property_value)
+                                        let n_nor = (o_gpu_property_value.n_nor) ? o_gpu_property_value.n_nor : o_gpu_property_value.o_number_value.n;
+
+                                        return n_nor;
+                                    }
+                                );
+                                // console.log(a_n_y)
+                                return {
+                                    name: o_gpu_property_value_visualization.o_gpu_property.s_property_accessor_nvidia_smi,
+                                    type: 'line',
+                                    data: a_n_y,
+                                    // new Array(100).fill(0).map(n=>Math.random())  // Update series data, 
+                                    lineStyle: {
+                                        color: o_gpu_property_value_visualization.s_rgba_color_interpolation
+                                    }
+                                }
+                            }
+                        )
+                        
+                    ]
 
                 })
         
@@ -193,7 +307,6 @@ f_add_css(
     .left{
         max-width: 20vw;
         width: 20vw;
-        background: red;
         flex: 1 1 auto;
     }
     .canvas_container{
@@ -453,6 +566,7 @@ document.body.appendChild(
                                                                 o_state.a_o_graph = o_state.a_o_graph.filter(o2=>{
                                                                     return o2!= o_graph
                                                                 });
+                                                                f_clear_echart_instances();
                                                                 await o_state.o_js__a_o_graph._f_render();
                                                             }
                                                         }
@@ -474,11 +588,14 @@ document.body.appendChild(
                                 new O_graph(
                                     o_state.a_o_gpu_readout_info.at(-1).a_o_gpu_info[0].s_name_brand_model_gpu,
                                     1000, 
-                                    10,
-                                    []
+                                    100,
+                                    [], 
+                                    5
                                 )
                             )
                             await o_state.o_js__a_o_graph._f_render();
+                            f_clear_echart_instances();
+                            
                             console.log(o_state.a_o_graph)
                         }
                     }              
