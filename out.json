@@ -1,0 +1,1092 @@
+[
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "fb_memory_usage.reserved",
+            "s_title": "Frame Buffer Memory Reserved",
+            "s_description": "How much memory is reserved for the frame buffer. This memory is allocated but not necessarily used for immediate rendering."
+        },
+        "s_value": "243 MiB",
+        "o_number_value": {
+            "s_original": "243 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 254803968000000000,
+            "n_micro": 254803968000000,
+            "n_milli": 254803968000,
+            "n_centi": 25480396800,
+            "n_deci": 2548039680,
+            "n": 254803968,
+            "n_kilo": 254803.968,
+            "n_kibi": 248832,
+            "n_mega": 254.803968,
+            "n_mebi": 243,
+            "n_giga": 0.254803968,
+            "n_gibi": 0.2373046875,
+            "n_tera": 0.000254803968,
+            "n_tebi": 0.00023174285888671875,
+            "n_peta": 2.54803968e-7,
+            "n_peti": 2.2631138563156128e-7
+        },
+        "n_nor": 0.0296630859375,
+        "o_number_value_max": {
+            "s_original": "8192 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 8589934591999999000,
+            "n_micro": 8589934592000000,
+            "n_milli": 8589934592000,
+            "n_centi": 858993459200,
+            "n_deci": 85899345920,
+            "n": 8589934592,
+            "n_kilo": 8589934.592,
+            "n_kibi": 8388608,
+            "n_mega": 8589.934592,
+            "n_mebi": 8192,
+            "n_giga": 8.589934592,
+            "n_gibi": 8,
+            "n_tera": 0.008589934592,
+            "n_tebi": 0.0078125,
+            "n_peta": 0.000008589934592,
+            "n_peti": 0.00000762939453125
+        },
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "fb_memory_usage.used",
+            "s_title": "Frame Buffer Memory Used",
+            "s_description": "The amount of frame buffer memory actively being used by the GPU for rendering tasks and operations."
+        },
+        "s_value": "1737 MiB",
+        "o_number_value": {
+            "s_original": "1737 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 1821376512000000000,
+            "n_micro": 1821376512000000,
+            "n_milli": 1821376512000,
+            "n_centi": 182137651200,
+            "n_deci": 18213765120,
+            "n": 1821376512,
+            "n_kilo": 1821376.512,
+            "n_kibi": 1778688,
+            "n_mega": 1821.376512,
+            "n_mebi": 1737,
+            "n_giga": 1.821376512,
+            "n_gibi": 1.6962890625,
+            "n_tera": 0.001821376512,
+            "n_tebi": 0.0016565322875976562,
+            "n_peta": 0.000001821376512,
+            "n_peti": 0.0000016177073121070862
+        },
+        "n_nor": 0.2120361328125,
+        "o_number_value_max": {
+            "s_original": "8192 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 8589934591999999000,
+            "n_micro": 8589934592000000,
+            "n_milli": 8589934592000,
+            "n_centi": 858993459200,
+            "n_deci": 85899345920,
+            "n": 8589934592,
+            "n_kilo": 8589934.592,
+            "n_kibi": 8388608,
+            "n_mega": 8589.934592,
+            "n_mebi": 8192,
+            "n_giga": 8.589934592,
+            "n_gibi": 8,
+            "n_tera": 0.008589934592,
+            "n_tebi": 0.0078125,
+            "n_peta": 0.000008589934592,
+            "n_peti": 0.00000762939453125
+        },
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "fb_memory_usage.free",
+            "s_title": "Frame Buffer Memory Free",
+            "s_description": "The available frame buffer memory that can be allocated for future rendering operations."
+        },
+        "s_value": "6211 MiB",
+        "o_number_value": {
+            "s_original": "6211 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 6512705536000000000,
+            "n_micro": 6512705536000000,
+            "n_milli": 6512705536000,
+            "n_centi": 651270553600,
+            "n_deci": 65127055360,
+            "n": 6512705536,
+            "n_kilo": 6512705.536,
+            "n_kibi": 6360064,
+            "n_mega": 6512.705536,
+            "n_mebi": 6211,
+            "n_giga": 6.512705536,
+            "n_gibi": 6.0654296875,
+            "n_tera": 0.006512705536,
+            "n_tebi": 0.005923271179199219,
+            "n_peta": 0.000006512705536,
+            "n_peti": 0.000005784444510936737
+        },
+        "n_nor": 0.7581787109375,
+        "o_number_value_max": {
+            "s_original": "8192 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 8589934591999999000,
+            "n_micro": 8589934592000000,
+            "n_milli": 8589934592000,
+            "n_centi": 858993459200,
+            "n_deci": 85899345920,
+            "n": 8589934592,
+            "n_kilo": 8589934.592,
+            "n_kibi": 8388608,
+            "n_mega": 8589.934592,
+            "n_mebi": 8192,
+            "n_giga": 8.589934592,
+            "n_gibi": 8,
+            "n_tera": 0.008589934592,
+            "n_tebi": 0.0078125,
+            "n_peta": 0.000008589934592,
+            "n_peti": 0.00000762939453125
+        },
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "bar1_memory_usage.used",
+            "s_title": "BAR1 Memory Used",
+            "s_description": "The amount of memory used by BAR1, which is used for communication between the CPU and GPU. It maps parts of GPU memory for CPU access."
+        },
+        "s_value": "31 MiB",
+        "o_number_value": {
+            "s_original": "31 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 32505855999999996,
+            "n_micro": 32505856000000,
+            "n_milli": 32505856000,
+            "n_centi": 3250585600,
+            "n_deci": 325058560,
+            "n": 32505856,
+            "n_kilo": 32505.856,
+            "n_kibi": 31744,
+            "n_mega": 32.505856,
+            "n_mebi": 31,
+            "n_giga": 0.032505856,
+            "n_gibi": 0.0302734375,
+            "n_tera": 0.000032505856,
+            "n_tebi": 0.00002956390380859375,
+            "n_peta": 3.2505856e-8,
+            "n_peti": 2.8870999813079834e-8
+        },
+        "n_nor": 0.0037841796875,
+        "o_number_value_max": {
+            "s_original": "8192 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 8589934591999999000,
+            "n_micro": 8589934592000000,
+            "n_milli": 8589934592000,
+            "n_centi": 858993459200,
+            "n_deci": 85899345920,
+            "n": 8589934592,
+            "n_kilo": 8589934.592,
+            "n_kibi": 8388608,
+            "n_mega": 8589.934592,
+            "n_mebi": 8192,
+            "n_giga": 8.589934592,
+            "n_gibi": 8,
+            "n_tera": 0.008589934592,
+            "n_tebi": 0.0078125,
+            "n_peta": 0.000008589934592,
+            "n_peti": 0.00000762939453125
+        },
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "bar1_memory_usage.free",
+            "s_title": "BAR1 Memory Free",
+            "s_description": "The available BAR1 memory that the CPU can map and use for communication with the GPU."
+        },
+        "s_value": "8161 MiB",
+        "o_number_value": {
+            "s_original": "8161 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 8557428735999999000,
+            "n_micro": 8557428736000000,
+            "n_milli": 8557428736000,
+            "n_centi": 855742873600,
+            "n_deci": 85574287360,
+            "n": 8557428736,
+            "n_kilo": 8557428.736,
+            "n_kibi": 8356864,
+            "n_mega": 8557.428736,
+            "n_mebi": 8161,
+            "n_giga": 8.557428736,
+            "n_gibi": 7.9697265625,
+            "n_tera": 0.008557428736,
+            "n_tebi": 0.007782936096191406,
+            "n_peta": 0.000008557428736,
+            "n_peti": 0.00000760052353143692
+        },
+        "n_nor": 0.9962158203125,
+        "o_number_value_max": {
+            "s_original": "8192 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 8589934591999999000,
+            "n_micro": 8589934592000000,
+            "n_milli": 8589934592000,
+            "n_centi": 858993459200,
+            "n_deci": 85899345920,
+            "n": 8589934592,
+            "n_kilo": 8589934.592,
+            "n_kibi": 8388608,
+            "n_mega": 8589.934592,
+            "n_mebi": 8192,
+            "n_giga": 8.589934592,
+            "n_gibi": 8,
+            "n_tera": 0.008589934592,
+            "n_tebi": 0.0078125,
+            "n_peta": 0.000008589934592,
+            "n_peti": 0.00000762939453125
+        },
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "cc_protected_memory_usage.used",
+            "s_title": "CC Protected Memory Used",
+            "s_description": "The amount of memory used for protected content, which is secured by Content and Context Protection (CCP)."
+        },
+        "s_value": "0 MiB",
+        "o_number_value": {
+            "s_original": "0 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 0,
+            "n_micro": 0,
+            "n_milli": 0,
+            "n_centi": 0,
+            "n_deci": 0,
+            "n": 0,
+            "n_kilo": 0,
+            "n_kibi": 0,
+            "n_mega": 0,
+            "n_mebi": 0,
+            "n_giga": 0,
+            "n_gibi": 0,
+            "n_tera": 0,
+            "n_tebi": 0,
+            "n_peta": 0,
+            "n_peti": 0
+        },
+        "n_nor": null,
+        "o_number_value_max": {
+            "s_original": "0 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 0,
+            "n_micro": 0,
+            "n_milli": 0,
+            "n_centi": 0,
+            "n_deci": 0,
+            "n": 0,
+            "n_kilo": 0,
+            "n_kibi": 0,
+            "n_mega": 0,
+            "n_mebi": 0,
+            "n_giga": 0,
+            "n_gibi": 0,
+            "n_tera": 0,
+            "n_tebi": 0,
+            "n_peta": 0,
+            "n_peti": 0
+        },
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "cc_protected_memory_usage.free",
+            "s_title": "CC Protected Memory Free",
+            "s_description": "The available memory for protected content secured under Content and Context Protection (CCP)."
+        },
+        "s_value": "0 MiB",
+        "o_number_value": {
+            "s_original": "0 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 0,
+            "n_micro": 0,
+            "n_milli": 0,
+            "n_centi": 0,
+            "n_deci": 0,
+            "n": 0,
+            "n_kilo": 0,
+            "n_kibi": 0,
+            "n_mega": 0,
+            "n_mebi": 0,
+            "n_giga": 0,
+            "n_gibi": 0,
+            "n_tera": 0,
+            "n_tebi": 0,
+            "n_peta": 0,
+            "n_peti": 0
+        },
+        "n_nor": null,
+        "o_number_value_max": {
+            "s_original": "0 MiB",
+            "s_name_base_unit": "Byte",
+            "n_nano": 0,
+            "n_micro": 0,
+            "n_milli": 0,
+            "n_centi": 0,
+            "n_deci": 0,
+            "n": 0,
+            "n_kilo": 0,
+            "n_kibi": 0,
+            "n_mega": 0,
+            "n_mebi": 0,
+            "n_giga": 0,
+            "n_gibi": 0,
+            "n_tera": 0,
+            "n_tebi": 0,
+            "n_peta": 0,
+            "n_peti": 0
+        },
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "utilization.gpu_util",
+            "s_title": "GPU Utilization",
+            "s_description": "The percentage of GPU utilization, showing how much of the GPU’s processing power is currently in use."
+        },
+        "s_value": "7 %",
+        "o_number_value": {
+            "s_original": "7 %",
+            "s_name_base_unit": "Percent",
+            "n_nano": 70000000,
+            "n_micro": 70000.00000000001,
+            "n_milli": 70,
+            "n_centi": 7.000000000000001,
+            "n_deci": 0.7000000000000001,
+            "n": 0.07,
+            "n_kilo": 0.00007000000000000001,
+            "n_kibi": 0.000068359375,
+            "n_mega": 7e-8,
+            "n_mebi": 6.67572021484375e-8,
+            "n_giga": 7e-11,
+            "n_gibi": 6.51925802230835e-11,
+            "n_tera": 7e-14,
+            "n_tebi": 6.366462912410498e-14,
+            "n_peta": 7e-17,
+            "n_peti": 6.217248937900877e-17
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "utilization.memory_util",
+            "s_title": "Memory Utilization",
+            "s_description": "The percentage of memory utilization, showing how much of the GPU’s memory is currently in use."
+        },
+        "s_value": "24 %",
+        "o_number_value": {
+            "s_original": "24 %",
+            "s_name_base_unit": "Percent",
+            "n_nano": 239999999.99999997,
+            "n_micro": 240000,
+            "n_milli": 240,
+            "n_centi": 24,
+            "n_deci": 2.4,
+            "n": 0.24,
+            "n_kilo": 0.00023999999999999998,
+            "n_kibi": 0.000234375,
+            "n_mega": 2.4e-7,
+            "n_mebi": 2.288818359375e-7,
+            "n_giga": 2.4e-10,
+            "n_gibi": 2.2351741790771484e-10,
+            "n_tera": 2.4e-13,
+            "n_tebi": 2.1827872842550277e-13,
+            "n_peta": 2.4e-16,
+            "n_peti": 2.1316282072803005e-16
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "utilization.encoder_util",
+            "s_title": "Encoder Utilization",
+            "s_description": "The percentage of utilization for the GPU’s video encoder, showing how much of the encoder’s resources are being used."
+        },
+        "s_value": "0 %",
+        "o_number_value": {
+            "s_original": "0 %",
+            "s_name_base_unit": "Percent",
+            "n_nano": 0,
+            "n_micro": 0,
+            "n_milli": 0,
+            "n_centi": 0,
+            "n_deci": 0,
+            "n": 0,
+            "n_kilo": 0,
+            "n_kibi": 0,
+            "n_mega": 0,
+            "n_mebi": 0,
+            "n_giga": 0,
+            "n_gibi": 0,
+            "n_tera": 0,
+            "n_tebi": 0,
+            "n_peta": 0,
+            "n_peti": 0
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "utilization.decoder_util",
+            "s_title": "Decoder Utilization",
+            "s_description": "The percentage of utilization for the GPU’s video decoder, showing how much of the decoder’s resources are being used."
+        },
+        "s_value": "0 %",
+        "o_number_value": {
+            "s_original": "0 %",
+            "s_name_base_unit": "Percent",
+            "n_nano": 0,
+            "n_micro": 0,
+            "n_milli": 0,
+            "n_centi": 0,
+            "n_deci": 0,
+            "n": 0,
+            "n_kilo": 0,
+            "n_kibi": 0,
+            "n_mega": 0,
+            "n_mebi": 0,
+            "n_giga": 0,
+            "n_gibi": 0,
+            "n_tera": 0,
+            "n_tebi": 0,
+            "n_peta": 0,
+            "n_peti": 0
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "utilization.jpeg_util",
+            "s_title": "JPEG Decoder Utilization",
+            "s_description": "The percentage of utilization for the GPU’s JPEG decoding engine, showing how much of the JPEG decoder’s resources are being used."
+        },
+        "s_value": "0 %",
+        "o_number_value": {
+            "s_original": "0 %",
+            "s_name_base_unit": "Percent",
+            "n_nano": 0,
+            "n_micro": 0,
+            "n_milli": 0,
+            "n_centi": 0,
+            "n_deci": 0,
+            "n": 0,
+            "n_kilo": 0,
+            "n_kibi": 0,
+            "n_mega": 0,
+            "n_mebi": 0,
+            "n_giga": 0,
+            "n_gibi": 0,
+            "n_tera": 0,
+            "n_tebi": 0,
+            "n_peta": 0,
+            "n_peti": 0
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "utilization.ofa_util",
+            "s_title": "Optical Flow Accelerator Utilization",
+            "s_description": "The percentage of utilization for the GPU’s Optical Flow Accelerator (OFA), which is used for motion estimation and similar tasks."
+        },
+        "s_value": "0 %",
+        "o_number_value": {
+            "s_original": "0 %",
+            "s_name_base_unit": "Percent",
+            "n_nano": 0,
+            "n_micro": 0,
+            "n_milli": 0,
+            "n_centi": 0,
+            "n_deci": 0,
+            "n": 0,
+            "n_kilo": 0,
+            "n_kibi": 0,
+            "n_mega": 0,
+            "n_mebi": 0,
+            "n_giga": 0,
+            "n_gibi": 0,
+            "n_tera": 0,
+            "n_tebi": 0,
+            "n_peta": 0,
+            "n_peti": 0
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "temperature.gpu_temp",
+            "s_title": "GPU Temperature",
+            "s_description": "The current temperature of the GPU in degrees Celsius."
+        },
+        "s_value": "51 C",
+        "o_number_value": {
+            "s_original": "51 C",
+            "s_name_base_unit": "Celsius",
+            "n_nano": 51000000000,
+            "n_micro": 51000000,
+            "n_milli": 51000,
+            "n_centi": 5100,
+            "n_deci": 510,
+            "n": 51,
+            "n_kilo": 0.051,
+            "n_kibi": 0.0498046875,
+            "n_mega": 0.000051,
+            "n_mebi": 0.00004863739013671875,
+            "n_giga": 5.1e-8,
+            "n_gibi": 4.7497451305389404e-8,
+            "n_tera": 5.1e-11,
+            "n_tebi": 4.638422979041934e-11,
+            "n_peta": 5.1e-14,
+            "n_peti": 4.529709940470639e-14
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "temperature.gpu_temp_max_threshold",
+            "s_title": "Max GPU Temperature Threshold",
+            "s_description": "The maximum safe operating temperature for the GPU, beyond which it may throttle or shut down to prevent damage."
+        },
+        "s_value": "101 C",
+        "o_number_value": {
+            "s_original": "101 C",
+            "s_name_base_unit": "Celsius",
+            "n_nano": 101000000000,
+            "n_micro": 101000000,
+            "n_milli": 101000,
+            "n_centi": 10100,
+            "n_deci": 1010,
+            "n": 101,
+            "n_kilo": 0.101,
+            "n_kibi": 0.0986328125,
+            "n_mega": 0.000101,
+            "n_mebi": 0.00009632110595703125,
+            "n_giga": 1.01e-7,
+            "n_gibi": 9.406358003616333e-8,
+            "n_tera": 1.01e-10,
+            "n_tebi": 9.185896487906575e-11,
+            "n_peta": 1.01e-13,
+            "n_peti": 8.970602038971265e-14
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "temperature.gpu_temp_slow_threshold",
+            "s_title": "GPU Slowdown Temperature Threshold",
+            "s_description": "The temperature at which the GPU will start to reduce its clock speeds (throttle) to prevent overheating."
+        },
+        "s_value": "98 C",
+        "o_number_value": {
+            "s_original": "98 C",
+            "s_name_base_unit": "Celsius",
+            "n_nano": 98000000000,
+            "n_micro": 98000000,
+            "n_milli": 98000,
+            "n_centi": 9800,
+            "n_deci": 980,
+            "n": 98,
+            "n_kilo": 0.098,
+            "n_kibi": 0.095703125,
+            "n_mega": 0.000098,
+            "n_mebi": 0.0000934600830078125,
+            "n_giga": 9.8e-8,
+            "n_gibi": 9.12696123123169e-8,
+            "n_tera": 9.8e-11,
+            "n_tebi": 8.913048077374697e-11,
+            "n_peta": 9.8e-14,
+            "n_peti": 8.704148513061227e-14
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "temperature.gpu_temp_max_gpu_threshold",
+            "s_title": "Max GPU Temperature",
+            "s_description": "The highest temperature the GPU has reached during operation."
+        },
+        "s_value": "87 C",
+        "o_number_value": {
+            "s_original": "87 C",
+            "s_name_base_unit": "Celsius",
+            "n_nano": 87000000000,
+            "n_micro": 87000000,
+            "n_milli": 87000,
+            "n_centi": 8700,
+            "n_deci": 870,
+            "n": 87,
+            "n_kilo": 0.087,
+            "n_kibi": 0.0849609375,
+            "n_mega": 0.000087,
+            "n_mebi": 0.00008296966552734375,
+            "n_giga": 8.7e-8,
+            "n_gibi": 8.102506399154663e-8,
+            "n_tera": 8.7e-11,
+            "n_tebi": 7.912603905424476e-11,
+            "n_peta": 8.7e-14,
+            "n_peti": 7.72715225139109e-14
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "gpu_power_readings.power_draw",
+            "s_title": "GPU Power Draw",
+            "s_description": "The current power consumption of the GPU in watts."
+        },
+        "s_value": "19.00 W",
+        "o_number_value": {
+            "s_original": "19.00 W",
+            "s_name_base_unit": "Watt",
+            "n_nano": 19000000000,
+            "n_micro": 19000000,
+            "n_milli": 19000,
+            "n_centi": 1900,
+            "n_deci": 190,
+            "n": 19,
+            "n_kilo": 0.019,
+            "n_kibi": 0.0185546875,
+            "n_mega": 0.000019,
+            "n_mebi": 0.00001811981201171875,
+            "n_giga": 1.9e-8,
+            "n_gibi": 1.7695128917694092e-8,
+            "n_tera": 1.9e-11,
+            "n_tebi": 1.7280399333685637e-11,
+            "n_peta": 1.9e-14,
+            "n_peti": 1.687538997430238e-14
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "gpu_power_readings.current_power_limit",
+            "s_title": "Current Power Limit",
+            "s_description": "The current power limit set for the GPU, which can be dynamically adjusted based on workload or system configuration."
+        },
+        "s_value": "115.00 W",
+        "o_number_value": {
+            "s_original": "115.00 W",
+            "s_name_base_unit": "Watt",
+            "n_nano": 115000000000,
+            "n_micro": 115000000,
+            "n_milli": 115000,
+            "n_centi": 11500,
+            "n_deci": 1150,
+            "n": 115,
+            "n_kilo": 0.115,
+            "n_kibi": 0.1123046875,
+            "n_mega": 0.000115,
+            "n_mebi": 0.00010967254638671875,
+            "n_giga": 1.15e-7,
+            "n_gibi": 1.0710209608078003e-7,
+            "n_tera": 1.15e-10,
+            "n_tebi": 1.0459189070388675e-10,
+            "n_peta": 1.15e-13,
+            "n_peti": 1.021405182655144e-13
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "gpu_power_readings.requested_power_limit",
+            "s_title": "Requested Power Limit",
+            "s_description": "The power limit requested by the system or software for the GPU."
+        },
+        "s_value": "115.00 W",
+        "o_number_value": {
+            "s_original": "115.00 W",
+            "s_name_base_unit": "Watt",
+            "n_nano": 115000000000,
+            "n_micro": 115000000,
+            "n_milli": 115000,
+            "n_centi": 11500,
+            "n_deci": 1150,
+            "n": 115,
+            "n_kilo": 0.115,
+            "n_kibi": 0.1123046875,
+            "n_mega": 0.000115,
+            "n_mebi": 0.00010967254638671875,
+            "n_giga": 1.15e-7,
+            "n_gibi": 1.0710209608078003e-7,
+            "n_tera": 1.15e-10,
+            "n_tebi": 1.0459189070388675e-10,
+            "n_peta": 1.15e-13,
+            "n_peti": 1.021405182655144e-13
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "gpu_power_readings.default_power_limit",
+            "s_title": "Default Power Limit",
+            "s_description": "The default power limit set by the manufacturer for the GPU."
+        },
+        "s_value": "115.00 W",
+        "o_number_value": {
+            "s_original": "115.00 W",
+            "s_name_base_unit": "Watt",
+            "n_nano": 115000000000,
+            "n_micro": 115000000,
+            "n_milli": 115000,
+            "n_centi": 11500,
+            "n_deci": 1150,
+            "n": 115,
+            "n_kilo": 0.115,
+            "n_kibi": 0.1123046875,
+            "n_mega": 0.000115,
+            "n_mebi": 0.00010967254638671875,
+            "n_giga": 1.15e-7,
+            "n_gibi": 1.0710209608078003e-7,
+            "n_tera": 1.15e-10,
+            "n_tebi": 1.0459189070388675e-10,
+            "n_peta": 1.15e-13,
+            "n_peti": 1.021405182655144e-13
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "gpu_power_readings.min_power_limit",
+            "s_title": "Minimum Power Limit",
+            "s_description": "The minimum power limit the GPU can operate under without shutting down or malfunctioning."
+        },
+        "s_value": "1.00 W",
+        "o_number_value": {
+            "s_original": "1.00 W",
+            "s_name_base_unit": "Watt",
+            "n_nano": 999999999.9999999,
+            "n_micro": 1000000,
+            "n_milli": 1000,
+            "n_centi": 100,
+            "n_deci": 10,
+            "n": 1,
+            "n_kilo": 0.001,
+            "n_kibi": 0.0009765625,
+            "n_mega": 0.000001,
+            "n_mebi": 9.5367431640625e-7,
+            "n_giga": 1e-9,
+            "n_gibi": 9.313225746154785e-10,
+            "n_tera": 1e-12,
+            "n_tebi": 9.094947017729282e-13,
+            "n_peta": 1e-15,
+            "n_peti": 8.881784197001252e-16
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "gpu_power_readings.max_power_limit",
+            "s_title": "Maximum Power Limit",
+            "s_description": "The maximum power limit the GPU can draw without exceeding safety limits."
+        },
+        "s_value": "150.00 W",
+        "o_number_value": {
+            "s_original": "150.00 W",
+            "s_name_base_unit": "Watt",
+            "n_nano": 150000000000,
+            "n_micro": 150000000,
+            "n_milli": 150000,
+            "n_centi": 15000,
+            "n_deci": 1500,
+            "n": 150,
+            "n_kilo": 0.15,
+            "n_kibi": 0.146484375,
+            "n_mega": 0.00015,
+            "n_mebi": 0.0001430511474609375,
+            "n_giga": 1.5e-7,
+            "n_gibi": 1.3969838619232178e-7,
+            "n_tera": 1.5e-10,
+            "n_tebi": 1.3642420526593924e-10,
+            "n_peta": 1.5e-13,
+            "n_peti": 1.3322676295501878e-13
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "clocks.graphics_clock",
+            "s_title": "Graphics Clock Speed",
+            "s_description": "The current clock speed of the GPU’s graphics core, measured in MHz."
+        },
+        "s_value": "210 MHz",
+        "o_number_value": {
+            "s_original": "210 MHz",
+            "s_name_base_unit": "Byte",
+            "n_nano": 210000000000000000,
+            "n_micro": 210000000000000,
+            "n_milli": 210000000000,
+            "n_centi": 21000000000,
+            "n_deci": 2100000000,
+            "n": 210000000,
+            "n_kilo": 210000,
+            "n_kibi": 205078.125,
+            "n_mega": 210,
+            "n_mebi": 200.2716064453125,
+            "n_giga": 0.21,
+            "n_gibi": 0.1955777406692505,
+            "n_tera": 0.00021,
+            "n_tebi": 0.00019099388737231493,
+            "n_peta": 2.1e-7,
+            "n_peti": 1.865174681370263e-7
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "clocks.sm_clock",
+            "s_title": "SM Clock Speed",
+            "s_description": "The clock speed of the GPU’s streaming multiprocessor (SM), which handles parallel workloads."
+        },
+        "s_value": "210 MHz",
+        "o_number_value": {
+            "s_original": "210 MHz",
+            "s_name_base_unit": "Byte",
+            "n_nano": 210000000000000000,
+            "n_micro": 210000000000000,
+            "n_milli": 210000000000,
+            "n_centi": 21000000000,
+            "n_deci": 2100000000,
+            "n": 210000000,
+            "n_kilo": 210000,
+            "n_kibi": 205078.125,
+            "n_mega": 210,
+            "n_mebi": 200.2716064453125,
+            "n_giga": 0.21,
+            "n_gibi": 0.1955777406692505,
+            "n_tera": 0.00021,
+            "n_tebi": 0.00019099388737231493,
+            "n_peta": 2.1e-7,
+            "n_peti": 1.865174681370263e-7
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "clocks.mem_clock",
+            "s_title": "Memory Clock Speed",
+            "s_description": "The current clock speed of the GPU’s memory, measured in MHz."
+        },
+        "s_value": "405 MHz",
+        "o_number_value": {
+            "s_original": "405 MHz",
+            "s_name_base_unit": "Byte",
+            "n_nano": 405000000000000000,
+            "n_micro": 405000000000000,
+            "n_milli": 405000000000,
+            "n_centi": 40500000000,
+            "n_deci": 4050000000,
+            "n": 405000000,
+            "n_kilo": 405000,
+            "n_kibi": 395507.8125,
+            "n_mega": 405,
+            "n_mebi": 386.23809814453125,
+            "n_giga": 0.405,
+            "n_gibi": 0.3771856427192688,
+            "n_tera": 0.000405,
+            "n_tebi": 0.00036834535421803594,
+            "n_peta": 4.05e-7,
+            "n_peti": 3.597122599785507e-7
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "clocks.video_clock",
+            "s_title": "Video Clock Speed",
+            "s_description": "The clock speed of the GPU’s video processing engine, measured in MHz. This controls the rate at which the video processing hardware operates."
+        },
+        "s_value": "555 MHz",
+        "o_number_value": {
+            "s_original": "555 MHz",
+            "s_name_base_unit": "Byte",
+            "n_nano": 554999999999999940,
+            "n_micro": 555000000000000,
+            "n_milli": 555000000000,
+            "n_centi": 55500000000,
+            "n_deci": 5550000000,
+            "n": 555000000,
+            "n_kilo": 555000,
+            "n_kibi": 541992.1875,
+            "n_mega": 555,
+            "n_mebi": 529.2892456054688,
+            "n_giga": 0.555,
+            "n_gibi": 0.5168840289115906,
+            "n_tera": 0.000555,
+            "n_tebi": 0.0005047695594839752,
+            "n_peta": 5.55e-7,
+            "n_peti": 4.929390229335695e-7
+        },
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "product_name",
+            "s_title": "Product Name",
+            "s_description": "The official name of the GPU, identifying its model and variant."
+        },
+        "s_value": "NVIDIA GeForce RTX 3070 Laptop GPU",
+        "o_number_value": null,
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "product_brand",
+            "s_title": "Product Brand",
+            "s_description": "The brand under which the GPU is marketed, such as NVIDIA GeForce or AMD Radeon."
+        },
+        "s_value": "GeForce",
+        "o_number_value": null,
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "product_architecture",
+            "s_title": "Product Architecture",
+            "s_description": "The underlying architecture of the GPU, representing its generation and core technology, such as Ampere, RDNA, or Turing."
+        },
+        "s_value": "Ampere",
+        "o_number_value": null,
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "vbios_version",
+            "s_title": "VBIOS Version",
+            "s_description": "The version of the Video BIOS (VBIOS) running on the GPU, which controls low-level operations and configurations."
+        },
+        "s_value": "94.04.83.00.13",
+        "o_number_value": null,
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "display_mode",
+            "s_title": "Display Mode",
+            "s_description": "The current display mode, indicating whether the GPU is rendering content on connected displays (active) or not (idle)."
+        },
+        "s_value": "Enabled",
+        "o_number_value": null,
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "display_active",
+            "s_title": "Display Active",
+            "s_description": "Indicates whether the GPU is actively connected to and driving a display."
+        },
+        "s_value": "Enabled",
+        "o_number_value": null,
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "persistence_mode",
+            "s_title": "Persistence Mode",
+            "s_description": "Indicates whether the GPU is in persistence mode, which keeps the GPU driver loaded even when no applications are using the GPU."
+        },
+        "s_value": "Disabled",
+        "o_number_value": null,
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "addressing_mode",
+            "s_title": "Addressing Mode",
+            "s_description": "The memory addressing mode used by the GPU, which determines how the GPU accesses its memory."
+        },
+        "s_value": "None",
+        "o_number_value": null,
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "accounting_mode",
+            "s_title": "Accounting Mode",
+            "s_description": "Indicates whether the GPU’s resource usage accounting mode is enabled, tracking the consumption of GPU resources for processes."
+        },
+        "s_value": "Disabled",
+        "o_number_value": null,
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    },
+    {
+        "o_gpu_property": {
+            "s_property_accessor_nvidia_smi": "accounting_mode_buffer_size",
+            "s_title": "Accounting Mode Buffer Size",
+            "s_description": "The buffer size allocated for tracking and storing GPU resource usage information when accounting mode is enabled."
+        },
+        "s_value": "4000",
+        "o_number_value": null,
+        "n_nor": null,
+        "o_number_value_max": null,
+        "o_number_value_min": null
+    }
+]

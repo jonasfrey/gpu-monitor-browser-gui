@@ -15,11 +15,18 @@ import {
 } from "./classes.module.js"
 import { ensureDir } from "https://deno.land/std@0.224.0/fs/ensure_dir.ts";
 
+
+
+import { parse as f_o_xml_parsed } from "https://deno.land/x/xml@5.4.16/parse.ts"
+
 import { f_o_config } from "./functions.module.js";
 import {
-    f_a_o_entry__from_s_path
-} from "https://deno.land/x/handyhelpers@4.0.7/mod.js"
-import { O_nvidia_smi_info } from "./localhost/classes.module.js";
+    f_o_number_value__from_s_input, 
+    f_a_o_number_value_temperature_from_s_temp
+} from "https://deno.land/x/handyhelpers@4.1.2/mod.js"
+
+import { O_gpu_property_value, O_gpu_info, O_gpu_readout_info } from "./localhost/classes.module.js";
+import { a_o_gpu_property } from "./localhost/runtimedata.module.js";
 
 let s_path_abs_file_current = new URL(import.meta.url).pathname;
 let s_path_abs_folder_current = s_path_abs_file_current.split('/').slice(0, -1).join('/');
@@ -50,11 +57,22 @@ const o_kv = await Deno.openKv();
 // let o_config = await f_o_config();
 // console.log({o_config});
 
+let b_dev = true;
 let s_api_key = `rtrjRM`
 let s_path_abs_folder_cached_shaders = './localhost/cached_shaders';
 if(!b_deno_deploy){
 
     await ensureDir(s_path_abs_folder_cached_shaders)// deno deploy is read only...
+}
+let f_b_nvidia_smi_installed = async function(){
+    let b = false;
+    try {
+        let o = await f_o_command('which nvidia-smi');
+        b = (o.s_stdout != '');
+    } catch (error) {
+        
+    }
+    return b
 }
 
 let f_handler = async function(o_request){
@@ -116,21 +134,112 @@ let f_handler = async function(o_request){
             }
         );
     }
-    if(o_url.pathname == '/f_o_nvidia_smi_info'){
-        let o = await f_o_command('nvidia-smi -q -x');
+    
+    if(o_url.pathname == '/f_b_nvidia_smi_installed'){
+        
+        let b = await f_b_nvidia_smi_installed();
+        if(b_dev){
+            b = true;
+        }
+        return new Response(
+            JSON.stringify(b),
+            { 
+                headers: {
+                    'Content-type': "application/json"
+                }
+            }
+        );
+    }
+
+    if(o_url.pathname == '/f_o_gpu_readout_info'){
+
+        let s_xml = ''
+        if(b_dev){
+            let b = await f_b_nvidia_smi_installed();
+            if(!b){
+                s_xml = await Deno.readTextFile(
+                    './nvidiasmiqx.xml'
+                );
+            }
+        }else{
+            let o = await f_o_command('nvidia-smi -q -x');
+            s_xml = o.s_stdout;
+        }
         // console.log(o)
+        // const o_parser = new DOMParser();
+        // const o_xml = o_parser.parseFromString(s_xml, "application/xml");
+        // console.log(o_xml);
+        let o_nvidia_smi_xml = f_o_xml_parsed(s_xml);
+        await Deno.writeTextFile('./o_xml.json', JSON.stringify(o_nvidia_smi_xml, null, 4))
+        console.log(o_nvidia_smi_xml)
+        let a_o_gpu_xml_info = o_nvidia_smi_xml.nvidia_smi_log.gpu;
+        // i could kotzen ! fucking xml structure is behinderet as fuck just use fucking json, what is so hard
+        // now this absolutely stupid workaround is necessary
+        if(!Array.isArray(a_o_gpu_xml_info)){
+            a_o_gpu_xml_info = [a_o_gpu_xml_info]
+        }
+        let a_o_gpu_info = a_o_gpu_xml_info.map(
+            o_gpu_xml_info =>{
+                let a_o_gpu_property_value = a_o_gpu_property.map(
+                    o=>{
+                        let a_s_prop = o.s_property_accessor_nvidia_smi.split('.');
+                        let v = o_gpu_xml_info;
+                        while(a_s_prop.length > 0){
+                            v = v[a_s_prop.shift()]
+                        }
+        
+                        let o_number_value = null;
+                        try {
+                            o_number_value = f_o_number_value__from_s_input(v) 
+                        } catch (error) {
+                        }
+                        return new O_gpu_property_value(
+                            o,
+                            v, 
+                            o_number_value,
+                            null, 
+                            null, 
+                            null,
+                        );
+                    }
+                )
+                let f_o_gpu_property_value_from_s = function(s){
+                    return a_o_gpu_property_value.find(o=>{
+                        return o.o_gpu_property.s_property_accessor_nvidia_smi == s
+                    });
+                }
+                // calculate the normalized values 
+                for(let o of a_o_gpu_property_value){
+                    if(
+                        o.o_gpu_property.s_property_accessor_nvidia_smi.includes('usage')
+                    ){
+                        let s_accessor = o.o_gpu_property.s_property_accessor_nvidia_smi.split('.').shift();
+                        let v = o_gpu_xml_info[s_accessor].total;
+        
+                        o.o_number_value_max = f_o_number_value__from_s_input(v)
+                        o.n_nor = o.o_number_value.n / o.o_number_value_max.n;
+                    }
+                }
+
+                let o_gpu_info = new O_gpu_info(
+                    f_o_gpu_property_value_from_s('product_name')?.s_value,
+                    a_o_gpu_property_value,
+                    o_gpu_xml_info, 
+                )
+                return o_gpu_info; 
+            }
+        )
         let n_ts_ms = new Date().getTime()
         let s_ymd_hms = f_s_ymd_hms__from_n_ts_ms_utc(n_ts_ms)
-        let o_nvidia_smi_info = new O_nvidia_smi_info(
-            o.s_stdout, 
+        let o_gpu_readout_info = new O_gpu_readout_info(
             n_ts_ms,
-            s_ymd_hms 
+            s_ymd_hms,
+            a_o_gpu_info,
+            o_nvidia_smi_xml,
         )
-        
-        // await o_kv.set([`o_nvidia_smi_info_${s_ymd_hms}`], o_nvidia_smi_info);
 
         return new Response(
-            JSON.stringify(o_nvidia_smi_info),
+            JSON.stringify(o_gpu_readout_info),
             { 
                 headers: {
                     'Content-type': "application/json"
