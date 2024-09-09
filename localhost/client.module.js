@@ -276,6 +276,10 @@ o_variables.n_rem_font_size_base = 0.78 // adjust font size, other variables can
 o_variables.n_rem_padding_interactive_elements = 0.5; // adjust padding for interactive elements 
 f_add_css(
     `
+    button, select {
+        max-width: 100%;
+        white-space: normal;
+    }
     input[type="color"] {
         padding: 0rem;
         width: 2rem;
