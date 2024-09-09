@@ -65,19 +65,15 @@ let f_n_ts_sec_lt_from_s_date = function(s){
 }
 
 let o_state = {
+    n_ms_interval:500, 
+    n_datapoints_x: 200, 
     a_o_gpu_property,
     b_nvidia_smi_installed: await (await fetch('./f_b_nvidia_smi_installed')).json(),
     s_name_gpu : '', 
     o_gpu_info: null, 
     a_o_gpu_readout_info: [], 
     a_o_dataset: [], 
-    n_ms_interval: 500,
-    n_ms_interval_min: 100,
-    n_ms_interval_max: 2000,
     n_id_interval: 0,
-    n_datapoints_x: 20,
-    n_datapoints_x_min: 1,
-    n_datapoints_x_max: 500,
     a_o_graph: [], 
     o_state__notifier: {}
 }
@@ -121,7 +117,7 @@ let f_update_interval = function(){
             let o_graph = o_state.a_o_graph[n_idx];
             let o_div = a_o_div[n_idx]
 
-            let n_remaining = Math.max(o_graph.n_datapoints_x-o_state.a_o_gpu_readout_info.length, 0);
+            let n_remaining = Math.max(o_state.n_datapoints_x-o_state.a_o_gpu_readout_info.length, 0);
             let a_o_gpu_readout_info = [
                 ...new Array(
                     n_remaining,
@@ -129,7 +125,7 @@ let f_update_interval = function(){
                     return o_state.a_o_gpu_readout_info[0]
                 }),
                 ...o_state.a_o_gpu_readout_info.slice(
-                    Math.max(o_state.a_o_gpu_readout_info.length-o_graph.n_datapoints_x, 0)
+                    Math.max(o_state.a_o_gpu_readout_info.length-o_state.n_datapoints_x, 0)
                 )
             ];
             // console.log(a_o_gpu_readout_info)
@@ -276,7 +272,7 @@ let f_update_interval = function(){
 
 window.o_state = o_state
 
-o_variables.n_rem_font_size_base = 1. // adjust font size, other variables can also be adapted before adding the css to the dom
+o_variables.n_rem_font_size_base = 0.78 // adjust font size, other variables can also be adapted before adding the css to the dom
 o_variables.n_rem_padding_interactive_elements = 0.5; // adjust padding for interactive elements 
 f_add_css(
     `
@@ -382,6 +378,55 @@ document.body.appendChild(
                     Object.assign(
                         o_state, 
                         {
+                            o_js__n_ms_interval: {
+                                f_o_jsh:()=>{
+                                    return {
+                                        a_o: [
+                                            {
+                                                innerText: "Milliseconds interval", 
+                                            },
+                                            {
+                                                s_tag: "input", 
+                                                
+                                                value: o_state.n_ms_interval, 
+                                                oninput: ()=>{
+                                                    let n = parseInt(o_e.target.value)
+                                                    o_state.n_ms_interval = Math.max(100, n);
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                    ).o_js__n_ms_interval,
+                    Object.assign(
+                        o_state, 
+                        { 
+                            o_js__n_datapoints_x: {
+                                f_o_jsh:()=>{
+                                    return {
+                                        a_o: [
+                                            {
+                                                innerText: "Datapoints x", 
+                                            },
+                                            {
+                                                s_tag: "input", 
+                                                value: o_state.n_datapoints_x, 
+                                                oninput: ()=>{
+                                                    let n = parseInt(o_e.target.value)
+                                                    o_state.n_datapoints_x = Math.min(1000, n);
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }, 
+                    ).o_js__n_datapoints_x, 
+                    Object.assign(
+                        o_state, 
+                        {
                             o_js__a_o_graph: {
                                 f_o_jsh:()=>{
                                     return {
@@ -415,54 +460,6 @@ document.body.appendChild(
                                                                 {
                                                                     class: "left", 
                                                                     a_o: [
-                                                                        Object.assign(
-                                                                            o_graph, 
-                                                                            {
-                                                                                o_js__n_ms_interval: {
-                                                                                    f_o_jsh:()=>{
-                                                                                        return {
-                                                                                            a_o: [
-                                                                                                {
-                                                                                                    innerText: "Milliseconds interval", 
-                                                                                                },
-                                                                                                {
-                                                                                                    s_tag: "input", 
-                                                                                                    value: o_graph.n_ms_interval, 
-                                                                                                    oninput: ()=>{
-                                                                                                        let n = parseInt(o_e.target.value)
-                                                                                                        o_graph.n_ms_interval = Math.max(100, n);
-                                                                                                    }
-                                                                                                }
-                                                                                            ]
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            },
-                                                                        ).o_js__n_ms_interval,
-                                                                        Object.assign(
-                                                                            o_graph, 
-                                                                            { 
-                                                                                o_js__n_datapoints_x: {
-                                                                                    f_o_jsh:()=>{
-                                                                                        return {
-                                                                                            a_o: [
-                                                                                                {
-                                                                                                    innerText: "Datapoints x", 
-                                                                                                },
-                                                                                                {
-                                                                                                    s_tag: "input", 
-                                                                                                    value: o_graph.n_datapoints_x, 
-                                                                                                    oninput: ()=>{
-                                                                                                        let n = parseInt(o_e.target.value)
-                                                                                                        o_graph.n_datapoints_x = Math.min(1000, n);
-                                                                                                    }
-                                                                                                }
-                                                                                            ]
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }, 
-                                                                        ).o_js__n_datapoints_x, 
                                                                         Object.assign(
                                                                             o_graph, 
                                                                             {
@@ -506,9 +503,7 @@ document.body.appendChild(
                                                                                                                         await o_graph.o_js_a_o_gpu_property_value_visualization._f_render();
                                                                                                                     }
                                                                                                                 },
-                                                                                                                {
-                                                                                                                    innerText: o_gpu_property_value_visualization.o_gpu_property.s_title,
-                                                                                                                },
+                                                                                                               
                                                                                                                 {
                                                                                                                     innerText: o_gpu_property_value_visualization.o_gpu_property.s_description,
                                                                                                                 },
@@ -543,6 +538,7 @@ document.body.appendChild(
                                                                                                             )
                                                                                                         )
                                                                                                         await o_graph.o_js_a_o_gpu_property_value_visualization._f_render();
+                                                                                                        f_resize_echart_graphs();
                                                                                                     }
                                                                                                 }
                                                                                             ]
@@ -587,16 +583,13 @@ document.body.appendChild(
                             o_state.a_o_graph.push(
                                 new O_graph(
                                     o_state.a_o_gpu_readout_info.at(-1).a_o_gpu_info[0].s_name_brand_model_gpu,
-                                    1000, 
-                                    100,
                                     [], 
                                     5
                                 )
                             )
                             await o_state.o_js__a_o_graph._f_render();
                             f_clear_echart_instances();
-                            
-                            console.log(o_state.a_o_graph)
+                            f_resize_echart_graphs();
                         }
                     }              
                 ]
@@ -626,164 +619,7 @@ let f_n_nor2 = function(
     let n_nor = parseInt(o.innerHTML) / 100.0;
     return n_nor
 }
-let a_o_prop = [
-    
-    // { f_n_nor: f_n_nor1, s_prop: 'fb_memory_usage.total', showLine: true },
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'fb_memory_usage.reserved', 
-        s_title: 'Frame Buffer Memory Reserved',
-        s_description: 'How much memory is reserved for the frame buffer. This memory is allocated but not necessarily used for immediate rendering.'
-    },
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'fb_memory_usage.used', 
-        s_title: 'Frame Buffer Memory Used',
-        s_description: 'The amount of frame buffer memory actively being used by the GPU for rendering tasks and operations.'
-    },
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'fb_memory_usage.free', 
-        s_title: 'Frame Buffer Memory Free',
-        s_description: 'The available frame buffer memory that can be allocated for future rendering operations.'
-    },
 
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'bar1_memory_usage.used', 
-        s_title: 'BAR1 Memory Used',
-        s_description: 'The amount of memory used by BAR1, which is used for communication between the CPU and GPU. It maps parts of GPU memory for CPU access.'
-    },
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'bar1_memory_usage.free', 
-        s_title: 'BAR1 Memory Free',
-        s_description: 'The available BAR1 memory that the CPU can map and use for communication with the GPU.'
-    },
-
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'cc_protected_memory_usage.used', 
-        s_title: 'CC Protected Memory Used',
-        s_description: 'The amount of memory used for protected content, which is secured by Content and Context Protection (CCP).'
-    },
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'cc_protected_memory_usage.free', 
-        s_title: 'CC Protected Memory Free',
-        s_description: 'The available memory for protected content secured under Content and Context Protection (CCP).'
-    },
-
-    {   
-        f_n_nor: f_n_nor2,
-        s_prop: 'utilization.gpu_util', 
-        s_title: 'GPU Utilization',
-        s_description: 'The percentage of GPU utilization, showing how much of the GPU’s processing power is currently in use.'
-    },
-    {   
-        f_n_nor: f_n_nor2,
-        s_prop: 'utilization.memory_util', 
-        s_title: 'Memory Utilization',
-        s_description: 'The percentage of memory utilization, showing how much of the GPU’s memory is currently in use.'
-    },
-    {   
-        f_n_nor: f_n_nor2,
-        s_prop: 'utilization.encoder_util', 
-        s_title: 'Encoder Utilization',
-        s_description: 'The percentage of utilization for the GPU’s video encoder, showing how much of the encoder’s resources are being used.'
-    },
-    {   
-        f_n_nor: f_n_nor2,
-        s_prop: 'utilization.decoder_util', 
-        s_title: 'Decoder Utilization',
-        s_description: 'The percentage of utilization for the GPU’s video decoder, showing how much of the decoder’s resources are being used.'
-    },
-    {   
-        f_n_nor: f_n_nor2,
-        s_prop: 'utilization.jpeg_util', 
-        s_title: 'JPEG Decoder Utilization',
-        s_description: 'The percentage of utilization for the GPU’s JPEG decoding engine, showing how much of the JPEG decoder’s resources are being used.'
-    },
-    {   
-        f_n_nor: f_n_nor2,
-        s_prop: 'utilization.ofa_util', 
-        s_title: 'Optical Flow Accelerator Utilization',
-        s_description: 'The percentage of utilization for the GPU’s Optical Flow Accelerator (OFA), which is used for motion estimation and similar tasks.'
-    },
-
-    {   
-        s_prop: 'temperature.gpu_temp', 
-        s_title: 'GPU Temperature',
-        s_description: 'The current temperature of the GPU in degrees Celsius.'
-    },
-    {   
-        s_prop: 'temperature.gpu_temp_max_threshold', 
-        s_title: 'Max GPU Temperature Threshold',
-        s_description: 'The maximum safe operating temperature for the GPU, beyond which it may throttle or shut down to prevent damage.'
-    },
-    {   
-        s_prop: 'temperature.gpu_temp_slow_threshold', 
-        s_title: 'GPU Slowdown Temperature Threshold',
-        s_description: 'The temperature at which the GPU will start to reduce its clock speeds (throttle) to prevent overheating.'
-    },
-    {   
-        s_prop: 'temperature.gpu_temp_max_gpu_threshold', 
-        s_title: 'Max GPU Temperature',
-        s_description: 'The highest temperature the GPU has reached during operation.'
-    },
-
-    {   
-        s_prop: 'gpu_power_readings.power_draw', 
-        s_title: 'GPU Power Draw',
-        s_description: 'The current power consumption of the GPU in watts.'
-    },
-    {   
-        s_prop: 'gpu_power_readings.current_power_limit', 
-        s_title: 'Current Power Limit',
-        s_description: 'The current power limit set for the GPU, which can be dynamically adjusted based on workload or system configuration.'
-    },
-    {   
-        s_prop: 'gpu_power_readings.requested_power_limit', 
-        s_title: 'Requested Power Limit',
-        s_description: 'The power limit requested by the system or software for the GPU.'
-    },
-    {   
-        s_prop: 'gpu_power_readings.default_power_limit', 
-        s_title: 'Default Power Limit',
-        s_description: 'The default power limit set by the manufacturer for the GPU.'
-    },
-    {   
-        s_prop: 'gpu_power_readings.min_power_limit', 
-        s_title: 'Minimum Power Limit',
-        s_description: 'The minimum power limit the GPU can operate under without shutting down or malfunctioning.'
-    },
-    {   
-        s_prop: 'gpu_power_readings.max_power_limit', 
-        s_title: 'Maximum Power Limit',
-        s_description: 'The maximum power limit the GPU can draw without exceeding safety limits.'
-    },
-
-    {   
-        s_prop: 'clocks.graphics_clock', 
-        s_title: 'Graphics Clock Speed',
-        s_description: 'The current clock speed of the GPU’s graphics core, measured in MHz.'
-    },
-    {   
-        s_prop: 'clocks.sm_clock', 
-        s_title: 'SM Clock Speed',
-        s_description: 'The clock speed of the GPU’s streaming multiprocessor (SM), which handles parallel workloads.'
-    },
-    {   
-        s_prop: 'clocks.mem_clock', 
-        s_title: 'Memory Clock Speed',
-        s_description: 'The current clock speed of the GPU’s memory, measured in MHz.'
-    },
-    {   
-        s_prop: 'clocks.video_clock', 
-        s_title: 'Video Clock Speed',
-        s_description: 'The clock speed of the GPU’s video processing engine, measured in MHz.'
-    },
-]
 
 
 
