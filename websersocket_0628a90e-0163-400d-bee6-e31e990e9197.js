@@ -134,7 +134,38 @@ let f_handler = async function(o_request){
             }
         );
     }
-    
+    if(o_url.pathname == '/f_save_configuration'){
+        let o = await o_request.json();
+        let s_path_file = './a_o_configuration.json'
+        let a_o = []
+        try {
+            a_o = JSON.parse(await(Deno.readTextFile(s_path_file)));
+        } catch (error) {
+            
+        }
+        let o_existing = a_o.find(o2=>o2.s_name == o.s_name);
+        if(o_existing){
+            return new Response(
+                `configuration with name '${o.s_name}' already existing`,
+                { 
+                    status: 500,
+                    headers: {
+                        'Content-type': "application/json"
+                    }
+                }
+            );
+        }
+        a_o.push(o);
+        await Deno.writeTextFile(s_path_file, JSON.stringify(a_o, null, 4))
+        return new Response(
+            {b_success: true},
+            { 
+                headers: {
+                    'Content-type': "application/json"
+                }
+            }
+        );
+    }
     if(o_url.pathname == '/f_b_nvidia_smi_installed'){
         
         let b = await f_b_nvidia_smi_installed();
@@ -161,17 +192,17 @@ let f_handler = async function(o_request){
             );
         }else{
             let o = await f_o_command('nvidia-smi -q -x');
-            console.log(o)
+            // console.log(o)
             s_xml = o.s_stdout;
         }
-        console.log(s_xml)
+        // console.log(s_xml)
         // console.log(o)
         // const o_parser = new DOMParser();
         // const o_xml = o_parser.parseFromString(s_xml, "application/xml");
         // console.log(o_xml);
         let o_nvidia_smi_xml = f_o_xml_parsed(s_xml);
         await Deno.writeTextFile('./o_xml.json', JSON.stringify(o_nvidia_smi_xml, null, 4))
-        console.log(o_nvidia_smi_xml)
+        // console.log(o_nvidia_smi_xml)
         let a_o_gpu_xml_info = o_nvidia_smi_xml.nvidia_smi_log.gpu;
         // i could kotzen ! fucking xml structure is behinderet as fuck just use fucking json, what is so hard
         // now this absolutely stupid workaround is necessary

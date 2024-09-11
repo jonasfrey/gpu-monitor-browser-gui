@@ -97,6 +97,23 @@ class O_threshhold{
         this.s_col = s_col
     }
 }
+class O_configuration{
+    constructor(
+        s_name,
+        a_o_window,
+        b_auto_update_title,
+        n_min_backview,
+        n_sec_interval, 
+        n_tickinterval
+    ){
+        this.s_name = s_name
+        this.a_o_window = a_o_window
+        this.b_auto_update_title = b_auto_update_title
+        this.n_min_backview = n_min_backview
+        this.n_sec_interval = n_sec_interval
+        this.n_tickinterval = n_tickinterval
+    }
+}
 class O_window{
     constructor(
         n_trn_x_nor,
@@ -110,9 +127,6 @@ class O_window{
         a_o_threshhold, 
         s_name_brand_model_gpu,
         s_id_gpu, 
-        n_min_backview, 
-        n_sec_interval,
-        n_tickinterval,
     ){
         this.n_trn_x_nor = n_trn_x_nor,
         this.n_trn_y_nor = n_trn_y_nor, 
@@ -126,7 +140,6 @@ class O_window{
         this.o_echart = null
         this.s_name_brand_model_gpu = s_name_brand_model_gpu
         this.s_id_gpu = s_id_gpu
-        this.n_tickinterval = n_tickinterval
     }
 }
 export {
@@ -138,5 +151,6 @@ export {
     O_gpu_property_value_visualization,
     O_window,
     O_graph_type,
-    O_threshhold
+    O_threshhold, 
+    O_configuration
 }

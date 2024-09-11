@@ -36,8 +36,8 @@ window.f_o_number_value__from_s_input = f_o_number_value__from_s_input
 import {
     f_s_hms__from_n_ts_ms_utc,
 } from "https://deno.land/x/date_functions@1.4/mod.js"
-import { O_graph, O_gpu_info, O_gpu_property_value_visualization, O_window, O_threshhold, O_gpu_readout_info } from "./classes.module.js"
-import { a_o_gpu_property, a_o_graph_type, o_gpu_property__clocks_graphics_clock, o_graph_type__gauge, o_graph_type__text, o_graph_type__xy } from "./runtimedata.module.js"
+import { O_graph, O_gpu_info, O_gpu_property_value_visualization, O_window, O_threshhold, O_gpu_readout_info, O_configuration } from "./classes.module.js"
+import { a_o_gpu_property, a_o_graph_type, o_gpu_property__clocks_graphics_clock, o_gpu_property__utilization_gpu_util, o_graph_type__gauge, o_graph_type__text, o_graph_type__xy } from "./runtimedata.module.js"
 
 let f_n_ts_sec_lt_from_s_date = function(s){
     try {
@@ -64,10 +64,50 @@ let f_n_ts_sec_lt_from_s_date = function(s){
 
 }
 
+let a_o_gpu_readout_info= [
+    await (async () => {
+        let o = await fetch('./f_o_gpu_readout_info');
+        if(!o.ok){
+            await f_o_throw_notification(o_state.o_state__notifier, await o.text(), 'error');
+        }
+        let o_data = await o.json();
+        return o_data;
+    })()
+];
+
+let o_window__default = new O_window(
+    0.1, 0.1, 
+    0., 
+    0.1, 0.1, 
+    o_gpu_property__utilization_gpu_util.s_title,
+    o_graph_type__gauge,
+    o_gpu_property__utilization_gpu_util, 
+    [
+        new O_threshhold(0, '#00ff00'),
+        new O_threshhold(0.25, '#EBCF38'),
+        new O_threshhold(0.5, '#EBBA38'),
+        new O_threshhold(0.75, '#EB8700'),
+        new O_threshhold(0.9, '#EA2815'),
+    ], 
+    a_o_gpu_readout_info[0].a_o_gpu_info[0].o_gpu_xml_info['product_name'],
+    a_o_gpu_readout_info[0].a_o_gpu_info[0].o_gpu_xml_info['@id'], 
+
+)
 let o_state = {
+    a_o_configuration: [
+        new O_configuration(
+            'Configuration name', 
+            [
+                o_window__default
+            ],
+            true, 
+            1, 
+            1, 
+            10
+        ),
+    ],
+    o_configuration: null,
     b_render_global_settings: false,
-    n_min_backview: 1,
-    n_sec_interval: 1,
     s_searchterm_tmp : '',
     a_o_graph_type,
     o_graph_type__text,
@@ -84,12 +124,15 @@ let o_state = {
     b_nvidia_smi_installed: await (await fetch('./f_b_nvidia_smi_installed')).json(),
     s_name_gpu : '', 
     o_gpu_info: null, 
-    a_o_gpu_readout_info: [], 
+    a_o_gpu_readout_info,
     a_o_dataset: [], 
     n_id_interval: 0,
     a_o_graph: [], 
     o_state__notifier: {}
 }
+
+o_state.o_configuration = o_state.a_o_configuration[0];
+
 let f_update_e_chart = function(o_echart){
     let o_window = o_state.a_o_window.find((o_window, n_idx)=>{
         return o_window.o_echart == o_echart
@@ -229,13 +272,13 @@ let f_update_interval = async function(){
                         // console.log(o_gpu_property_value)
                         let n_nor = (o_gpu_property_value.n_nor) ? o_gpu_property_value.n_nor : o_gpu_property_value.o_number_value.n;
     
-                        var gaugeValue = n_nor*100;  // Example gauge value (can be dynamic)
+                        var n_value_gauge = parseInt(n_nor*100);  // Example gauge value (can be dynamic)
                         var needleColor = '#32cd32'; // Default color
     
                         // Change needle color based on value
-                        if (gaugeValue <= 30) {
+                        if (n_value_gauge <= 30) {
                             needleColor = '#ff4500';  // Red for values 0-30
-                        } else if (gaugeValue <= 70) {
+                        } else if (n_value_gauge <= 70) {
                             needleColor = '#ffcc00';  // Yellow for values 30-70
                         } else {
                             needleColor = '#32cd32';  // Green for values 70-100
@@ -247,7 +290,7 @@ let f_update_interval = async function(){
                                 {
                                     type: 'gauge',
                                     detail: {formatter: '{value}%'},
-                                    data: [{value: gaugeValue, name: o_window.s_title}],
+                                    data: [{value: n_value_gauge, name: o_window.s_title}],
                                     axisLine: {
                                         lineStyle: {
                                             color: [
@@ -268,112 +311,112 @@ let f_update_interval = async function(){
     
                     }
     
-                    // if(o_window.o_graph_type.s_name == o_graph_type__xy.s_name){
+                    if(o_window.o_graph_type.s_name == o_graph_type__xy.s_name){
                         
-                    //     o_window.o_echart.setOption({
-                    //         backgroundColor: '#1e1e1e', // Set the background to dark
-                    //         title: {
-                    //             text: '',
-                    //             textStyle: {
-                    //                 color: '#ffffff' // White title text for better contrast
-                    //             }
-                    //         },
-                    //         tooltip: {
-                    //             trigger: 'axis',
-                    //             backgroundColor: '#333', // Dark background for tooltips
-                    //             textStyle: {
-                    //                 color: '#ffffff' // White tooltip text
-                    //             }
-                    //         },
-                    //         grid: {
-                    //             top: 40,     // Adjust top padding
-                    //             left: 40,    // Adjust left padding
-                    //             right: 40,   // Adjust right padding
-                    //             bottom: 40   // Adjust bottom padding
-                    //         },
-                    //         xAxis: {
-                    //             interval: o_window.n_tickinterval,
-                    //             type: 'category',
-                    //             boundaryGap: false,
-                    //             data: [],
-                    //             axisLabel: {
-                    //                 color: '#ffffff',  // Optional: Set text color for the labels
-                    //                 fontSize: 9,      // Optional: Set font size
-                    //                 // rotate: 45         // Optional: Rotate labels (if needed)
-                    //             },
-                    //             axisLine: {
-                    //                 lineStyle: {
-                    //                     color: '#ffffff' // White axis line
-                    //                 }
-                    //             },
-                    //             splitLine: {
-                    //                 show: false // Disable grid lines if not necessary
-                    //             }
-                    //         },
-                    //         yAxis: {
-                    //             type: 'value',
-                    //             min: 0,
-                    //             max: 1,
-                    //             axisLine: {
-                    //                 lineStyle: {
-                    //                     color: '#ffffff' // White axis line
-                    //                 }
-                    //             },
-                    //             axisLabel: {
-                    //                 color: '#ffffff' // White axis labels
-                    //             },
-                    //             splitLine: {
-                    //                 lineStyle: {
-                    //                     color: '#444' // Darker color for grid lines to blend with background
-                    //                 }
-                    //             }
-                    //         },
-                    //         animation: false, // Disable all animations globally, 
-                    //         series: [
-                    //             ...o_window.a_o_gpu_property_value_visualization.map(
-                    //                 o_gpu_property_value_visualization => {
-                    //                     // console.log(o_gpu_property_value_visualization)
-                    //                     // console.log(a_o_gpu_readout_info)
-                    //                     let a_n_y = a_o_gpu_readout_info.map(
-                    //                         o_gpu_readout_info=>{
-                    //                             // console.log(o_gpu_readout_info.a_o_gpu_info)
-                    //                             let o_gpu_info = o_gpu_readout_info.a_o_gpu_info.find(
-                    //                                 o_gpu_info=>{
-                    //                                     return o_gpu_info.s_name_brand_model_gpu == o_graph.s_name_brand_model_gpu
-                    //                                 }
-                    //                             );
-                    //                             // console.log(o_gpu_info)
-                    //                             let o_gpu_property_value = o_gpu_info.a_o_gpu_property_value.find(o=>{
-                    //                                 return o.o_gpu_property.s_property_accessor_nvidia_smi == o_gpu_property_value_visualization.o_gpu_property.s_property_accessor_nvidia_smi
-                    //                             });
-                    //                             console.log(o_gpu_property_value)
-                    //                             let n_nor = (o_gpu_property_value.n_nor) ? o_gpu_property_value.n_nor : o_gpu_property_value.o_number_value.n;
+                        o_window.o_echart.setOption({
+                            backgroundColor: '#1e1e1e', // Set the background to dark
+                            title: {
+                                text: '',
+                                textStyle: {
+                                    color: '#ffffff' // White title text for better contrast
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                backgroundColor: '#333', // Dark background for tooltips
+                                textStyle: {
+                                    color: '#ffffff' // White tooltip text
+                                }
+                            },
+                            grid: {
+                                top: 40,     // Adjust top padding
+                                left: 40,    // Adjust left padding
+                                right: 40,   // Adjust right padding
+                                bottom: 40   // Adjust bottom padding
+                            },
+                            xAxis: {
+                                interval: o_state.o_configuration.n_tick,
+                                type: 'category',
+                                boundaryGap: false,
+                                data: [],
+                                axisLabel: {
+                                    color: '#ffffff',  // Optional: Set text color for the labels
+                                    fontSize: 9,      // Optional: Set font size
+                                    // rotate: 45         // Optional: Rotate labels (if needed)
+                                },
+                                axisLine: {
+                                    lineStyle: {
+                                        color: '#ffffff' // White axis line
+                                    }
+                                },
+                                splitLine: {
+                                    show: false // Disable grid lines if not necessary
+                                }
+                            },
+                            yAxis: {
+                                type: 'value',
+                                min: 0,
+                                max: 1,
+                                axisLine: {
+                                    lineStyle: {
+                                        color: '#ffffff' // White axis line
+                                    }
+                                },
+                                axisLabel: {
+                                    color: '#ffffff' // White axis labels
+                                },
+                                splitLine: {
+                                    lineStyle: {
+                                        color: '#444' // Darker color for grid lines to blend with background
+                                    }
+                                }
+                            },
+                            animation: false, // Disable all animations globally, 
+                            series: [
+                                ...o_window.a_o_gpu_property_value_visualization.map(
+                                    o_gpu_property_value_visualization => {
+                                        // console.log(o_gpu_property_value_visualization)
+                                        // console.log(a_o_gpu_readout_info)
+                                        let a_n_y = a_o_gpu_readout_info.map(
+                                            o_gpu_readout_info=>{
+                                                // console.log(o_gpu_readout_info.a_o_gpu_info)
+                                                let o_gpu_info = o_gpu_readout_info.a_o_gpu_info.find(
+                                                    o_gpu_info=>{
+                                                        return o_gpu_info.s_name_brand_model_gpu == o_graph.s_name_brand_model_gpu
+                                                    }
+                                                );
+                                                // console.log(o_gpu_info)
+                                                let o_gpu_property_value = o_gpu_info.a_o_gpu_property_value.find(o=>{
+                                                    return o.o_gpu_property.s_property_accessor_nvidia_smi == o_gpu_property_value_visualization.o_gpu_property.s_property_accessor_nvidia_smi
+                                                });
+                                                console.log(o_gpu_property_value)
+                                                let n_nor = (o_gpu_property_value.n_nor) ? o_gpu_property_value.n_nor : o_gpu_property_value.o_number_value.n;
         
-                    //                             return n_nor;
-                    //                         }
-                    //                     );
-                    //                     // console.log(a_n_y)
-                    //                     return {
-                    //                         name: o_gpu_property_value_visualization.o_gpu_property.s_property_accessor_nvidia_smi,
-                    //                         type: 'line',
-                    //                         data: a_n_y,
-                    //                         // new Array(100).fill(0).map(n=>Math.random())  // Update series data, 
-                    //                         lineStyle: {
-                    //                             color: o_gpu_property_value_visualization.s_rgba_color_interpolation
-                    //                         }
-                    //                     }
-                    //                 }
-                    //             )
+                                                return n_nor;
+                                            }
+                                        );
+                                        // console.log(a_n_y)
+                                        return {
+                                            name: o_gpu_property_value_visualization.o_gpu_property.s_property_accessor_nvidia_smi,
+                                            type: 'line',
+                                            data: a_n_y,
+                                            // new Array(100).fill(0).map(n=>Math.random())  // Update series data, 
+                                            lineStyle: {
+                                                color: o_gpu_property_value_visualization.s_rgba_color_interpolation
+                                            }
+                                        }
+                                    }
+                                )
                                 
-                    //         ]
+                            ]
         
-                    //     })
-                    // }
+                        })
+                    }
             
                 }
             }
             return f_res(true);
-        },o_state.n_sec_interval*1000)
+        },o_state.o_configuration.n_sec_interval*1000)
     })
 }
 
@@ -440,6 +483,17 @@ f_add_css(
 
 
 
+let f_f_o_jsh = function(
+    s_name, 
+    o
+){
+    return Object.assign(
+        o_state, 
+        {
+            [s_name]: o
+        }
+    )[s_name]
+}
 
 // Determine the current domain
 const s_hostname = window.location.hostname;
@@ -532,6 +586,50 @@ document.body.appendChild(
                 b_render: o_state.b_nvidia_smi_installed,
                 a_o: [
                     {
+                        innerText: o_state.s_name_configuration
+                    },
+                    {
+                        s_tag: 'button', 
+                        innerText: "save configuration",
+                        onpointerdown: async ()=>{
+                            let s_text = `this is your url`
+                            let o_resp = await fetch(
+                                './f_save_configuration', 
+                                {
+                                    method: "POST", 
+                                    headers: {
+                                        'content-type': "application/json"
+                                    },
+                                    body: JSON.stringify(
+                                        Object.assign(
+                                            {}, 
+                                            {
+                                                o_configuration: o_state.o_configuration, 
+                                            }
+                                        ), function(s_prop, value) {
+                                        // If the property is in the ignored list, skip it
+                                        if(
+                                            s_prop.includes('o_js__')
+                                            ||
+                                            s_prop.includes('o_echart')
+                                            || 
+                                            s_prop.includes('o_jsh')
+                                            || 
+                                            s_prop.includes('f_o_jsh')
+                                        ){
+                                            return undefined
+                                        }
+                                        
+                                        // Otherwise, return the value
+                                        return value;
+                                      })
+                                }
+                            )
+                            console.log(o_resp)
+                            alert(s_text)
+                        }
+                    },
+                    {
                         class: "settings fas fa-cog", 
                         s_tag: "button",
                         onclick: async ()=>{
@@ -578,6 +676,33 @@ document.body.appendChild(
                                                     o_state.n_sec_interval = parseInt(o_e.target.value)
                                                 }
                                             },
+                                            Object.assign(
+                                                o_state,
+                                                {
+                                                    o_js__b_auto_update_title: {
+                                                        f_o_jsh:()=>{
+                                                            return {
+                                                                s_tag: 'button', 
+                                                                
+                                                                a_o: [
+                                                                    {
+                
+                                                                        innerText: "Auto update title"
+                                                                    }, 
+                                                                    {
+                                                                        class: `fa-regular fa-square${(o_state.b_auto_update_title) ? '-check': ''}`,                                                
+                                                                    }
+                                                                ] , 
+                                                                onpointerdown:async ()=>{
+                                                                    o_state.b_auto_update_title = !o_state.b_auto_update_title
+                                                                    await o_state.o_js__b_auto_update_title._f_render()
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ).o_js__b_auto_update_title,
+                                          
                                             {
                                                 class: 'fa-solid fa-xmark',
                                                 style: "position:absolute; right: 0; top:0",
@@ -612,11 +737,15 @@ document.body.appendChild(
                                             {
                                                 innerText: "Title"
                                             },
-                                            {
-                                                s_tag: 'input', 
-                                                value: o_state?.o_window__settings?.s_title, 
-                                                oninput: (o_e)=>{o_state.o_window__settings.s_title = o_e.target.value}
-                                            },
+                                            f_f_o_jsh('o_js__s_title', {
+                                                f_o_jsh:()=>{
+                                                    return {
+                                                        s_tag: 'input', 
+                                                        value: o_state?.o_window__settings?.s_title, 
+                                                        oninput: (o_e)=>{o_state.o_window__settings.s_title = o_e.target.value}
+                                                    }
+                                                }
+                                            }),
                                             {
                                                 innerText: "GPU"
                                             },
@@ -716,7 +845,11 @@ document.body.appendChild(
                                                                     return {
                                                                         onpointerdown: async (o_e)=>{
                                                                             o_state.o_window__settings.o_gpu_property = o_gpu_property
+                                                                            if(o_state.b_auto_update_title){
+                                                                                o_state.o_window__settings.s_title = o_gpu_property.s_title
+                                                                            }
                                                                             await o_state.o_js__prop._f_render();
+                                                                            await o_state.o_js__s_title._f_render();
                                                                         },
                                                                         class: "clickable",
                                                                         data_value: o_gpu_property.s_property_accessor_nvidia_smi,
@@ -846,24 +979,8 @@ document.body.appendChild(
                         onclick : async ()=>{
                             let n_new = o_state.a_o_window.length+1;
                             o_state.a_o_window.push(
-                                new O_window(
-                                    0.1, 0.1, 
-                                    0., 
-                                    0.1, 0.1, 
-                                    `window ${o_state.a_o_window.length+1}`,
-                                    o_graph_type__gauge,
-                                    a_o_gpu_property[0], 
-                                    [
-                                        new O_threshhold(
-                                            0, 
-                                            '#ff0000'
-                                        )
-                                    ], 
-                                    o_state.a_o_gpu_readout_info[0].a_o_gpu_info[0].o_gpu_xml_info['product_name'],
-                                    o_state.a_o_gpu_readout_info[0].a_o_gpu_info[0].o_gpu_xml_info['@id'], 
-                                    10
-                                )
-                                )
+                                Object.assign({}, o_window__default)    
+                            )
                             for(let n_idx in o_state.a_o_window){
                                 let n_nor = parseInt(n_idx)/n_new;
                                 o_state.a_o_window[n_idx].n_trn_z_nor = n_nor;
@@ -876,7 +993,6 @@ document.body.appendChild(
         ]
     })
 )
-
 // import 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js'
 // Register all necessary components (optional, depending on what you need)
 // Chart.register(...registerables);
