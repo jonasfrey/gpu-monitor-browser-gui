@@ -37,7 +37,7 @@ import {
     f_s_hms__from_n_ts_ms_utc,
 } from "https://deno.land/x/date_functions@1.4/mod.js"
 import { O_graph, O_gpu_info, O_gpu_property_value_visualization, O_window } from "./classes.module.js"
-import { a_o_gpu_property, o_gpu_property__clocks_graphics_clock } from "./runtimedata.module.js"
+import { a_o_gpu_property, a_o_graph_type, o_gpu_property__clocks_graphics_clock, o_graph_type__gauge, o_graph_type__text, o_graph_type__xy } from "./runtimedata.module.js"
 
 let f_n_ts_sec_lt_from_s_date = function(s){
     try {
@@ -65,21 +65,18 @@ let f_n_ts_sec_lt_from_s_date = function(s){
 }
 
 let o_state = {
+    a_o_graph_type,
+    o_graph_type__text,
+    o_graph_type__gauge,
+    o_graph_type__xy,
+    n_ms_interval: 1000000,
     o_el_target_window_pointerdown: null,
     o_window_pointerdown_copy: null,
     n_trn_x_nor_pointerdown: 0,
     n_trn_y_nor_pointerdown: 0,
     o_window__pointerdown: null,
     o_window__settings: null,
-    a_o_window: [
-        new O_window(
-            0.2, 
-            0.2, 
-            0.,
-            0.2, 
-            0.2
-        )
-    ],
+    a_o_window: [ ],
     a_o_gpu_property,
     b_nvidia_smi_installed: await (await fetch('./f_b_nvidia_smi_installed')).json(),
     s_name_gpu : '', 
@@ -290,6 +287,15 @@ o_variables.n_rem_padding_interactive_elements = 0.5; // adjust padding for inte
 f_add_css('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 f_add_css(
     `
+    .o_window__settings{
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0.1,0.1,0.1,0.85);
+        z-index:100000;
+        left:0;
+        top:0;
+        position:absolute;
+    }
     button, select {
         max-width: 100%;
         white-space: normal;
@@ -420,13 +426,54 @@ document.body.appendChild(
                         o_state, 
                         {
                             o_js__o_window_settings: {
-                                f_render:()=>{
+                                f_o_jsh:()=>{
+
                                     return {
                                         class: "o_window__settings",
-                                        b_render: o_state?.o_window__settings != null, 
+                                        b_render: o_state?.o_window__settings != null,
                                         a_o: [
                                             {
-
+                                                innerText: "Title"
+                                            },
+                                            {
+                                                s_tag: 'input', 
+                                                value: o_state?.o_window__settings?.s_title, 
+                                                oninput: (o_e)=>{o_state.o_window__settings.s_title = o_e.target.value}
+                                            },
+                                            {
+                                                innerText: "Graph type"
+                                            },
+                                            {
+                                                style: 'display:flex;flex-direction:row',
+                                                a_o:o_state.a_o_graph_type.map(o_graph_type=>{
+                                                    return {
+                                                        class: `clickable ${(o_state.o_window__settings?.o_graph_type.s_name == o_graph_type.s_name)?'hovered': ''}`,
+                                                        onclick: async ()=>{
+                                                            o_state.o_window__settings.o_graph_type = o_graph_type
+                                                            await o_state.o_js__o_window_settings._f_render();
+                                                        },
+                                                        a_o: [
+                                                            {
+                                                                innerText: o_graph_type.s_name
+                                                            },
+                                                            {
+                                                                s_tag: "img", 
+                                                                style: "max-width: 100px;max-height:100px",
+                                                                src: o_graph_type.s_name_img
+                                                            }, 
+                                                        ]
+                                                    }
+                                                })
+                                            },
+                                            {
+                                                class: 'fa-solid fa-xmark',
+                                                style: "position:absolute; right: 0; top:0",
+                                                s_tag: 'button', 
+                                                onclick: async()=>{
+                                                    o_state.o_window__settings = null;
+                                                    await o_state.o_js__o_window_settings._f_render();
+                                                    await o_state.o_js__a_o_window._f_render()
+                                                }
                                             }
                                         ]
                                     }
@@ -442,26 +489,35 @@ document.body.appendChild(
                                     return {
                                         a_o: o_state.a_o_window.map(o_window=>{
                                             return {
-                                                onpointerdown : function(o_e){
+                                                class: "clickable hovered",
+                                                onpointerdown : async function(o_e){
                                                     o_state.o_el_target_window_pointerdown = o_e.target;
                                                     o_state.o_window_pointerdown_copy = Object.assign({}, o_window);
                                                     o_state.o_window__pointerdown = o_window
                                                     o_state.n_trn_x_nor_pointerdown = (o_e.clientX / window.innerWidth)
                                                     o_state.n_trn_y_nor_pointerdown = (o_e.clientY / window.innerHeight)
+                                                    if(o_e.target.className.includes('settings')){
+                                                        o_state.o_window__settings = o_window
+                                                        await o_state.o_js__o_window_settings._f_render();
+                                                    }
                                                 },
                                                 
                                                 style: [
                                                     `top: ${parseInt(o_window.n_trn_y_nor*window.innerHeight)}px`,
                                                     `left: ${parseInt(o_window.n_trn_x_nor*window.innerWidth)}px`,
-                                                    `width: ${parseInt(o_window.n_scl_x_nor*window.innerHeight)}px`,
-                                                    `height: ${parseInt(o_window.n_scl_y_nor*window.innerWidth)}px`,
+                                                    `width: ${parseInt(o_window.n_scl_x_nor*window.innerWidth)}px`,
+                                                    `height: ${parseInt(o_window.n_scl_y_nor*window.innerHeight)}px`,
                                                     `position:absolute`, 
                                                     `z-index: ${o_window.n_trn_z_nor*o_state.a_o_window.length}`,
-                                                    `background-color: rgba(${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},1)`
+                                                    // `background-color: rgba(${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},1)`
                                                 ].join(';'), 
                                                 a_o: [
                                                     {
-                                                        class: "fas fa-cog", 
+                                                        innerText: o_window.s_title,
+                                                        style: 'font-size: 1rem; width:100%; text-align:center'
+                                                    },
+                                                    {
+                                                        class: "settings fas fa-cog", 
                                                         s_tag: "button", 
                                                     }, 
                                                     {
@@ -483,7 +539,14 @@ document.body.appendChild(
                         onclick : async ()=>{
                             let n_new = o_state.a_o_window.length+1;
                             o_state.a_o_window.push(
-                                new O_window(0.1, .1, 0., .1, .1)
+                                new O_window(
+                                    0.1, 0.1, 
+                                    0., 
+                                    0.1, 0.1, 
+                                    `window ${o_state.a_o_window.length+1}`,
+                                    o_graph_type__gauge,
+                                    a_o_gpu_property[0].s_property_accessor_nvidia_smi
+                                )
                                 )
                             for(let n_idx in o_state.a_o_window){
                                 let n_nor = parseInt(n_idx)/n_new;

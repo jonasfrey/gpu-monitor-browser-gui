@@ -78,6 +78,15 @@ class O_graph{
         this.o_echart = null
     }
 }
+class O_graph_type{
+    constructor(
+        s_name, 
+        s_name_img, 
+    ){
+        this.s_name = s_name
+        this.s_name_img = s_name_img
+    }
+}
 
 class O_window{
     constructor(
@@ -86,16 +95,18 @@ class O_window{
         n_trn_z_nor,
         n_scl_x_nor, 
         n_scl_y_nor,
-        o_window_settings
-
+        s_title, 
+        o_graph_type,
+        s_property_accessor_nvidia_smi,
     ){
         this.n_trn_x_nor = n_trn_x_nor,
         this.n_trn_y_nor = n_trn_y_nor, 
         this.n_trn_z_nor = n_trn_z_nor
         this.n_scl_x_nor = n_scl_x_nor, 
         this.n_scl_y_nor = n_scl_y_nor
-        this.o_graph = null
-        this.b_render_settings = false
+        this.s_property_accessor_nvidia_smi = s_property_accessor_nvidia_smi
+        this.s_title = s_title
+        this.o_graph_type = o_graph_type
     }
 }
 export {
@@ -106,4 +117,5 @@ export {
     O_gpu_property_value,
     O_gpu_property_value_visualization,
     O_window,
+    O_graph_type
 }

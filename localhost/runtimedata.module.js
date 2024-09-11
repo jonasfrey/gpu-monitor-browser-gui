@@ -1,6 +1,7 @@
 import { 
     O_gpu_property,
-    O_gpu_property_value
+    O_gpu_property_value,
+    O_graph_type
  } from "./classes.module.js"
 
 
@@ -223,6 +224,24 @@ let o_gpu_property__accounting_mode_buffer_size = new O_gpu_property(
     'The buffer size allocated for tracking and storing GPU resource usage information when accounting mode is enabled.' // description
 );
 
+let o_graph_type__text = new O_graph_type(
+    'Text information',
+    './graph_text.png' 
+);
+let o_graph_type__gauge = new O_graph_type(
+    'Gauge',
+    './graph_gauge_chart.png' 
+);
+let o_graph_type__xy = new O_graph_type(
+    'XY',
+    './graph_xychart.png' 
+);
+let a_o_graph_type = [
+    o_graph_type__text,
+    o_graph_type__gauge,
+    o_graph_type__xy,
+]
+
 let a_o_gpu_property = [
     o_gpu_property__fb_memory_usage_reserved,
     o_gpu_property__fb_memory_usage_used,
@@ -301,5 +320,12 @@ export {
     o_gpu_property__persistence_mode,
     o_gpu_property__addressing_mode,
     o_gpu_property__accounting_mode,
-    o_gpu_property__accounting_mode_buffer_size
+    o_gpu_property__accounting_mode_buffer_size,
+
+
+
+    a_o_graph_type,
+    o_graph_type__text,
+    o_graph_type__gauge,
+    o_graph_type__xy
 }
