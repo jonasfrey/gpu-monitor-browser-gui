@@ -81,22 +81,66 @@
             }
 
             // Update the chart with the new data
-            myChart.setOption({
-                xAxis: {
-                    data: xData  // Update x-axis data
-                },
-                series: [{
-                name: 'Random Data',
-                type: 'line',
-                data: yData,
-                // smooth: true,  // Makes the line smooth
-                lineStyle: {
-                    color: 'blue'
-                },
-                animation: false // Disable all animations globally
+            // myChart.setOption({
+            //     xAxis: {
+            //         data: xData  // Update x-axis data
+            //     },
+            //     series: [{
+            //     name: 'Random Data',
+            //     type: 'line',
+            //     data: yData,
+            //     // smooth: true,  // Makes the line smooth
+            //     lineStyle: {
+            //         color: 'blue'
+            //     },
+            //     animation: false // Disable all animations globally
 
-            }]
-            });
+            // }]
+            // });
+
+            let chart = myChart;
+            var gaugeValue = Math.random()*100;  // Example gauge value (can be dynamic)
+            var needleColor = '#32cd32'; // Default color
+
+            // Change needle color based on value
+            if (gaugeValue <= 30) {
+                needleColor = '#ff4500';  // Red for values 0-30
+            } else if (gaugeValue <= 70) {
+                needleColor = '#ffcc00';  // Yellow for values 30-70
+            } else {
+                needleColor = '#32cd32';  // Green for values 70-100
+            }
+
+            var option = {
+                series: [
+                    {
+                        type: 'gauge',
+                        detail: {formatter: '{value}%'},
+                        data: [{value: gaugeValue, name: 'Completion'}],
+                        axisLine: {
+                            lineStyle: {
+                                color: [
+                                    [0.3, '#ff4500'],   // Red for 0% to 30%
+                                    [0.7, '#ffcc00'],   // Yellow for 30% to 70%
+                                    [1, '#32cd32']      // Green for 70% to 100%
+                                ],
+                                width: 20
+                            }
+                        },
+                        pointer: {
+                            itemStyle: {
+                                color: needleColor  // Dynamic needle color
+                            }
+                        }
+                    }
+                ]
+            };
+
+            chart.setOption(option);
+
+
+
+
         }
 
         // Update the chart every second with new data

@@ -88,6 +88,15 @@ class O_graph_type{
     }
 }
 
+class O_threshhold{
+    constructor(
+        n, 
+        s_col
+    ){
+        this.n = n 
+        this.s_col = s_col
+    }
+}
 class O_window{
     constructor(
         n_trn_x_nor,
@@ -97,16 +106,23 @@ class O_window{
         n_scl_y_nor,
         s_title, 
         o_graph_type,
-        s_property_accessor_nvidia_smi,
+        o_gpu_property,
+        a_o_threshhold, 
+        s_name_brand_model_gpu,
+        s_id_gpu
     ){
         this.n_trn_x_nor = n_trn_x_nor,
         this.n_trn_y_nor = n_trn_y_nor, 
         this.n_trn_z_nor = n_trn_z_nor
         this.n_scl_x_nor = n_scl_x_nor, 
         this.n_scl_y_nor = n_scl_y_nor
-        this.s_property_accessor_nvidia_smi = s_property_accessor_nvidia_smi
+        this.o_gpu_property = o_gpu_property
         this.s_title = s_title
         this.o_graph_type = o_graph_type
+        this.a_o_threshhold = a_o_threshhold
+        this.o_echart = null
+        this.s_name_brand_model_gpu = s_name_brand_model_gpu
+        this.s_id_gpu = s_id_gpu
     }
 }
 export {
@@ -117,5 +133,6 @@ export {
     O_gpu_property_value,
     O_gpu_property_value_visualization,
     O_window,
-    O_graph_type
+    O_graph_type,
+    O_threshhold
 }
