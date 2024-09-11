@@ -80,11 +80,32 @@ class O_graph{
         this.o_echart = null
     }
 }
+
+class O_window{
+    constructor(
+        n_trn_x_nor,
+        n_trn_y_nor, 
+        n_trn_z_nor,
+        n_scl_x_nor, 
+        n_scl_y_nor,
+        o_window_settings
+
+    ){
+        this.n_trn_x_nor = n_trn_x_nor,
+        this.n_trn_y_nor = n_trn_y_nor, 
+        this.n_trn_z_nor = n_trn_z_nor
+        this.n_scl_x_nor = n_scl_x_nor, 
+        this.n_scl_y_nor = n_scl_y_nor
+        this.o_graph = null
+        this.b_render_settings = false
+    }
+}
 export {
     O_gpu_info, 
     O_gpu_readout_info,
     O_graph, 
     O_gpu_property, 
     O_gpu_property_value,
-    O_gpu_property_value_visualization
+    O_gpu_property_value_visualization,
+    O_window,
 }

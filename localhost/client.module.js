@@ -33,7 +33,7 @@ window.f_o_number_value__from_s_input = f_o_number_value__from_s_input
 import {
     f_s_hms__from_n_ts_ms_utc,
 } from "https://deno.land/x/date_functions@1.4/mod.js"
-import { O_graph, O_gpu_info, O_gpu_property_value_visualization } from "./classes.module.js"
+import { O_graph, O_gpu_info, O_gpu_property_value_visualization, O_window } from "./classes.module.js"
 import { a_o_gpu_property, o_gpu_property__clocks_graphics_clock } from "./runtimedata.module.js"
 
 let f_n_ts_sec_lt_from_s_date = function(s){
@@ -62,6 +62,21 @@ let f_n_ts_sec_lt_from_s_date = function(s){
 }
 
 let o_state = {
+    o_el_target_window_pointerdown: null,
+    o_window_pointerdown_copy: null,
+    n_trn_x_nor_pointerdown: 0,
+    n_trn_y_nor_pointerdown: 0,
+    o_window__pointerdown: null,
+    o_window__settings: null,
+    a_o_window: [
+        new O_window(
+            0.2, 
+            0.2, 
+            0.,
+            0.2, 
+            0.2
+        )
+    ],
     a_o_gpu_property,
     b_nvidia_smi_installed: await (await fetch('./f_b_nvidia_smi_installed')).json(),
     s_name_gpu : '', 
@@ -164,6 +179,7 @@ window.o_state = o_state
 
 o_variables.n_rem_font_size_base = 1. // adjust font size, other variables can also be adapted before adding the css to the dom
 o_variables.n_rem_padding_interactive_elements = 0.5; // adjust padding for interactive elements 
+f_add_css('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 f_add_css(
     `
     input[type="color"] {
@@ -253,6 +269,29 @@ window.addEventListener('pointerdown', (o_e)=>{
 let f_n_clamped = function(n, n_min, n_max){
     return Math.max(Math.min(n, n_max), n_min);
 }
+
+
+window.onpointermove = async (o_e)=>{
+    if(o_state.o_window__pointerdown){
+        let n_trn_x_nor_pointer = o_e.clientX / window.innerWidth;
+        let n_trn_y_nor_pointer = o_e.clientY / window.innerHeight;
+        if(o_state.o_el_target_window_pointerdown.className.includes('resize')){
+            o_state.o_window__pointerdown.n_scl_x_nor =  n_trn_x_nor_pointer - o_state.o_window__pointerdown.n_trn_x_nor
+            o_state.o_window__pointerdown.n_scl_y_nor =  n_trn_y_nor_pointer - o_state.o_window__pointerdown.n_trn_y_nor
+        }else{
+
+            o_state.o_window__pointerdown.n_trn_x_nor = n_trn_x_nor_pointer + (o_state.o_window_pointerdown_copy.n_trn_x_nor - o_state.n_trn_x_nor_pointerdown)
+            o_state.o_window__pointerdown.n_trn_y_nor = n_trn_y_nor_pointer + (o_state.o_window_pointerdown_copy.n_trn_y_nor - o_state.n_trn_y_nor_pointerdown)
+            // console.log(o_state.o_window__pointerdown);
+        }
+        // await o_state.o_window__pointerdown._f_update()
+        await o_state.o_js__a_o_window._f_render()
+    }
+}
+window.onpointerup = function(){
+    o_state.o_window__pointerdown = null
+}
+
 document.body.appendChild(
     await f_o_html__and_make_renderable({
         a_o: [
@@ -265,220 +304,81 @@ document.body.appendChild(
             },
             {
                 b_render: o_state.b_nvidia_smi_installed,
-                a_o: [   
+                a_o: [
                     Object.assign(
                         o_state, 
                         {
-                            o_js__a_o_graph: {
+                            o_js__o_window_settings: {
+                                f_render:()=>{
+                                    return {
+                                        class: "o_window__settings",
+                                        b_render: o_state?.o_window__settings != null, 
+                                        a_o: [
+                                            {
+
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+
+                        }
+                    ).o_js__o_window_settings,
+                    Object.assign(
+                        o_state, {
+                            o_js__a_o_window: {
                                 f_o_jsh:()=>{
                                     return {
-                                        a_o: [
-                                            o_state.a_o_graph.map(o_graph=>{
-                                                return {
-                                                    class: "o_graph", 
-                                                    a_o: [
-                                                        {
-                                                            s_tag: "select", 
-                                                            a_o: [
-                                                                ...o_state.a_o_gpu_readout_info.at(-1).a_o_gpu_info.map(o=>{
-                                                                    return {
-                                                                        s_tag: "option", 
-                                                                        ...((o_graph.s_name_brand_model_gpu == o.s_name_brand_model_gpu) ? {
-                                                                            selected: true
-                                                                        } : {}),
-                                                                        value: o.s_name_brand_model_gpu,
-                                                                        innerText: o.s_name_brand_model_gpu
-                                                                    }
-                                                                })
-                                                            ],
-                                                            onchange : async (o_e)=>{
-                                                                let s = o_e.target.value;
-                                                                o_graph.s_name_brand_model_gpu = s
-                                                            }
-                                                        },
-                                                        {
-                                                            class: "leftright", 
-                                                            a_o: [
-                                                                {
-                                                                    class: "left", 
-                                                                    a_o: [
-                                                                        Object.assign(
-                                                                            o_graph, 
-                                                                            {
-                                                                                o_js__n_ms_interval: {
-                                                                                    f_o_jsh:()=>{
-                                                                                        return {
-                                                                                            a_o: [
-                                                                                                {
-                                                                                                    innerText: "Milliseconds interval", 
-                                                                                                },
-                                                                                                {
-                                                                                                    s_tag: "input", 
-                                                                                                    value: o_graph.n_ms_interval, 
-                                                                                                    oninput: ()=>{
-                                                                                                        let n = parseInt(o_e.target.value)
-                                                                                                        o_graph.n_ms_interval = Math.max(100, n);
-                                                                                                    }
-                                                                                                }
-                                                                                            ]
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            },
-                                                                        ).o_js__n_ms_interval,
-                                                                        Object.assign(
-                                                                            o_graph, 
-                                                                            { 
-                                                                                o_js__n_datapoints_x: {
-                                                                                    f_o_jsh:()=>{
-                                                                                        return {
-                                                                                            a_o: [
-                                                                                                {
-                                                                                                    innerText: "Datapoints x", 
-                                                                                                },
-                                                                                                {
-                                                                                                    s_tag: "input", 
-                                                                                                    value: o_graph.n_datapoints_x, 
-                                                                                                    oninput: ()=>{
-                                                                                                        let n = parseInt(o_e.target.value)
-                                                                                                        o_graph.n_datapoints_x = Math.min(1000, n);
-                                                                                                    }
-                                                                                                }
-                                                                                            ]
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }, 
-                                                                        ).o_js__n_datapoints_x, 
-                                                                        Object.assign(
-                                                                            o_graph, 
-                                                                            {
-                                                                                o_js_a_o_gpu_property_value_visualization: {
-                                                                                    f_o_jsh: ()=>{
-                                                                                        return {
-                                                                                            a_o: [
-                                                                                                ...o_graph.a_o_gpu_property_value_visualization.map(
-                                                                                                    o_gpu_property_value_visualization=>{
-                                                                                                        return {
-                                                                                                            a_o: [
-                                                                                                                {
-                                                                                                                    s_tag: "select", 
-                                                                                                                    a_o: [
-                                                                                                                        ...o_state.a_o_gpu_property.map(
-                                                                                                                            o_gpu_property=>{
-                                                                                                                                return {
-                                                                                                                                    s_tag: "option",
-                                                                                                                                    value: o_gpu_property.s_property_accessor_nvidia_smi, 
-                                                                                                                                    innerText: o_gpu_property.s_property_accessor_nvidia_smi, 
-                                                                                                                                    ...(
-                                                                                                                                        (
-                                                                                                                                            o_gpu_property.s_property_accessor_nvidia_smi == 
-                                                                                                                                            o_gpu_property_value_visualization.o_gpu_property.s_property_accessor_nvidia_smi)
-                                                                                                                                            ? {
-                                                                                                                                                selected: true
-                                                                                                                                            } : {}
-                                                                                                                                    )
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        )
-                                                                                                                    ], 
-                                                                                                                    onchange: async (o_e)=>{
-                                                                                                                        let o_gpu_property = o_state.a_o_gpu_property.find(
-                                                                                                                            o=>{
-                                                                                                                                return o.s_property_accessor_nvidia_smi == o_e.target.value
-                                                                                                                            }
-                                                                                                                        );
-                                                                                                                        o_gpu_property_value_visualization.o_gpu_property = o_gpu_property
-                                                                                                                        
-                                                                                                                        await o_graph.o_js_a_o_gpu_property_value_visualization._f_render();
-                                                                                                                    }
-                                                                                                                },
-                                                                                                                {
-                                                                                                                    innerText: o_gpu_property_value_visualization.o_gpu_property.s_title,
-                                                                                                                },
-                                                                                                                {
-                                                                                                                    innerText: o_gpu_property_value_visualization.o_gpu_property.s_description,
-                                                                                                                },
-                                                                                                                {
-                                                                                                                    s_tag: "input", 
-                                                                                                                    type: 'color', 
-                                                                                                                    value: o_gpu_property_value_visualization.s_rgba_color_interpolation,
-                                                                                                                }, 
-                                                                                                                {
-                                                                                                                    s_tag: "button",
-                                                                                                                    innerText: "remove property", 
-                                                                                                                    onclick: async ()=>{
-                                                                                                                        o_graph.a_o_gpu_property_value_visualization = o_graph.a_o_gpu_property_value_visualization.filter(o2=>{
-                                                                                                                            o2 != o_gpu_property_value_visualization
-                                                                                                                        })
-                                                                                                                        await o_graph.o_js_a_o_gpu_property_value_visualization._f_render();
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            ]
-                                                                                                        }
-                                                                                                    }
-                                                                                                ), 
-                                                                                                {
-                                                                                                    s_tag :"button", 
-                                                                                                    innerText: "add a property", 
-                                                                                                    onclick: async ()=>{
-                                                                                                        o_graph.a_o_gpu_property_value_visualization.push(
-                                                                                                            new O_gpu_property_value_visualization(
-                                                                                                                o_state.a_o_gpu_property[0],
-                                                                                                                'rgba(128, 0, 0, 1.0)',
-                                                                                                                'linear'
-                                                                                                            )
-                                                                                                        )
-                                                                                                        await o_graph.o_js_a_o_gpu_property_value_visualization._f_render();
-                                                                                                    }
-                                                                                                }
-                                                                                            ]
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        ).o_js_a_o_gpu_property_value_visualization
-                                                                    ]
-                                                                }, 
-                                                                {
-                                                                    class: 'canvas_container', 
-                                                                    a_o: []
-                                                                }, 
-                                                            ]
-                                                        },
-                                                        {
-                                                            s_tag: "button", 
-                                                            innerText: "remove graph", 
-                                                            onclick: async ()=>{
-                                                                o_state.a_o_graph = o_state.a_o_graph.filter(o2=>{
-                                                                    return o2!= o_graph
-                                                                });
-                                                                await o_state.o_js__a_o_graph._f_render();
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            }), 
-                                        ]
-
+                                        a_o: o_state.a_o_window.map(o_window=>{
+                                            return {
+                                                onpointerdown : function(o_e){
+                                                    o_state.o_el_target_window_pointerdown = o_e.target;
+                                                    o_state.o_window_pointerdown_copy = Object.assign({}, o_window);
+                                                    o_state.o_window__pointerdown = o_window
+                                                    o_state.n_trn_x_nor_pointerdown = (o_e.clientX / window.innerWidth)
+                                                    o_state.n_trn_y_nor_pointerdown = (o_e.clientY / window.innerHeight)
+                                                },
+                                                
+                                                style: [
+                                                    `top: ${parseInt(o_window.n_trn_y_nor*window.innerHeight)}px`,
+                                                    `left: ${parseInt(o_window.n_trn_x_nor*window.innerWidth)}px`,
+                                                    `width: ${parseInt(o_window.n_scl_y_nor*window.innerHeight)}px`,
+                                                    `height: ${parseInt(o_window.n_scl_x_nor*window.innerWidth)}px`,
+                                                    `position:absolute`, 
+                                                    `z-index: ${o_window.n_trn_z_nor*o_state.a_o_window.length}`,
+                                                    `background-color: rgba(${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},1)`
+                                                ].join(';'), 
+                                                a_o: [
+                                                    {
+                                                        class: "fas fa-cog", 
+                                                        s_tag: "button", 
+                                                    }, 
+                                                    {
+                                                        style: "position:absolute; right:0;bottom:0",
+                                                        class: "resize fa-solid fa-up-right-and-down-left-from-center", 
+                                                        s_tag: "button", 
+                                                    },
+                                                ]
+                                            }
+                                        })
                                     }
                                 }
                             }
                         }
-                    ).o_js__a_o_graph,
+                    ).o_js__a_o_window,
                     {
                         s_tag: "button", 
                         innerText: "add graph",
                         onclick : async ()=>{
-                            o_state.a_o_graph.push(
-                                new O_graph(
-                                    o_state.a_o_gpu_readout_info.at(-1).a_o_gpu_info[0].s_name_brand_model_gpu,
-                                    1000, 
-                                    10,
-                                    []
+                            let n_new = o_state.a_o_window.length+1;
+                            o_state.a_o_window.push(
+                                new O_window(0.1, .1, 0., .1, .1)
                                 )
-                            )
-                            await o_state.o_js__a_o_graph._f_render();
+                            for(let n_idx in o_state.a_o_window){
+                                let n_nor = parseInt(n_idx)/n_new;
+                                o_state.a_o_window[n_idx].n_trn_z_nor = n_nor;
+                            }
+                            await o_state.o_js__a_o_window._f_render();
                             console.log(o_state.a_o_graph)
                         }
                     }              
