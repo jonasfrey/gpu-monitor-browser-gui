@@ -109,7 +109,10 @@ class O_window{
         o_gpu_property,
         a_o_threshhold, 
         s_name_brand_model_gpu,
-        s_id_gpu
+        s_id_gpu, 
+        n_min_backview, 
+        n_sec_interval,
+        n_tickinterval,
     ){
         this.n_trn_x_nor = n_trn_x_nor,
         this.n_trn_y_nor = n_trn_y_nor, 
@@ -123,6 +126,7 @@ class O_window{
         this.o_echart = null
         this.s_name_brand_model_gpu = s_name_brand_model_gpu
         this.s_id_gpu = s_id_gpu
+        this.n_tickinterval = n_tickinterval
     }
 }
 export {
