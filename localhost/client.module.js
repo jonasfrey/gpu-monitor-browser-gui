@@ -6,7 +6,10 @@ import {
     f_s_css_from_o_variables
 } from "https://deno.land/x/f_add_css@1.1/mod.js"
 
-
+import {
+    f_s_timestring_from_n_ms
+}
+from "https://deno.land/x/date_functions@1.4/mod.js"
 
 import {
     f_o_html__and_make_renderable,
@@ -83,16 +86,26 @@ let o_state = {
     o_gpu_info: null, 
     a_o_gpu_readout_info: [], 
     a_o_dataset: [], 
-    n_ms_interval: 500,
-    n_ms_interval_min: 100,
-    n_ms_interval_max: 2000,
     n_id_interval: 0,
-    n_datapoints_x: 20,
-    n_datapoints_x_min: 1,
-    n_datapoints_x_max: 500,
     a_o_graph: [], 
     o_state__notifier: {}
 }
+let f_clear_echart_instances = function(){
+    for(let o of o_state.a_o_graph){
+        if(o.o_echart){
+            o.o_echart.dispose();
+            o.o_echart = null;
+        }
+    }
+}
+let f_resize_echart_graphs = function(){
+    for(let o of o_state.a_o_graph){
+        if(o.o_echart){
+            o.o_echart.resize();
+        }
+    }
+}
+window.onresize = function(){f_resize_echart_graphs()}
 let f_update_interval = function(){
 
     clearInterval(o_state.n_id_interval);
@@ -107,65 +120,160 @@ let f_update_interval = function(){
             o_data
         );
 
+        let a_o_div = Array.from(document.querySelectorAll('.canvas_container'));
+        // console.log(a_o_div)
         // check if there are new graphs
-        for(let n_idx in o_state.a_o_graph){
-            let o_graph = o_state.a_o_graph[n_idx];
-            let o_div = Array.from(document.querySelectorAll('.canvas_container'))[n_idx]
 
+
+        for(let n_idx in o_state.a_o_graph){
+
+            let o_graph = o_state.a_o_graph[n_idx];
+            let o_div = a_o_div[n_idx]
+
+            let n_remaining = Math.max(o_state.n_datapoints_x-o_state.a_o_gpu_readout_info.length, 0);
+            let a_o_gpu_readout_info = [
+                ...new Array(
+                    n_remaining,
+                ).fill(0).map(o=>{
+                    return o_state.a_o_gpu_readout_info[0]
+                }),
+                ...o_state.a_o_gpu_readout_info.slice(
+                    Math.max(o_state.a_o_gpu_readout_info.length-o_state.n_datapoints_x, 0)
+                )
+            ];
+            // console.log(a_o_gpu_readout_info)
+            let n_ts_ms_now = new Date().getTime();
+            let a_n_x = a_o_gpu_readout_info.map((o_gpu_readout_info, n_idx)=>{
+                n_idx = parseInt(n_idx)
+                let n_ms_diff = Math.floor(parseInt(o_gpu_readout_info.n_ts_ms - n_ts_ms_now)/100)*100
+                console.log(n_ms_diff);
+                let s_timestring = `-`+f_s_timestring_from_n_ms(Math.abs(n_ms_diff));
+                return s_timestring
+            });
             if(!o_graph.o_echart){
                 o_graph.o_echart = echarts.init(o_div);
-        
-                // Initial data
-                var xData = [];
-                var yData = [];
-        
-                // Populate with initial data
-                for (let i = 0; i < 500; i++) {
-                    xData.push(i);
-                    yData.push(Math.random() * 100);
-                }
-        
-                // Option to configure the chart
+
                 var option = {
+                    backgroundColor: '#1e1e1e', // Set the background to dark
                     title: {
-                        text: 'Real-time Data Chart'
+                        text: '',
+                        textStyle: {
+                            color: '#ffffff' // White title text for better contrast
+                        }
                     },
                     tooltip: {
-                        trigger: 'axis'
+                        trigger: 'axis',
+                        backgroundColor: '#333', // Dark background for tooltips
+                        textStyle: {
+                            color: '#ffffff' // White tooltip text
+                        }
+                    },
+                    grid: {
+                        top: 40,     // Adjust top padding
+                        left: 40,    // Adjust left padding
+                        right: 40,   // Adjust right padding
+                        bottom: 40   // Adjust bottom padding
                     },
                     xAxis: {
+                        interval: o_graph.n_tickinterval,
                         type: 'category',
                         boundaryGap: false,
-                        data: new Array(100).fill(0).map(n=>n)
+                        data: [],
+                        axisLabel: {
+                            color: '#ffffff',  // Optional: Set text color for the labels
+                            fontSize: 9,      // Optional: Set font size
+                            // rotate: 45         // Optional: Rotate labels (if needed)
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                color: '#ffffff' // White axis line
+                            }
+                        },
+                        splitLine: {
+                            show: false // Disable grid lines if not necessary
+                        }
                     },
                     yAxis: {
                         type: 'value',
                         min: 0,
-                        max: 100
-                    },
-                    series: [{
-                        name: 'Random Data',
-                        type: 'line',
-                        data: new Array(100).fill(0).map(n=>Math.random()),
-                        smooth: true,  // Makes the line smooth
-                        lineStyle: {
-                            color: 'blue'
+                        max: 1,
+                        axisLine: {
+                            lineStyle: {
+                                color: '#ffffff' // White axis line
+                            }
+                        },
+                        axisLabel: {
+                            color: '#ffffff' // White axis labels
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: '#444' // Darker color for grid lines to blend with background
+                            }
                         }
-                    }]
+                    },
+                    series: [], 
+                    animation: false // Disable all animations globally
+
                 };
-                        // Set the initial option to the chart
+                
+                // Set the initial option to the chart
                 o_graph.o_echart.setOption(option);
+                o_graph.o_echart.resize();
+                
 
             }else{
 
                 // Update the chart with the new data
                 o_graph.o_echart.setOption({
                     xAxis: {
-                        data: new Array(100).fill(0).map(n=>n)  // Update x-axis data
+                        data: a_n_x,
+                        // new Array(100).fill(0).map(n=>n)  // Update x-axis data
                     },
-                    series: [{
-                        data: new Array(100).fill(0).map(n=>Math.random())  // Update series data
-                    }]
+                    // series: [{
+                    //     name: 'Data Series',
+                    //     type: 'line',
+                    //     data: [10, 15, 13, 18, 22, 30, 40], // Corresponding data points for each label
+                    //     lineStyle: {
+                    //         color: 'blue'
+                    //     }
+                    // }]
+                    series: [
+                        ...o_graph.a_o_gpu_property_value_visualization.map(
+                            o_gpu_property_value_visualization => {
+                                // console.log(o_gpu_property_value_visualization)
+                                // console.log(a_o_gpu_readout_info)
+                                let a_n_y = a_o_gpu_readout_info.map(
+                                    o_gpu_readout_info=>{
+                                        // console.log(o_gpu_readout_info.a_o_gpu_info)
+                                        let o_gpu_info = o_gpu_readout_info.a_o_gpu_info.find(
+                                            o_gpu_info=>{
+                                                return o_gpu_info.s_name_brand_model_gpu == o_graph.s_name_brand_model_gpu
+                                            }
+                                        );
+                                        // console.log(o_gpu_info)
+                                        let o_gpu_property_value = o_gpu_info.a_o_gpu_property_value.find(o=>{
+                                            return o.o_gpu_property.s_property_accessor_nvidia_smi == o_gpu_property_value_visualization.o_gpu_property.s_property_accessor_nvidia_smi
+                                        });
+                                        console.log(o_gpu_property_value)
+                                        let n_nor = (o_gpu_property_value.n_nor) ? o_gpu_property_value.n_nor : o_gpu_property_value.o_number_value.n;
+
+                                        return n_nor;
+                                    }
+                                );
+                                // console.log(a_n_y)
+                                return {
+                                    name: o_gpu_property_value_visualization.o_gpu_property.s_property_accessor_nvidia_smi,
+                                    type: 'line',
+                                    data: a_n_y,
+                                    // new Array(100).fill(0).map(n=>Math.random())  // Update series data, 
+                                    lineStyle: {
+                                        color: o_gpu_property_value_visualization.s_rgba_color_interpolation
+                                    }
+                                }
+                            }
+                        )
+                        
+                    ]
 
                 })
         
@@ -177,11 +285,15 @@ let f_update_interval = function(){
 
 window.o_state = o_state
 
-o_variables.n_rem_font_size_base = 1. // adjust font size, other variables can also be adapted before adding the css to the dom
+o_variables.n_rem_font_size_base = 0.78 // adjust font size, other variables can also be adapted before adding the css to the dom
 o_variables.n_rem_padding_interactive_elements = 0.5; // adjust padding for interactive elements 
 f_add_css('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 f_add_css(
     `
+    button, select {
+        max-width: 100%;
+        white-space: normal;
+    }
     input[type="color"] {
         padding: 0rem;
         width: 2rem;
@@ -209,7 +321,6 @@ f_add_css(
     .left{
         max-width: 20vw;
         width: 20vw;
-        background: red;
         flex: 1 1 auto;
     }
     .canvas_container{
@@ -409,164 +520,7 @@ let f_n_nor2 = function(
     let n_nor = parseInt(o.innerHTML) / 100.0;
     return n_nor
 }
-let a_o_prop = [
-    
-    // { f_n_nor: f_n_nor1, s_prop: 'fb_memory_usage.total', showLine: true },
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'fb_memory_usage.reserved', 
-        s_title: 'Frame Buffer Memory Reserved',
-        s_description: 'How much memory is reserved for the frame buffer. This memory is allocated but not necessarily used for immediate rendering.'
-    },
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'fb_memory_usage.used', 
-        s_title: 'Frame Buffer Memory Used',
-        s_description: 'The amount of frame buffer memory actively being used by the GPU for rendering tasks and operations.'
-    },
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'fb_memory_usage.free', 
-        s_title: 'Frame Buffer Memory Free',
-        s_description: 'The available frame buffer memory that can be allocated for future rendering operations.'
-    },
 
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'bar1_memory_usage.used', 
-        s_title: 'BAR1 Memory Used',
-        s_description: 'The amount of memory used by BAR1, which is used for communication between the CPU and GPU. It maps parts of GPU memory for CPU access.'
-    },
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'bar1_memory_usage.free', 
-        s_title: 'BAR1 Memory Free',
-        s_description: 'The available BAR1 memory that the CPU can map and use for communication with the GPU.'
-    },
-
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'cc_protected_memory_usage.used', 
-        s_title: 'CC Protected Memory Used',
-        s_description: 'The amount of memory used for protected content, which is secured by Content and Context Protection (CCP).'
-    },
-    {   
-        f_n_nor: f_n_nor1, 
-        s_prop: 'cc_protected_memory_usage.free', 
-        s_title: 'CC Protected Memory Free',
-        s_description: 'The available memory for protected content secured under Content and Context Protection (CCP).'
-    },
-
-    {   
-        f_n_nor: f_n_nor2,
-        s_prop: 'utilization.gpu_util', 
-        s_title: 'GPU Utilization',
-        s_description: 'The percentage of GPU utilization, showing how much of the GPU’s processing power is currently in use.'
-    },
-    {   
-        f_n_nor: f_n_nor2,
-        s_prop: 'utilization.memory_util', 
-        s_title: 'Memory Utilization',
-        s_description: 'The percentage of memory utilization, showing how much of the GPU’s memory is currently in use.'
-    },
-    {   
-        f_n_nor: f_n_nor2,
-        s_prop: 'utilization.encoder_util', 
-        s_title: 'Encoder Utilization',
-        s_description: 'The percentage of utilization for the GPU’s video encoder, showing how much of the encoder’s resources are being used.'
-    },
-    {   
-        f_n_nor: f_n_nor2,
-        s_prop: 'utilization.decoder_util', 
-        s_title: 'Decoder Utilization',
-        s_description: 'The percentage of utilization for the GPU’s video decoder, showing how much of the decoder’s resources are being used.'
-    },
-    {   
-        f_n_nor: f_n_nor2,
-        s_prop: 'utilization.jpeg_util', 
-        s_title: 'JPEG Decoder Utilization',
-        s_description: 'The percentage of utilization for the GPU’s JPEG decoding engine, showing how much of the JPEG decoder’s resources are being used.'
-    },
-    {   
-        f_n_nor: f_n_nor2,
-        s_prop: 'utilization.ofa_util', 
-        s_title: 'Optical Flow Accelerator Utilization',
-        s_description: 'The percentage of utilization for the GPU’s Optical Flow Accelerator (OFA), which is used for motion estimation and similar tasks.'
-    },
-
-    {   
-        s_prop: 'temperature.gpu_temp', 
-        s_title: 'GPU Temperature',
-        s_description: 'The current temperature of the GPU in degrees Celsius.'
-    },
-    {   
-        s_prop: 'temperature.gpu_temp_max_threshold', 
-        s_title: 'Max GPU Temperature Threshold',
-        s_description: 'The maximum safe operating temperature for the GPU, beyond which it may throttle or shut down to prevent damage.'
-    },
-    {   
-        s_prop: 'temperature.gpu_temp_slow_threshold', 
-        s_title: 'GPU Slowdown Temperature Threshold',
-        s_description: 'The temperature at which the GPU will start to reduce its clock speeds (throttle) to prevent overheating.'
-    },
-    {   
-        s_prop: 'temperature.gpu_temp_max_gpu_threshold', 
-        s_title: 'Max GPU Temperature',
-        s_description: 'The highest temperature the GPU has reached during operation.'
-    },
-
-    {   
-        s_prop: 'gpu_power_readings.power_draw', 
-        s_title: 'GPU Power Draw',
-        s_description: 'The current power consumption of the GPU in watts.'
-    },
-    {   
-        s_prop: 'gpu_power_readings.current_power_limit', 
-        s_title: 'Current Power Limit',
-        s_description: 'The current power limit set for the GPU, which can be dynamically adjusted based on workload or system configuration.'
-    },
-    {   
-        s_prop: 'gpu_power_readings.requested_power_limit', 
-        s_title: 'Requested Power Limit',
-        s_description: 'The power limit requested by the system or software for the GPU.'
-    },
-    {   
-        s_prop: 'gpu_power_readings.default_power_limit', 
-        s_title: 'Default Power Limit',
-        s_description: 'The default power limit set by the manufacturer for the GPU.'
-    },
-    {   
-        s_prop: 'gpu_power_readings.min_power_limit', 
-        s_title: 'Minimum Power Limit',
-        s_description: 'The minimum power limit the GPU can operate under without shutting down or malfunctioning.'
-    },
-    {   
-        s_prop: 'gpu_power_readings.max_power_limit', 
-        s_title: 'Maximum Power Limit',
-        s_description: 'The maximum power limit the GPU can draw without exceeding safety limits.'
-    },
-
-    {   
-        s_prop: 'clocks.graphics_clock', 
-        s_title: 'Graphics Clock Speed',
-        s_description: 'The current clock speed of the GPU’s graphics core, measured in MHz.'
-    },
-    {   
-        s_prop: 'clocks.sm_clock', 
-        s_title: 'SM Clock Speed',
-        s_description: 'The clock speed of the GPU’s streaming multiprocessor (SM), which handles parallel workloads.'
-    },
-    {   
-        s_prop: 'clocks.mem_clock', 
-        s_title: 'Memory Clock Speed',
-        s_description: 'The current clock speed of the GPU’s memory, measured in MHz.'
-    },
-    {   
-        s_prop: 'clocks.video_clock', 
-        s_title: 'Video Clock Speed',
-        s_description: 'The clock speed of the GPU’s video processing engine, measured in MHz.'
-    },
-]
 
 
 

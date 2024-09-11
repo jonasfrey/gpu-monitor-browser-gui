@@ -154,17 +154,17 @@ let f_handler = async function(o_request){
     if(o_url.pathname == '/f_o_gpu_readout_info'){
 
         let s_xml = ''
-        if(b_dev){
-            let b = await f_b_nvidia_smi_installed();
-            if(!b){
-                s_xml = await Deno.readTextFile(
-                    './nvidiasmiqx.xml'
-                );
-            }
+        let b = await f_b_nvidia_smi_installed();
+        if(!b && b_dev){
+            s_xml = await Deno.readTextFile(
+                './nvidiasmiqx.xml'
+            );
         }else{
             let o = await f_o_command('nvidia-smi -q -x');
+            console.log(o)
             s_xml = o.s_stdout;
         }
+        console.log(s_xml)
         // console.log(o)
         // const o_parser = new DOMParser();
         // const o_xml = o_parser.parseFromString(s_xml, "application/xml");
