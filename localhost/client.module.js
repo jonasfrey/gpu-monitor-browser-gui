@@ -387,8 +387,8 @@ window.onpointermove = async (o_e)=>{
         let n_trn_x_nor_pointer = o_e.clientX / window.innerWidth;
         let n_trn_y_nor_pointer = o_e.clientY / window.innerHeight;
         if(o_state.o_el_target_window_pointerdown.className.includes('resize')){
-            o_state.o_window__pointerdown.n_scl_x_nor =  n_trn_x_nor_pointer - o_state.o_window__pointerdown.n_trn_x_nor
-            o_state.o_window__pointerdown.n_scl_y_nor =  n_trn_y_nor_pointer - o_state.o_window__pointerdown.n_trn_y_nor
+            o_state.o_window__pointerdown.n_scl_x_nor =  Math.abs(n_trn_x_nor_pointer - o_state.o_window__pointerdown.n_trn_x_nor)
+            o_state.o_window__pointerdown.n_scl_y_nor =  Math.abs(n_trn_y_nor_pointer - o_state.o_window__pointerdown.n_trn_y_nor)
         }else{
 
             o_state.o_window__pointerdown.n_trn_x_nor = n_trn_x_nor_pointer + (o_state.o_window_pointerdown_copy.n_trn_x_nor - o_state.n_trn_x_nor_pointerdown)
@@ -453,8 +453,8 @@ document.body.appendChild(
                                                 style: [
                                                     `top: ${parseInt(o_window.n_trn_y_nor*window.innerHeight)}px`,
                                                     `left: ${parseInt(o_window.n_trn_x_nor*window.innerWidth)}px`,
-                                                    `width: ${parseInt(o_window.n_scl_y_nor*window.innerHeight)}px`,
-                                                    `height: ${parseInt(o_window.n_scl_x_nor*window.innerWidth)}px`,
+                                                    `width: ${parseInt(o_window.n_scl_x_nor*window.innerHeight)}px`,
+                                                    `height: ${parseInt(o_window.n_scl_y_nor*window.innerWidth)}px`,
                                                     `position:absolute`, 
                                                     `z-index: ${o_window.n_trn_z_nor*o_state.a_o_window.length}`,
                                                     `background-color: rgba(${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},1)`
