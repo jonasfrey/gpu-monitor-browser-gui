@@ -26,7 +26,7 @@ import {
 } from "https://deno.land/x/handyhelpers@4.1.2/mod.js"
 
 import { O_gpu_property_value, O_gpu_info, O_gpu_readout_info } from "./localhost/classes.module.js";
-import { a_o_gpu_property } from "./localhost/runtimedata.module.js";
+import { a_o_gpu_property, o_gpu_property__gpu_name, o_gpu_property__gpu_utilization, o_gpu_property__memory_info, o_gpu_property__pci_address, o_gpu_property__power_draw, o_gpu_property__temperature } from "./localhost/runtimedata.module.js";
 
 let s_path_abs_file_current = new URL(import.meta.url).pathname;
 let s_path_abs_folder_current = s_path_abs_file_current.split('/').slice(0, -1).join('/');
@@ -74,6 +74,19 @@ let f_b_nvidia_smi_installed = async function(){
     }
     return b
 }
+let f_b_amdgpu_top_installed = async function(){
+    let b = false;
+    try {
+        let o = await f_o_command('which amdgpu_top');
+        b = (o.s_stdout != '');
+    } catch (error) {
+        
+    }
+    return b
+}
+
+let s_path_file_a_o_configuration = './gitignored/a_o_configuration.json'
+
 
 let f_handler = async function(o_request){
 
@@ -134,37 +147,43 @@ let f_handler = async function(o_request){
             }
         );
     }
-    if(o_url.pathname == '/f_save_configuration'){
-        let o = await o_request.json();
-        let s_path_file = './a_o_configuration.json'
+    if(o_url.pathname == '/f_a_o_configuration'){
         let a_o = []
         try {
-            a_o = JSON.parse(await(Deno.readTextFile(s_path_file)));
+            a_o = JSON.parse(await(Deno.readTextFile(s_path_file_a_o_configuration)));
         } catch (error) {
             
         }
-        let o_existing = a_o.find(o2=>o2.s_name == o.s_name);
-        if(o_existing){
-            return new Response(
-                `configuration with name '${o.s_name}' already existing`,
-                { 
-                    status: 500,
-                    headers: {
-                        'Content-type': "application/json"
-                    }
-                }
-            );
-        }
-        a_o.push(o);
-        await Deno.writeTextFile(s_path_file, JSON.stringify(a_o, null, 4))
         return new Response(
-            {b_success: true},
+            JSON.stringify(a_o),
             { 
                 headers: {
                     'Content-type': "application/json"
                 }
             }
         );
+    }
+    if(o_url.pathname == '/f_createorupdate_configuration'){
+        let o = await o_request.json();
+        let a_o = []
+        try {
+            a_o = JSON.parse(await(Deno.readTextFile(s_path_file_a_o_configuration)));
+        } catch (error) {
+            
+        }
+        let o_existing = a_o.find(o2=>o2.s_name == o.s_name);
+        console.log(o_existing)
+        let s = 'saved'
+        if(o_existing){
+            let n_idx = a_o.indexOf(o_existing);
+            a_o[n_idx] = o
+            s = 'updated'
+        }else{
+            a_o.push(o);
+        }
+
+        await Deno.writeTextFile(s_path_file_a_o_configuration, JSON.stringify(a_o, null, 4))
+        return new Response(`configuration ${s} successfully !`,);
     }
     if(o_url.pathname == '/f_b_nvidia_smi_installed'){
         
@@ -185,81 +204,127 @@ let f_handler = async function(o_request){
     if(o_url.pathname == '/f_o_gpu_readout_info'){
 
         let s_xml = ''
-        let b = await f_b_nvidia_smi_installed();
-        if(!b && b_dev){
-            s_xml = await Deno.readTextFile(
-                './nvidiasmiqx.xml'
+        let b_nvidia_smi = await f_b_nvidia_smi_installed();
+        let b_amdgpu_top = await f_b_amdgpu_top_installed();
+        if(!b_amdgpu_top && !b_nvidia_smi){
+            return new Response(
+                `please run 'apt install amdgpu_top' or 'apt install nvidia-smi' depending on your GPU`,
+                { 
+                    status:500,
+                }
             );
-        }else{
+        }
+
+
+
+        let a_o_gpu_info = []
+        let o_nvidia_smi_xml;
+        let a_o_gpunvidiaoramd = []
+
+        if(b_nvidia_smi){
             let o = await f_o_command('nvidia-smi -q -x');
             // console.log(o)
             s_xml = o.s_stdout;
+            o_nvidia_smi_xml = f_o_xml_parsed(s_xml);
+            await Deno.writeTextFile('./o_xml.json', JSON.stringify(o_nvidia_smi_xml, null, 4))
+            // console.log(o_nvidia_smi_xml)
+            a_o_gpunvidiaoramd = o_nvidia_smi_xml.nvidia_smi_log.gpu;
+            // i could kotzen ! fucking xml structure is behinderet as fuck just use fucking json, what is so hard
+            // now this absolutely stupid workaround is necessary
+        }else{
+            a_o_gpunvidiaoramd = JSON.parse((await f_o_command('amdgpu_top -d --json')).s_stdout);
         }
-        // console.log(s_xml)
-        // console.log(o)
-        // const o_parser = new DOMParser();
-        // const o_xml = o_parser.parseFromString(s_xml, "application/xml");
-        // console.log(o_xml);
-        let o_nvidia_smi_xml = f_o_xml_parsed(s_xml);
-        await Deno.writeTextFile('./o_xml.json', JSON.stringify(o_nvidia_smi_xml, null, 4))
-        // console.log(o_nvidia_smi_xml)
-        let a_o_gpu_xml_info = o_nvidia_smi_xml.nvidia_smi_log.gpu;
-        // i could kotzen ! fucking xml structure is behinderet as fuck just use fucking json, what is so hard
-        // now this absolutely stupid workaround is necessary
-        if(!Array.isArray(a_o_gpu_xml_info)){
-            a_o_gpu_xml_info = [a_o_gpu_xml_info]
-        }
-        let a_o_gpu_info = a_o_gpu_xml_info.map(
-            o_gpu_xml_info =>{
-                let a_o_gpu_property_value = a_o_gpu_property.map(
-                    o=>{
-                        let a_s_prop = o.s_property_accessor_nvidia_smi.split('.');
-                        let v = o_gpu_xml_info;
-                        while(a_s_prop.length > 0){
-                            v = v[a_s_prop.shift()]
-                        }
-        
-                        let o_number_value = null;
-                        try {
-                            o_number_value = f_o_number_value__from_s_input(v) 
-                        } catch (error) {
-                        }
-                        return new O_gpu_property_value(
-                            o,
-                            v, 
-                            o_number_value,
-                            null, 
-                            null, 
-                            null,
-                        );
-                    }
-                )
-                let f_o_gpu_property_value_from_s = function(s){
-                    return a_o_gpu_property_value.find(o=>{
-                        return o.o_gpu_property.s_property_accessor_nvidia_smi == s
-                    });
-                }
-                // calculate the normalized values 
-                for(let o of a_o_gpu_property_value){
-                    if(
-                        o.o_gpu_property.s_property_accessor_nvidia_smi.includes('usage')
-                    ){
-                        let s_accessor = o.o_gpu_property.s_property_accessor_nvidia_smi.split('.').shift();
-                        let v = o_gpu_xml_info[s_accessor].total;
-        
-                        o.o_number_value_max = f_o_number_value__from_s_input(v)
-                        o.n_nor = o.o_number_value.n / o.o_number_value_max.n;
-                    }
-                }
 
-                let o_gpu_info = new O_gpu_info(
-                    f_o_gpu_property_value_from_s('product_name')?.s_value,
-                    a_o_gpu_property_value,
-                    o_gpu_xml_info, 
-                )
-                return o_gpu_info; 
-            }
-        )
+
+        a_o_gpu_info = a_o_gpunvidiaoramd.map(o_gpunvidiaoramd=>{
+            console.log(o_gpunvidiaoramd)
+            let a_o_gpu_property_value = a_o_gpu_property.map(
+                o_gpu_property=>{
+                    let o_gpu_property_value = new O_gpu_property_value(
+                        o_gpu_property,
+                    )
+                    if(o_gpu_property.s_name == o_gpu_property__gpu_name.s_name){
+                        if(b_nvidia_smi){
+                            o_gpu_property_value.s_val = null;// todo , i will do this when i have a nvidia gpu for developing...
+                        }else{
+                            o_gpu_property_value.s_val = o_gpunvidiaoramd?.DeviceName;
+                        }
+                    }
+                    if(o_gpu_property.s_name == o_gpu_property__pci_address.s_name){
+                        if(b_nvidia_smi){
+                            o_gpu_property_value.s_val = null;// todo , i will do this when i have a nvidia gpu for developing...
+                        }else{
+                            o_gpu_property_value.s_val = o_gpunvidiaoramd?.PCI;
+                        }
+                    }
+                    if(o_gpu_property.s_name == o_gpu_property__gpu_utilization.s_name){
+                        if(b_nvidia_smi){
+                            o_gpu_property_value.n_nor = null;// todo , i will do this when i have a nvidia gpu for developing...
+                        }else{
+                            o_gpu_property_value.n_nor = o_gpunvidiaoramd?.gpu_activity?.GFX?.value/100;
+                        }
+                    }
+                    if(o_gpu_property.s_name == o_gpu_property__temperature.s_name){
+                        if(b_nvidia_smi){
+                            o_gpu_property_value.n_nor = null;// todo , i will do this when i have a nvidia gpu for developing...
+                        }else{
+                            o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
+                                `${o_gpunvidiaoramd?.Sensors?.['Edge Temperature']?.value} ${o_gpunvidiaoramd?.Sensors?.['Edge Temperature'].unit}`
+                            )
+                        }
+                    }
+                    if(o_gpu_property.s_name == o_gpu_property__power_draw.s_name){
+                        if(b_nvidia_smi){
+                            o_gpu_property_value.n_nor = null;// todo , i will do this when i have a nvidia gpu for developing...
+                        }else{
+                            o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
+                                `${o_gpunvidiaoramd?.Sensors?.['GFX Power']?.value} ${o_gpunvidiaoramd?.Sensors?.['GFX Power'].unit}`
+                            )
+                            o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
+                                `${o_gpunvidiaoramd?.['Power Cap']?.max} ${o_gpunvidiaoramd?.Sensors?.['GFX Power'].unit}`
+                            )
+                            o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n; 
+                        }
+                    }
+                    if(o_gpu_property.s_name == o_gpu_property__memory_info.s_name){
+                        if(b_nvidia_smi){
+                            o_gpu_property_value.n_nor = null;// todo , i will do this when i have a nvidia gpu for developing...
+                        }else{
+                            o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
+                                `${o_gpunvidiaoramd?.VRAM?.['Total VRAM Usage']?.value} ${o_gpunvidiaoramd?.VRAM?.['Total VRAM Usage']?.unit}`
+                            )
+                            o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
+                                `${o_gpunvidiaoramd?.VRAM?.['Total VRAM']?.value} ${o_gpunvidiaoramd?.VRAM?.['Total VRAM']?.unit}`
+                            )
+                            o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n; 
+                        }
+                    }
+                    // o_gpu_property__gpu_name,
+                    // o_gpu_property__gpu_utilization,
+                    // o_gpu_property__temperature,
+                    // o_gpu_property__power_draw,
+                    // o_gpu_property__memory_info,
+                    // o_gpu_property__pci_address,
+
+                    return o_gpu_property_value
+                }
+            )
+
+            let o_gpu_info = new O_gpu_info(
+                a_o_gpu_property_value.find(
+                    o=>o.o_gpu_property.s_name == o_gpu_property__pci_address.s_name
+                )?.s_val,
+                a_o_gpu_property_value.find(
+                    o=>o.o_gpu_property.s_name == o_gpu_property__gpu_name.s_name
+                )?.s_val,
+                a_o_gpu_property_value, 
+                
+            )
+            return o_gpu_info; 
+        })
+        
+
+    
         let n_ts_ms = new Date().getTime()
         let s_ymd_hms = f_s_ymd_hms__from_n_ts_ms_utc(n_ts_ms)
         let o_gpu_readout_info = new O_gpu_readout_info(

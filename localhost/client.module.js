@@ -37,7 +37,7 @@ import {
     f_s_hms__from_n_ts_ms_utc,
 } from "https://deno.land/x/date_functions@1.4/mod.js"
 import { O_graph, O_gpu_info, O_gpu_property_value_visualization, O_window, O_threshhold, O_gpu_readout_info, O_configuration } from "./classes.module.js"
-import { a_o_gpu_property, a_o_graph_type, o_gpu_property__clocks_graphics_clock, o_gpu_property__utilization_gpu_util, o_graph_type__gauge, o_graph_type__text, o_graph_type__xy } from "./runtimedata.module.js"
+import { a_o_gpu_property, a_o_graph_type, o_gpu_property__gpu_utilization, o_graph_type__gauge, o_graph_type__text, o_graph_type__xy } from "./runtimedata.module.js"
 
 let f_n_ts_sec_lt_from_s_date = function(s){
     try {
@@ -79,9 +79,9 @@ let o_window__default = new O_window(
     0.1, 0.1, 
     0., 
     0.1, 0.1, 
-    o_gpu_property__utilization_gpu_util.s_title,
+    o_gpu_property__gpu_utilization.s_name,
     o_graph_type__gauge,
-    o_gpu_property__utilization_gpu_util, 
+    o_gpu_property__gpu_utilization, 
     [
         new O_threshhold(0, '#00ff00'),
         new O_threshhold(0.25, '#EBCF38'),
@@ -89,23 +89,27 @@ let o_window__default = new O_window(
         new O_threshhold(0.75, '#EB8700'),
         new O_threshhold(0.9, '#EA2815'),
     ], 
-    a_o_gpu_readout_info[0].a_o_gpu_info[0].o_gpu_xml_info['product_name'],
-    a_o_gpu_readout_info[0].a_o_gpu_info[0].o_gpu_xml_info['@id'], 
-
+    a_o_gpu_readout_info[0].a_o_gpu_info[0].s_pci,
+    a_o_gpu_readout_info[0].a_o_gpu_info[0].s_name_brand_model_gpu
 )
-let o_state = {
-    a_o_configuration: [
-        new O_configuration(
-            'Configuration name', 
-            [
-                o_window__default
-            ],
-            true, 
-            1, 
-            1, 
-            10
-        ),
+let o_configuration__default = new O_configuration(
+    'New configuration', 
+    [
+        o_window__default
     ],
+    true, 
+    1, 
+    1, 
+    10
+);
+let a_o_configuration = await (await fetch('./f_a_o_configuration')).json();
+console.log(a_o_configuration)
+if(!a_o_configuration.find(o=>o.s_name == o_configuration__default.s_name)){
+    a_o_configuration.push(o_configuration__default)
+}
+
+let o_state = {
+    a_o_configuration,
     o_configuration: null,
     b_render_global_settings: false,
     s_searchterm_tmp : '',
@@ -134,10 +138,11 @@ let o_state = {
 o_state.o_configuration = o_state.a_o_configuration[0];
 
 let f_update_e_chart = function(o_echart){
-    let o_window = o_state.a_o_window.find((o_window, n_idx)=>{
+    console.log(o_echart)
+    let o_window = o_state.o_configuration.a_o_window.find((o_window, n_idx)=>{
         return o_window.o_echart == o_echart
     });
-    let n_idx = o_state.a_o_window.indexOf(o_window);
+    let n_idx = o_state.o_configuration.a_o_window.indexOf(o_window);
     if(n_idx > -1){
         let o_el = Array.from(document.querySelectorAll('canvas'))[n_idx];
 
@@ -158,9 +163,8 @@ let f_update_e_chart = function(o_echart){
         console.log(o_el);
 
         // Get the current chart options
+        
         let o_option = Object.assign({}, o_echart.getOption());
-
-
 
         // Dispose of the current ECharts instance
         o_echart.dispose();
@@ -188,7 +192,7 @@ let f_update_e_chart = function(o_echart){
     }
 }
 let f_update_all_echarts = function(){
-    for(let o of o_state.a_o_window){
+    for(let o of o_state.o_configuration.a_o_window){
         f_update_e_chart(o.o_echart)
     }
 }
@@ -201,7 +205,8 @@ let f_update_interval = async function(){
 
         clearInterval(o_state.n_id_interval);
         o_state.n_id_interval = window.setInterval(async function(){
-            let n_datapoints_x = (o_state.n_min_backview*60) / o_state.n_sec_interval;
+            console.log('interval')
+            let n_datapoints_x = (o_state.o_configuration.n_min_backview*60) / o_state.o_configuration.n_sec_interval;
             let o = await fetch('./f_o_gpu_readout_info');
             if(!o.ok){
                 await f_o_throw_notification(o_state.o_state__notifier, await o.text(), 'error');
@@ -218,12 +223,12 @@ let f_update_interval = async function(){
             // check if there are new graphs
     
     
-            for(let n_idx in o_state.a_o_window){
+            for(let n_idx in o_state.o_configuration.a_o_window){
     
-                let o_window = o_state.a_o_window[n_idx];
+                let o_window = o_state.o_configuration.a_o_window[n_idx];
                 let o_div = a_o_el[n_idx]
     
-                let n_remaining = Math.max(n_datapoints_x-o_state.a_o_gpu_readout_info.length, 0);
+                let n_remaining = parseInt(Math.max(n_datapoints_x-o_state.a_o_gpu_readout_info.length, 0));
                 // console.log(n_remaining)
                 let a_o_gpu_readout_info = [
                     ...new Array(
@@ -245,6 +250,7 @@ let f_update_interval = async function(){
                     return s_timestring
                 });
                 if(!o_window.o_echart){
+                    console.log(o_div)
                     o_window.o_echart = echarts.init(o_div);
     
                     var option = {
@@ -267,10 +273,10 @@ let f_update_interval = async function(){
                         );
                         // console.log(o_gpu_info)
                         let o_gpu_property_value = o_gpu_info.a_o_gpu_property_value.find(o=>{
-                            return o.o_gpu_property.s_property_accessor_nvidia_smi == o_window.o_gpu_property.s_property_accessor_nvidia_smi
+                            return o.o_gpu_property.s_name == o_window.o_gpu_property.s_name
                         });
                         // console.log(o_gpu_property_value)
-                        let n_nor = (o_gpu_property_value.n_nor) ? o_gpu_property_value.n_nor : o_gpu_property_value.o_number_value.n;
+                        let n_nor = (o_gpu_property_value.n_nor != undefined) ? o_gpu_property_value.n_nor : o_gpu_property_value.o_number_value.n;
     
                         var n_value_gauge = parseInt(n_nor*100);  // Example gauge value (can be dynamic)
                         var needleColor = '#32cd32'; // Default color
@@ -312,7 +318,8 @@ let f_update_interval = async function(){
                     }
     
                     if(o_window.o_graph_type.s_name == o_graph_type__xy.s_name){
-                        
+                        console.log(o_window.o_gpu_property);
+
                         o_window.o_echart.setOption({
                             backgroundColor: '#1e1e1e', // Set the background to dark
                             title: {
@@ -335,7 +342,7 @@ let f_update_interval = async function(){
                                 bottom: 40   // Adjust bottom padding
                             },
                             xAxis: {
-                                interval: o_state.o_configuration.n_tick,
+                                interval: o_state.o_configuration.n_tickinterval,
                                 type: 'category',
                                 boundaryGap: false,
                                 data: [],
@@ -373,40 +380,44 @@ let f_update_interval = async function(){
                             },
                             animation: false, // Disable all animations globally, 
                             series: [
-                                ...o_window.a_o_gpu_property_value_visualization.map(
-                                    o_gpu_property_value_visualization => {
-                                        // console.log(o_gpu_property_value_visualization)
-                                        // console.log(a_o_gpu_readout_info)
-                                        let a_n_y = a_o_gpu_readout_info.map(
-                                            o_gpu_readout_info=>{
-                                                // console.log(o_gpu_readout_info.a_o_gpu_info)
-                                                let o_gpu_info = o_gpu_readout_info.a_o_gpu_info.find(
-                                                    o_gpu_info=>{
-                                                        return o_gpu_info.s_name_brand_model_gpu == o_graph.s_name_brand_model_gpu
-                                                    }
-                                                );
-                                                // console.log(o_gpu_info)
-                                                let o_gpu_property_value = o_gpu_info.a_o_gpu_property_value.find(o=>{
-                                                    return o.o_gpu_property.s_property_accessor_nvidia_smi == o_gpu_property_value_visualization.o_gpu_property.s_property_accessor_nvidia_smi
-                                                });
-                                                console.log(o_gpu_property_value)
-                                                let n_nor = (o_gpu_property_value.n_nor) ? o_gpu_property_value.n_nor : o_gpu_property_value.o_number_value.n;
-        
-                                                return n_nor;
+                                (()=>{
+                                    let o_gpu_property = o_window.o_gpu_property;
+                                    // o_window.a_o_gpu_property.map(
+                                        // o_gpu_property => {
+                                            // console.log(o_gpu_property_value_visualization)
+                                            // console.log(a_o_gpu_readout_info)
+                                            let a_n_y = a_o_gpu_readout_info.map(
+                                                o_gpu_readout_info=>{
+                                                    // console.log(o_gpu_readout_info.a_o_gpu_info)
+                                                    let o_gpu_info = o_gpu_readout_info.a_o_gpu_info.find(
+                                                        o_gpu_info=>{
+                                                            return o_gpu_info.s_name_brand_model_gpu == o_window.s_name_brand_model_gpu
+                                                            && o_gpu_info.s_id_gpu == o_window.s_id_gpu
+                                                        }
+                                                    );
+                                                    // console.log(o_gpu_info)
+                                                    let o_gpu_property_value = o_gpu_info.a_o_gpu_property_value.find(o=>{
+                                                        return o.o_gpu_property.s_name == o_gpu_property.s_name
+                                                    });
+                                                    // console.log(o_gpu_property_value)
+                                                    let n_nor = (o_gpu_property_value.n_nor != undefined) ? o_gpu_property_value.n_nor : o_gpu_property_value.o_number_value.n;
+            
+                                                    return n_nor;
+                                                }
+                                            );
+                                            // console.log(a_n_y)
+                                            return {
+                                                name: o_gpu_property.s_name,
+                                                type: 'line',
+                                                data: a_n_y,
+                                                // new Array(100).fill(0).map(n=>Math.random())  // Update series data, 
+                                                lineStyle: {
+                                                    color: 'red'
+                                                }
                                             }
-                                        );
-                                        // console.log(a_n_y)
-                                        return {
-                                            name: o_gpu_property_value_visualization.o_gpu_property.s_property_accessor_nvidia_smi,
-                                            type: 'line',
-                                            data: a_n_y,
-                                            // new Array(100).fill(0).map(n=>Math.random())  // Update series data, 
-                                            lineStyle: {
-                                                color: o_gpu_property_value_visualization.s_rgba_color_interpolation
-                                            }
-                                        }
-                                    }
-                                )
+                                        // }
+                                    // )
+                                })()
                                 
                             ]
         
@@ -419,11 +430,6 @@ let f_update_interval = async function(){
         },o_state.o_configuration.n_sec_interval*1000)
     })
 }
-
-if(o_state.b_nvidia_smi_installed){
-    await f_update_interval();
-}
-
 
 
 
@@ -483,10 +489,23 @@ f_add_css(
 
 
 
-let f_f_o_jsh = function(
+
+let f_o_assigned = function(
     s_name, 
-    o
+    v
 ){
+    let o = {}
+    if(typeof v.f_o_jsh == 'function'){
+        o = v
+    }else{
+        if(typeof v == 'function'){
+            o.f_o_jsh = v
+        }else{
+            o.f_o_jsh = function(){
+                return v
+            }
+        }
+    }
     return Object.assign(
         o_state, 
         {
@@ -585,16 +604,53 @@ document.body.appendChild(
             {
                 b_render: o_state.b_nvidia_smi_installed,
                 a_o: [
-                    {
-                        innerText: o_state.s_name_configuration
-                    },
+                    
+                    f_o_assigned(
+                        'o_js__a_o_configuration', 
+                        {
+                            s_tag: "select", 
+                            onchange: async (o_e)=>{
+                                let o_configuration = o_state.a_o_configuration.find(o=>{
+                                    return o.s_name == o_e.target.value
+                                })
+                                console.log(o_configuration)
+                                if(o_configuration){
+                                    o_state.o_configuration = o_configuration
+                                    await o_state.o_js__s_o_configuration_s_name._f_render()
+                                    await o_state.o_js__a_o_window._f_render();
+                                }
+                            },
+                            a_o: [
+                                ...o_state.a_o_configuration.map(o=>{
+                                    return {
+                                        innerText: o.s_name, 
+                                        value: o.s_name,
+                                        s_tag: "option"
+                                    }
+                                })
+                            ]
+                        }
+                    ),
+                    f_o_assigned(
+                        'o_js__s_o_configuration_s_name', 
+                        ()=>{
+                            console.log('asdf')
+                            return {
+                                s_tag: "input", 
+                                value: o_state.o_configuration.s_name,
+                                oninput: (o_e)=>{
+                                    o_state.o_configuration.s_name = o_e.target.value;
+                                }
+                            }
+                        }
+                        
+                    ),
                     {
                         s_tag: 'button', 
-                        innerText: "save configuration",
+                        innerText: "save or update configuration",
                         onpointerdown: async ()=>{
-                            let s_text = `this is your url`
                             let o_resp = await fetch(
-                                './f_save_configuration', 
+                                './f_createorupdate_configuration', 
                                 {
                                     method: "POST", 
                                     headers: {
@@ -603,9 +659,7 @@ document.body.appendChild(
                                     body: JSON.stringify(
                                         Object.assign(
                                             {}, 
-                                            {
-                                                o_configuration: o_state.o_configuration, 
-                                            }
+                                            o_state.o_configuration, 
                                         ), function(s_prop, value) {
                                         // If the property is in the ignored list, skip it
                                         if(
@@ -625,8 +679,7 @@ document.body.appendChild(
                                       })
                                 }
                             )
-                            console.log(o_resp)
-                            alert(s_text)
+                            await f_o_throw_notification(o_state.o_state__notifier, await o_resp.text(), (!o_resp.ok) ? 'error': "success");
                         }
                     },
                     {
@@ -636,354 +689,328 @@ document.body.appendChild(
                             o_state.b_render_global_settings = true;
                             await o_state.o_js__global_settings._f_render()
                         } 
-                    }, 
-                    Object.assign(
-                        o_state, 
-                        {
-                            o_js__global_settings: {
-                                f_o_jsh:()=>{
-                                    return {
-                                        b_render: o_state?.b_render_global_settings,
-                                        a_o: [
-                                            {
-                                                innerText: "Global settings"
-                                            },
-                                            {
-                                                innerText: "Minutes Backview"
-                                            },
-                                            {
-                                                s_tag: "input", 
-                                                value: o_state.n_min_backview, 
-                                                min: 1, 
-                                                max: 30,
-                                                step: 1,
-                                                type: 'number',
-                                                oninput: async (o_e)=>{
-                                                    o_state.n_min_backview = parseInt(o_e.target.value)
-                                                }
-                                            },
-                                            {
-                                                innerText: "Seconds Interval"
-                                            },
-                                            {
-                                                s_tag: "input", 
-                                                value: o_state.n_sec_interval, 
-                                                min: 0.1, 
-                                                max: 30,
-                                                step: 0.1,
-                                                type: 'number',
-                                                oninput: async (o_e)=>{
-                                                    o_state.n_sec_interval = parseInt(o_e.target.value)
-                                                }
-                                            },
-                                            Object.assign(
-                                                o_state,
+                    },
+                    f_o_assigned(
+                        'o_js__global_settings', 
+                        ()=>{
+                            console.log(o_state?.b_render_global_settings)
+                            return                         {
+                                b_render: o_state?.b_render_global_settings,
+                                a_o: [
+                                    {
+                                        innerText: "Global settings"
+                                    },
+                                    {
+                                        innerText: "Minutes Backview"
+                                    },
+                                    {
+                                        s_tag: "input", 
+                                        value: o_state.o_configuration.n_min_backview, 
+                                        min: 1, 
+                                        max: 30,
+                                        step: 1,
+                                        type: 'number',
+                                        oninput: async (o_e)=>{
+                                            o_state.o_configuration.n_min_backview = parseInt(o_e.target.value)
+                                        }
+                                    },
+                                    {
+                                        innerText: "Seconds Interval"
+                                    },
+                                    {
+                                        s_tag: "input", 
+                                        value: o_state.o_configuration.n_sec_interval, 
+                                        min: 0.1, 
+                                        max: 30,
+                                        step: 0.1,
+                                        type: 'number',
+                                        oninput: async (o_e)=>{
+                                            o_state.o_configuration.n_sec_interval = parseFloat(o_e.target.value)
+                                            f_update_interval()
+                                        }
+                                    },
+                                    f_o_assigned(
+                                        'o_js__b_auto_update_title', 
+                                        {
+                                            s_tag: 'button', 
+                                            
+                                            a_o: [
                                                 {
-                                                    o_js__b_auto_update_title: {
-                                                        f_o_jsh:()=>{
-                                                            return {
-                                                                s_tag: 'button', 
-                                                                
-                                                                a_o: [
-                                                                    {
-                
-                                                                        innerText: "Auto update title"
-                                                                    }, 
-                                                                    {
-                                                                        class: `fa-regular fa-square${(o_state.b_auto_update_title) ? '-check': ''}`,                                                
-                                                                    }
-                                                                ] , 
-                                                                onpointerdown:async ()=>{
-                                                                    o_state.b_auto_update_title = !o_state.b_auto_update_title
-                                                                    await o_state.o_js__b_auto_update_title._f_render()
-                                                                }
-                                                            }
-                                                        }
-                                                    }
+    
+                                                    innerText: "Auto update title"
+                                                }, 
+                                                {
+                                                    class: `fa-regular fa-square${(o_state.b_auto_update_title) ? '-check': ''}`,                                                
                                                 }
-                                            ).o_js__b_auto_update_title,
-                                          
-                                            {
-                                                class: 'fa-solid fa-xmark',
-                                                style: "position:absolute; right: 0; top:0",
-                                                s_tag: 'button', 
-                                                onclick: async()=>{
-                                                    o_state.b_render_global_settings = false;
-                                                    await o_state.o_js__global_settings._f_render()
-                                                    await o_state.o_js__a_o_window._f_render();
-
-                                                }
+                                            ] , 
+                                            onpointerdown:async ()=>{
+                                                o_state.b_auto_update_title = !o_state.b_auto_update_title
+                                                await o_state.o_js__b_auto_update_title._f_render()
                                             }
-                                        ]
+                                        }
+                                    ),
+                                    {
+                                        class: 'fa-solid fa-xmark',
+                                        style: "position:absolute; right: 0; top:0",
+                                        s_tag: 'button', 
+                                        onclick: async()=>{
+                                            o_state.b_render_global_settings = false;
+                                            await o_state.o_js__global_settings._f_render()
+                                            await o_state.o_js__a_o_window._f_render();
+    
+                                        }
                                     }
-                                }
+                                ]
                             }
-
                         }
-                    ).o_js__global_settings,
-                    Object.assign(
-                        o_state, 
-                        {
-                            o_js__o_window_settings: {
-                                f_o_jsh:()=>{
-                                    if(!o_state.o_window__settings){
-                                        return {}
-                                    }
-                                    // `${(o_state.o_window__settings?.o_graph_type.s_name == o_graph_type.s_name)?'hovered': ''}
-                                    return {
-                                        class: "o_window__settings",
-                                        b_render: o_state?.o_window__settings != null,
-                                        a_o: [
-                                            {
-                                                innerText: "Title"
-                                            },
-                                            f_f_o_jsh('o_js__s_title', {
-                                                f_o_jsh:()=>{
-                                                    return {
-                                                        s_tag: 'input', 
-                                                        value: o_state?.o_window__settings?.s_title, 
-                                                        oninput: (o_e)=>{o_state.o_window__settings.s_title = o_e.target.value}
-                                                    }
-                                                }
-                                            }),
-                                            {
-                                                innerText: "GPU"
-                                            },
-                                            Object.assign(
-                                                o_state, 
-                                                {
-                                                    o_js__a_o_gpu_readout_info: {
-                                                        f_o_jsh: ()=>{
-                                                            return {
-                                                                a_o: o_state.a_o_gpu_readout_info.at(-1).a_o_gpu_info.map(o_gpu_info=>{
-                                                                    return {
-                                                                        class: [
-                                                                            `clickable`,
-                                                                            (o_state.o_window__settings.s_id_gpu == o_gpu_info.o_gpu_xml_info['@id']) 
-                                                                                ? 'hovered': ''
-                                                                        ].join(' '), 
-                                                                        onclick: async ()=>{
-                                                                            o_state.o_window__settings.s_name_brand_model_gpu = o_gpu_info.o_gpu_xml_info['product_name']
-                                                                            o_state.o_window__settings.s_id_gpu = o_gpu_info.o_gpu_xml_info['@id']
-                                                                            await o_state.o_js__a_o_gpu_readout_info._f_render();
-                                                                        }, 
-                                                                        innerText: o_gpu_info.o_gpu_xml_info['product_name']+o_gpu_info.o_gpu_xml_info['@id']
-                                                                    }
-                                                                })
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            ).o_js__a_o_gpu_readout_info,
-                                            {
-                                                innerText: "Graph type"
-                                            },
-                                            {
-                                                style: 'display:flex;flex-direction:row',
-                                                a_o:o_state.a_o_graph_type.map(o_graph_type=>{
+                    ), 
+                    f_o_assigned(
+                        'o_js__o_window_settings',
+                        ()=>{
+                            if(!o_state.o_window__settings){
+                                return {}
+                            }
+                            // `${(o_state.o_window__settings?.o_graph_type.s_name == o_graph_type.s_name)?'hovered': ''}
+                            return {
+                                class: "o_window__settings",
+                                b_render: o_state?.o_window__settings != null,
+                                a_o: [
+                                    {
+                                        innerText: "Title"
+                                    },
+                                    f_o_assigned('o_js__s_title', 
+                                        {
+                                            s_tag: 'input', 
+                                            value: o_state?.o_window__settings?.s_title, 
+                                            oninput: (o_e)=>{o_state.o_window__settings.s_title = o_e.target.value}
+                                        }
+                                    ),
+                                    {
+                                        innerText: "GPU"
+                                    },
+                                    f_o_assigned(
+                                        'o_js__a_o_gpu_readout_info',
+                                        {
+                                                a_o: o_state.a_o_gpu_readout_info.at(-1).a_o_gpu_info.map(o_gpu_info=>{
+                                                    let s_id_gpu = o_gpu_info.a_o_gpu_property_value.find(o2=>o2.o_gpu_property.s_name == '@id');
+                                                    let s_product_name = o_gpu_info.a_o_gpu_property_value.find(o2=>o2.o_gpu_property.s_name == 'product_name');
                                                     return {
                                                         class: [
                                                             `clickable`,
-                                                            (o_state.o_window__settings?.o_graph_type.s_name == o_graph_type.s_name) 
+                                                            (o_state.o_window__settings.s_id_gpu == s_id_gpu) 
                                                                 ? 'hovered': ''
                                                         ].join(' '),
                                                         onclick: async ()=>{
-                                                            o_state.o_window__settings.o_graph_type = o_graph_type
-                                                            await o_state.o_js__o_window_settings._f_render();
-                                                        },
-                                                        a_o: [
-                                                            {
-                                                                innerText: o_graph_type.s_name
-                                                            },
-                                                            {
-                                                                s_tag: "img", 
-                                                                style: "max-width: 100px;max-height:100px",
-                                                                src: o_graph_type.s_name_img
-                                                            }, 
-                                                        ]
+                                                            o_state.o_window__settings.s_name_brand_model_gpu = s_product_name
+                                                            o_state.o_window__settings.s_id_gpu = s_id_gpu
+                                                            await o_state.o_js__a_o_gpu_readout_info._f_render();
+                                                        }, 
+                                                        innerText: s_product_name+s_id_gpu
                                                     }
-                                                })
-                                            },
-                                            {
-                                                innerText: "Property"
-                                            },
-                                            Object.assign(o_state, {o_js__prop:{f_o_jsh:()=>{
-                                                return {
-                                                    a_o: [
-                                                        {
-                                                            innerText: o_state.o_window__settings?.o_gpu_property?.s_property_accessor_nvidia_smi.split('.').join(' ')
-                                                        },
-                                                        {
-                                                            innerText: o_state.o_window__settings?.o_gpu_property?.s_description
-                                                        }
-                                                    ]
-                                                }
-                                            }}}).o_js__prop,
-                                            {
-                                                s_tag: "input", 
-                                                type: "text", 
-                                                oninput: async (o_e)=>{
-                                                    o_state.s_searchterm_tmp = o_e.target.value;
-                                                    await o_state.o_js__a_o_gpu_property._f_render();
-                                                }
-                                            },
-                                            Object.assign(
-                                                o_state,
-                                                {
-                                                    o_js__a_o_gpu_property: {
-                                                        f_o_jsh:()=>{
-                                                            return {
-                                                                style: "max-height: 300px; overflow-y:scroll",
-                                                                a_o: o_state.a_o_gpu_property
-                                                                    .filter(o_gpu_property=>{
-                                                                        if(o_state.s_searchterm_tmp == ''){return true}
-                                                                        return o_gpu_property.s_property_accessor_nvidia_smi.toLowerCase().includes(o_state.s_searchterm_tmp)
-                                                                        || 
-                                                                        o_gpu_property.s_description.toLowerCase().includes(o_state.s_searchterm_tmp)
-                                                                    })
-                                                                    .map(o_gpu_property=>{
-                                                                    return {
-                                                                        onpointerdown: async (o_e)=>{
-                                                                            o_state.o_window__settings.o_gpu_property = o_gpu_property
-                                                                            if(o_state.b_auto_update_title){
-                                                                                o_state.o_window__settings.s_title = o_gpu_property.s_title
-                                                                            }
-                                                                            await o_state.o_js__prop._f_render();
-                                                                            await o_state.o_js__s_title._f_render();
-                                                                        },
-                                                                        class: "clickable",
-                                                                        data_value: o_gpu_property.s_property_accessor_nvidia_smi,
-                                                                        a_o: [
-                                                                            {
-                                                                                innerHTML: f_s_html_highlighted(o_gpu_property.s_property_accessor_nvidia_smi.split('.').join(' '), o_state.s_searchterm_tmp)
-                                                                            },
-                                                                            {
-                                                                                innerHTML: f_s_html_highlighted(o_gpu_property.s_description, o_state.s_searchterm_tmp)
-                                                                            }
-                                                                        ]
-                                                                    }
-                                                                })
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            ).o_js__a_o_gpu_property,
-                                            {
-                                                innerText: "threshholds"
-                                            },
-                                            {
-                                                a_o: [
-                                                    ...o_state.o_window__settings?.a_o_threshhold.map(o_threshhold=>{
-                                                        return {
-                                                            class: 'o_threshhold', 
-                                                            style: "display:flex; flex-direction:row",
-                                                            a_o: [
-                                                                {
-                                                                    s_tag: 'input', 
-                                                                    type: 'number', 
-                                                                    value: o_threshhold.n, 
-                                                                    oninput: (o_e)=>{
-                                                                        o_threshhold.n = parseFloat(o_e.target.value)
-                                                                    }
-                                                                }, 
-                                                                {
-                                                                    s_tag: 'input', 
-                                                                    type: "color", 
-                                                                    value: o_threshhold.s_col, 
-                                                                    oninput: (o_e)=>{
-                                                                        o_threshhold.s_col = o_e.target.value
-                                                                    }
-                                                                }
-                                                            ]
-                                                        }
-                                                    })
-                                                ] 
-                                            },
-                                            {
-                                                class: 'fa-solid fa-xmark',
-                                                style: "position:absolute; right: 0; top:0",
-                                                s_tag: 'button', 
-                                                onclick: async()=>{
-                                                    o_state.o_window__settings = null;
-                                                    await o_state.o_js__o_window_settings._f_render();
-                                                    await o_state.o_js__a_o_window._f_render()
-                                                }
-                                            }
-                                        ]
-                                    }
-                                }
-                            }
-
-                        }
-                    ).o_js__o_window_settings,
-                    Object.assign(
-                        o_state, {
-                            o_js__a_o_window: {
-                                f_after_f_o_html__and_make_renderable: async ()=>{
-                                    f_update_all_echarts();
-                                },
-                                f_o_jsh:()=>{
-                                    return {
-                                        a_o: o_state.a_o_window.map(o_window=>{
+                                            })
+                                        }
+                                    ),
+                                    {
+                                        innerText: "Graph type"
+                                    },
+                                    {
+                                        style: 'display:flex;flex-direction:row',
+                                        a_o:o_state.a_o_graph_type.map(o_graph_type=>{
                                             return {
-                                                class: `clickable hovered`,
-                                                onpointerdown : async function(o_e){
-                                                    o_state.o_el_target_window_pointerdown = o_e.target;
-                                                    o_state.o_window_pointerdown_copy = Object.assign({}, o_window);
-                                                    o_state.o_window__pointerdown = o_window
-                                                    o_state.n_trn_x_nor_pointerdown = (o_e.clientX / window.innerWidth)
-                                                    o_state.n_trn_y_nor_pointerdown = (o_e.clientY / window.innerHeight)
-                                                    if(o_e.target.className.includes('settings')){
-                                                        o_state.o_window__settings = o_window
-                                                        await o_state.o_js__o_window_settings._f_render();
-                                                    }
+                                                class: [
+                                                    `clickable`,
+                                                    (o_state.o_window__settings?.o_graph_type.s_name == o_graph_type.s_name) 
+                                                        ? 'hovered': ''
+                                                ].join(' '),
+                                                onclick: async ()=>{
+                                                    o_state.o_window__settings.o_graph_type = o_graph_type
+                                                    await o_state.o_js__o_window_settings._f_render();
                                                 },
-                                                
-                                                style: [
-                                                    `top: ${parseInt(o_window.n_trn_y_nor*window.innerHeight)}px`,
-                                                    `left: ${parseInt(o_window.n_trn_x_nor*window.innerWidth)}px`,
-                                                    `width: ${parseInt(o_window.n_scl_x_nor*window.innerWidth)}px`,
-                                                    `height: ${parseInt(o_window.n_scl_y_nor*window.innerHeight)}px`,
-                                                    `position:absolute`, 
-                                                    `z-index: ${o_window.n_trn_z_nor*o_state.a_o_window.length}`,
-                                                    // `background-color: rgba(${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},1)`
-                                                ].join(';'), 
                                                 a_o: [
                                                     {
-                                                        innerText: o_window.s_title,
-                                                        style: 'font-size: 1rem; width:100%; text-align:center'
+                                                        innerText: o_graph_type.s_name
                                                     },
                                                     {
-                                                        s_tag: "canvas", 
-                                                    },
-                                                    {
-                                                        class: "settings fas fa-cog", 
-                                                        s_tag: "button", 
+                                                        s_tag: "img", 
+                                                        style: "max-width: 100px;max-height:100px",
+                                                        src: o_graph_type.s_name_img
                                                     }, 
-                                                    {
-                                                        style: "position:absolute; right:0;bottom:0",
-                                                        class: "resize fa-solid fa-up-right-and-down-left-from-center", 
-                                                        s_tag: "button", 
-                                                    },
                                                 ]
                                             }
                                         })
+                                    },
+                                    {
+                                        innerText: "Property"
+                                    },
+                                    f_o_assigned(
+                                        'o_js__prop', 
+                                        {
+                                            a_o: [
+                                                {
+                                                    innerText: o_state.o_window__settings?.o_gpu_property?.s_name.split('.').join(' ')
+                                                },
+                                                {
+                                                    innerText: o_state.o_window__settings?.o_gpu_property?.s_description
+                                                }
+                                            ]
+                                        }
+                                    ),
+                                    {
+                                        s_tag: "input", 
+                                        type: "text", 
+                                        oninput: async (o_e)=>{
+                                            o_state.s_searchterm_tmp = o_e.target.value;
+                                            await o_state.o_js__a_o_gpu_property._f_render();
+                                        }
+                                    },
+                                    f_o_assigned(
+                                        'o_js__a_o_gpu_property', 
+                                        {
+                                            style: "max-height: 300px; overflow-y:scroll",
+                                            a_o: o_state.a_o_gpu_property
+                                                .filter(o_gpu_property=>{
+                                                    if(o_state.s_searchterm_tmp == ''){return true}
+                                                    return o_gpu_property.s_name.toLowerCase().includes(o_state.s_searchterm_tmp)
+                                                    || 
+                                                    o_gpu_property.s_description.toLowerCase().includes(o_state.s_searchterm_tmp)
+                                                })
+                                                .map(o_gpu_property=>{
+                                                return {
+                                                    onpointerdown: async (o_e)=>{
+                                                        o_state.o_window__settings.o_gpu_property = o_gpu_property
+                                                        if(o_state.b_auto_update_title){
+                                                            o_state.o_window__settings.s_title = o_gpu_property.s_title
+                                                        }
+                                                        await o_state.o_js__prop._f_render();
+                                                        await o_state.o_js__s_title._f_render();
+                                                    },
+                                                    class: "clickable",
+                                                    data_value: o_gpu_property.s_name,
+                                                    a_o: [
+                                                        {
+                                                            innerHTML: f_s_html_highlighted(o_gpu_property.s_name.split('.').join(' '), o_state.s_searchterm_tmp)
+                                                        },
+                                                        {
+                                                            innerHTML: f_s_html_highlighted(o_gpu_property.s_description, o_state.s_searchterm_tmp)
+                                                        }
+                                                    ]
+                                                }
+                                            })
+                                        }
+                                    ),
+                                    {
+                                        innerText: "threshholds"
+                                    },
+                                    {
+                                        a_o: [
+                                            ...o_state.o_window__settings?.a_o_threshhold.map(o_threshhold=>{
+                                                return {
+                                                    class: 'o_threshhold', 
+                                                    style: "display:flex; flex-direction:row",
+                                                    a_o: [
+                                                        {
+                                                            s_tag: 'input', 
+                                                            type: 'number', 
+                                                            value: o_threshhold.n, 
+                                                            oninput: (o_e)=>{
+                                                                o_threshhold.n = parseFloat(o_e.target.value)
+                                                            }
+                                                        }, 
+                                                        {
+                                                            s_tag: 'input', 
+                                                            type: "color", 
+                                                            value: o_threshhold.s_col, 
+                                                            oninput: (o_e)=>{
+                                                                o_threshhold.s_col = o_e.target.value
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            })
+                                        ] 
+                                    },
+                                    {
+                                        class: 'fa-solid fa-xmark',
+                                        style: "position:absolute; right: 0; top:0",
+                                        s_tag: 'button', 
+                                        onclick: async()=>{
+                                            o_state.o_window__settings = null;
+                                            await o_state.o_js__o_window_settings._f_render();
+                                            await o_state.o_js__a_o_window._f_render()
+                                        }
                                     }
+                                ]
+                            }
+                        }
+                    ),
+                    f_o_assigned(
+                        'o_js__a_o_window', 
+                        {
+                            f_after_f_o_html__and_make_renderable: async ()=>{
+                                f_update_all_echarts();
+                            },
+                            f_o_jsh:()=>{
+                              
+                                return {
+                                    a_o: o_state.o_configuration.a_o_window.map(o_window=>{
+                                        return {
+                                            class: `clickable hovered`,
+                                            onpointerdown : async function(o_e){
+                                                o_state.o_el_target_window_pointerdown = o_e.target;
+                                                o_state.o_window_pointerdown_copy = Object.assign({}, o_window);
+                                                o_state.o_window__pointerdown = o_window
+                                                o_state.n_trn_x_nor_pointerdown = (o_e.clientX / window.innerWidth)
+                                                o_state.n_trn_y_nor_pointerdown = (o_e.clientY / window.innerHeight)
+                                                if(o_e.target.className.includes('settings')){
+                                                    o_state.o_window__settings = o_window
+                                                    await o_state.o_js__o_window_settings._f_render();
+                                                }
+                                            },
+                                            
+                                            style: [
+                                                `top: ${parseInt(o_window.n_trn_y_nor*window.innerHeight)}px`,
+                                                `left: ${parseInt(o_window.n_trn_x_nor*window.innerWidth)}px`,
+                                                `width: ${parseInt(o_window.n_scl_x_nor*window.innerWidth)}px`,
+                                                `height: ${parseInt(o_window.n_scl_y_nor*window.innerHeight)}px`,
+                                                `position:absolute`, 
+                                                `z-index: ${o_window.n_trn_z_nor*o_state.o_configuration.a_o_window.length}`,
+                                                // `background-color: rgba(${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},1)`
+                                            ].join(';'), 
+                                            a_o: [
+                                                {
+                                                    innerText: o_window.s_title,
+                                                    style: 'font-size: 1rem; width:100%; text-align:center'
+                                                },
+                                                {
+                                                    s_tag: "canvas", 
+                                                },
+                                                {
+                                                    class: "settings fas fa-cog", 
+                                                    s_tag: "button", 
+                                                }, 
+                                                {
+                                                    style: "position:absolute; right:0;bottom:0",
+                                                    class: "resize fa-solid fa-up-right-and-down-left-from-center", 
+                                                    s_tag: "button", 
+                                                },
+                                            ]
+                                        }
+                                    })
                                 }
                             }
                         }
-                    ).o_js__a_o_window,
+                    ),
                     {
                         s_tag: "button", 
                         innerText: "add graph",
                         onclick : async ()=>{
-                            let n_new = o_state.a_o_window.length+1;
-                            o_state.a_o_window.push(
+                            let n_new = o_state.o_configuration.a_o_window.length+1;
+                            o_state.o_configuration.a_o_window.push(
                                 Object.assign({}, o_window__default)    
                             )
-                            for(let n_idx in o_state.a_o_window){
+                            for(let n_idx in o_state.o_configuration.a_o_window){
                                 let n_nor = parseInt(n_idx)/n_new;
-                                o_state.a_o_window[n_idx].n_trn_z_nor = n_nor;
+                                o_state.o_configuration.a_o_window[n_idx].n_trn_z_nor = n_nor;
                             }
                             await o_state.o_js__a_o_window._f_render();
                         }
@@ -1017,9 +1044,10 @@ let f_n_nor2 = function(
 
 
 
-
-
-if(!o_state.b_nvidia_smi_installed){
+if(o_state.b_nvidia_smi_installed){
+    await f_update_interval();
+}else{
     f_o_throw_notification(o_state.o_state__notifier, 'nvidia smi not installed')
 }
+
 
