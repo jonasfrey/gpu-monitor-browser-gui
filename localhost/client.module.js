@@ -83,14 +83,13 @@ let o_window__default = new O_window(
     o_graph_type__gauge,
     o_gpu_property__gpu_utilization, 
     [
-        new O_threshhold(0, '#00ff00'),
-        new O_threshhold(0.25, '#EBCF38'),
-        new O_threshhold(0.5, '#EBBA38'),
-        new O_threshhold(0.75, '#EB8700'),
-        new O_threshhold(0.9, '#EA2815'),
+        new O_threshhold(0.5, '#00ff00'),
+        new O_threshhold(0.9, '#EBBA38'),
+        new O_threshhold(1.0, '#EA2815'),
     ], 
     a_o_gpu_readout_info[0].a_o_gpu_info[0].s_pci,
-    a_o_gpu_readout_info[0].a_o_gpu_info[0].s_name_brand_model_gpu
+    a_o_gpu_readout_info[0].a_o_gpu_info[0].s_name_brand_model_gpu, 
+    true
 )
 let o_configuration__default = new O_configuration(
     'New configuration', 
@@ -109,6 +108,11 @@ if(!a_o_configuration.find(o=>o.s_name == o_configuration__default.s_name)){
 }
 
 let o_state = {
+    o_overlay: {
+        b_render: false, 
+        a_o: [], 
+        s_style: ''
+    },
     a_o_configuration,
     o_configuration: null,
     b_render_global_settings: false,
@@ -249,6 +253,37 @@ let f_update_interval = async function(){
                     let s_timestring = `-`+f_s_timestring_from_n_ms(Math.abs(n_ms_diff));
                     return s_timestring
                 });
+
+                let o_gpu_info = o_state.a_o_gpu_readout_info.at(-1).a_o_gpu_info.find(
+                    o_gpu_info=>{
+                        return o_gpu_info.s_name_brand_model_gpu == o_window.s_name_brand_model_gpu
+                    }
+                );
+                // console.log(o_gpu_info)
+                o_window.o_gpu_property_value_last = o_gpu_info.a_o_gpu_property_value.find(o=>{
+                    return o.o_gpu_property.s_name == o_window.o_gpu_property.s_name
+                });
+                // console.log(o_gpu_property_value_last)
+                let n_value_gauge;
+                let s_formatter;
+                let s_y_axis_name;
+                let n_y_min;
+                let n_y_max;
+                if((o_window.o_gpu_property_value_last.n_nor != undefined) && o_window.b_use_normalized_value_percentage){
+                    n_value_gauge = o_window.o_gpu_property_value_last.n_nor*100;
+                    s_formatter =  '{value} %'
+                    n_y_min = 0
+                    n_y_max = 100
+                    s_y_axis_name = '%'
+                }else{
+                    n_value_gauge = o_window.o_gpu_property_value_last.o_number_value.n;
+                    s_formatter =  `{value} ${o_window.o_gpu_property_value_last.o_number_value.s_name_base_unit}`
+                    n_y_min = 0
+                    n_y_max = o_window.o_gpu_property_value_last.o_number_value_max.n;
+                    s_y_axis_name = o_window.o_gpu_property_value_last.s_val
+                }
+                n_value_gauge = parseInt(n_value_gauge)
+
                 if(!o_window.o_echart){
                     console.log(o_div)
                     o_window.o_echart = echarts.init(o_div);
@@ -266,59 +301,160 @@ let f_update_interval = async function(){
     
                     if(o_window.o_graph_type.s_name == o_graph_type__gauge.s_name){
     
-                        let o_gpu_info = o_state.a_o_gpu_readout_info.at(-1).a_o_gpu_info.find(
-                            o_gpu_info=>{
-                                return o_gpu_info.s_name_brand_model_gpu == o_window.s_name_brand_model_gpu
+                        let a_o_threshhold = o_window.a_o_threshhold;
+                        // let a_o_threshhold = [
+                        //     {n: 0.3, s_col: 'green'},
+                        //     {n: 0.6, s_col: 'orange'},
+                        //     {n: 1.0, s_col: 'red'},
+                        //     ]
+                        let o_el = o_window.o_echart._dom;
+                        let n_scl_x = o_el?.clientWidth;
+                        let n_scl_y = o_el?.clientHeight;
+                        let n_scl_min = Math.min(n_scl_x, n_scl_y);
+                        console.log(n_scl_min)
+                        // console.log(n_scl_x)
+                        let n_thick_nor = 0.33;
+                        let n_thick_nor2 = 0.30;
+                        let n_thick_nor3 = 0.27;
+                        let n_title_nor = 0.1;
+                        let n_value_gauge_min = n_y_min;//0; 
+                        let n_value_gauge_max = n_y_max;//180.;
+                        let n_value_gauge_range = n_value_gauge_max-n_value_gauge_min;
+                        let n_value_gauge_nor = (n_value_gauge - n_value_gauge_min)/n_value_gauge_range
+                        a_o_threshhold = a_o_threshhold.sort((o1,o2)=>{return o2.n-o1.n})
+                        let s_col_gauge_level = 'black'
+                        for(let o_threshhold of a_o_threshhold){
+                            if((n_value_gauge_nor)<o_threshhold.n){
+                                s_col_gauge_level = o_threshhold.s_col
                             }
-                        );
-                        // console.log(o_gpu_info)
-                        let o_gpu_property_value = o_gpu_info.a_o_gpu_property_value.find(o=>{
-                            return o.o_gpu_property.s_name == o_window.o_gpu_property.s_name
-                        });
-                        // console.log(o_gpu_property_value)
-                        let n_nor = (o_gpu_property_value.n_nor != undefined) ? o_gpu_property_value.n_nor : o_gpu_property_value.o_number_value.n;
-    
-                        var n_value_gauge = parseInt(n_nor*100);  // Example gauge value (can be dynamic)
-                        var needleColor = '#32cd32'; // Default color
-    
-                        // Change needle color based on value
-                        if (n_value_gauge <= 30) {
-                            needleColor = '#ff4500';  // Red for values 0-30
-                        } else if (n_value_gauge <= 70) {
-                            needleColor = '#ffcc00';  // Yellow for values 30-70
-                        } else {
-                            needleColor = '#32cd32';  // Green for values 70-100
                         }
-    
-                        window.oasdf = (o_window.o_echart)
-                        o_window.o_echart.setOption( {
-                            series: [
-                                {
-                                    type: 'gauge',
-                                    detail: {formatter: '{value}%'},
-                                    data: [{value: n_value_gauge, name: o_window.s_title}],
-                                    axisLine: {
-                                        lineStyle: {
-                                            color: [
-                                                [0.3, '#ff4500'],   // Red for 0% to 30%
-                                                [0.7, '#ffcc00'],   // Yellow for 30% to 70%
-                                                [1, '#32cd32']      // Green for 70% to 100%
-                                            ],
-                                        }
-                                    },
-                                    pointer: {
-                                        itemStyle: {
-                                            color: needleColor  // Dynamic needle color
-                                        }
-                                    }
+                        let s_col_titile = 'grey'
+                        let o_center = {center: ['50%', '60%']}
+                        console.log(s_col_gauge_level)
+                        let n_font_nor = 0.1;
+                        let s_col_bg = '#1e1e1e'
+                        let s_col_border = '#1e1e1e'
+                        let o_option = {
+                        series: [
+                            {
+                            ...o_center,
+                            type: 'gauge',
+                            startAngle: 200,
+                            endAngle: -20,
+                            min: n_value_gauge_min,
+                            max: n_value_gauge_max,
+                            splitNumber: 1,// how many label numbers shown
+                            itemStyle: { color: s_col_gauge_level},
+                            progress: {
+                                show: true,
+                                color: s_col_gauge_level,
+                                width: (n_scl_min*.5)*n_thick_nor3
+                            },
+                            pointer: {show: false},
+                            axisLine: {show: false},
+                            axisLabel: {show: false},
+                            anchor: {show: false},
+                            title: {show: true, color: s_col_titile, fontSize: (n_scl_min*.5)*n_title_nor},
+                            axisTick: {show: false},
+                            splitLine: {show: false},
+                            detail: {
+                                valueAnimation: true,
+                                width: '10%',
+                                lineHeight: 20,
+                                borderRadius: 20,
+                                // offsetCenter: [0, '-15%'],
+                                fontSize: (n_scl_min*.5)*n_font_nor,
+                                formatter: s_formatter,
+                                color: 'inherit'
+                            },
+                            data: [{value: n_value_gauge, name : o_window.s_title}]
+                            },
+
+
+                            {
+                            ...o_center,
+
+                            type: 'gauge',
+                            startAngle: 200,
+                            endAngle: -20,
+                            min: n_value_gauge_min,
+                            max: n_value_gauge_max,
+                            itemStyle: {show: false},
+                            progress: {show: false},
+                            pointer: {show: false},
+                            axisLine: {
+                                lineStyle: {
+                                width: (n_scl_min*.5)*n_thick_nor,
+                                color: [...a_o_threshhold.reverse().map(o=>{return [o.n, o.s_col]})]
                                 }
-                            ]
-                        });
+                            },
+                            axisTick: {show: false},
+                            splitLine: {show: false},
+                            axisLabel: {show: false},
+                            detail: {show: false},
+                            data: []
+                            }, 
+                            
+                            {
+                            ...o_center,
+
+                            type: 'gauge',
+                            startAngle: 200,
+                            endAngle: -20,
+                            min: n_value_gauge_min, 
+                            max: n_value_gauge_max,
+                            itemStyle: {show: false},
+                            progress: {show: false},
+                            pointer: {show: false},
+                            axisLine: {
+                                lineStyle: {
+                                width: (n_scl_min*.5)*n_thick_nor2,
+                                color: [[1., s_col_border]]
+                                }
+                            },
+                            axisTick: {show: false},
+                            splitLine: {show: false},
+                            axisLabel: {show: false},
+                            detail: {show: false},
+                            data: []
+                            }, 
+                                
+                            {
+                            ...o_center,
+
+                            type: 'gauge',
+                            startAngle: 200,
+                            endAngle: -20,
+                            min: n_value_gauge_min, 
+                            max: n_value_gauge_max,
+                            itemStyle: {show: false},
+                            progress: {show: false},
+                            pointer: {show: false},
+                            axisLine: {
+                                lineStyle: {
+                                width: (n_scl_min*.5)*n_thick_nor3,
+                                color: [[1., s_col_bg]]
+                                }
+                            },
+                            axisTick: {show: false},
+                            splitLine: {show: false},
+                            axisLabel: {show: false},
+                            detail: {show: false},
+                            data: []
+                            }, 
+                        ]
+                        };
+
+                        o_window.o_echart.setOption(o_option);
+
+
+
     
                     }
     
                     if(o_window.o_graph_type.s_name == o_graph_type__xy.s_name){
                         console.log(o_window.o_gpu_property);
+
 
                         o_window.o_echart.setOption({
                             backgroundColor: '#1e1e1e', // Set the background to dark
@@ -361,9 +497,10 @@ let f_update_interval = async function(){
                                 }
                             },
                             yAxis: {
+                                name: s_y_axis_name,
                                 type: 'value',
-                                min: 0,
-                                max: 1,
+                                min: n_y_min,
+                                max: n_y_max,
                                 axisLine: {
                                     lineStyle: {
                                         color: '#ffffff' // White axis line
@@ -477,6 +614,14 @@ f_add_css(
         width: 20vw;
         flex: 1 1 auto;
     }
+    canvas{
+        position: absolute;
+        width:100%;
+        height:100%;
+        top:0;
+        left:0;
+        z-index:-1;
+    }
 
 
     ${
@@ -584,11 +729,26 @@ window.onpointermove = async (o_e)=>{
         // await o_state.o_window__pointerdown._f_update()
         await o_state.o_js__a_o_window._f_render()
 
-
     }
 }
 window.onpointerup = function(){
     o_state.o_window__pointerdown = null
+}
+window.onpointerdown = async function(o_e){
+    if(
+        !o_e.target.className.includes('overlay_activator')
+        && o_e.target.closest('.o_overlay') == undefined
+    ){
+        o_state.o_overlay.b_render = false;
+        o_state.o_js__o_overlay._f_render();
+    }
+}
+window.onkeydown = function(o_e){
+    if(o_e.code == 'Escape'){
+        console.log(o_e.code)
+        o_state.o_overlay.b_render = false;
+        o_state.o_js__o_overlay._f_render(); 
+    }
 }
 
 document.body.appendChild(
@@ -601,6 +761,17 @@ document.body.appendChild(
                 b_render: o_state.b_nvidia_smi_installed == false,
                 innerText: "nvidia-smi is not installed. if you have a NVIDIA gpu, run `sudo apt install nvidia-smi` to install the programm."
             },
+            f_o_assigned(
+                'o_js__o_overlay', 
+                ()=>{
+                    return {
+                        class: "o_overlay",
+                        b_render: o_state.o_overlay.b_render == true,
+                        style: o_state.o_overlay.s_style,  
+                        a_o: o_state.o_overlay.a_o
+                    }
+                }
+            ),
             {
                 b_render: o_state.b_nvidia_smi_installed,
                 a_o: [
@@ -839,96 +1010,8 @@ document.body.appendChild(
                                             }
                                         })
                                     },
-                                    {
-                                        innerText: "Property"
-                                    },
-                                    f_o_assigned(
-                                        'o_js__prop', 
-                                        {
-                                            a_o: [
-                                                {
-                                                    innerText: o_state.o_window__settings?.o_gpu_property?.s_name.split('.').join(' ')
-                                                },
-                                                {
-                                                    innerText: o_state.o_window__settings?.o_gpu_property?.s_description
-                                                }
-                                            ]
-                                        }
-                                    ),
-                                    {
-                                        s_tag: "input", 
-                                        type: "text", 
-                                        oninput: async (o_e)=>{
-                                            o_state.s_searchterm_tmp = o_e.target.value;
-                                            await o_state.o_js__a_o_gpu_property._f_render();
-                                        }
-                                    },
-                                    f_o_assigned(
-                                        'o_js__a_o_gpu_property', 
-                                        {
-                                            style: "max-height: 300px; overflow-y:scroll",
-                                            a_o: o_state.a_o_gpu_property
-                                                .filter(o_gpu_property=>{
-                                                    if(o_state.s_searchterm_tmp == ''){return true}
-                                                    return o_gpu_property.s_name.toLowerCase().includes(o_state.s_searchterm_tmp)
-                                                    || 
-                                                    o_gpu_property.s_description.toLowerCase().includes(o_state.s_searchterm_tmp)
-                                                })
-                                                .map(o_gpu_property=>{
-                                                return {
-                                                    onpointerdown: async (o_e)=>{
-                                                        o_state.o_window__settings.o_gpu_property = o_gpu_property
-                                                        if(o_state.b_auto_update_title){
-                                                            o_state.o_window__settings.s_title = o_gpu_property.s_title
-                                                        }
-                                                        await o_state.o_js__prop._f_render();
-                                                        await o_state.o_js__s_title._f_render();
-                                                    },
-                                                    class: "clickable",
-                                                    data_value: o_gpu_property.s_name,
-                                                    a_o: [
-                                                        {
-                                                            innerHTML: f_s_html_highlighted(o_gpu_property.s_name.split('.').join(' '), o_state.s_searchterm_tmp)
-                                                        },
-                                                        {
-                                                            innerHTML: f_s_html_highlighted(o_gpu_property.s_description, o_state.s_searchterm_tmp)
-                                                        }
-                                                    ]
-                                                }
-                                            })
-                                        }
-                                    ),
-                                    {
-                                        innerText: "threshholds"
-                                    },
-                                    {
-                                        a_o: [
-                                            ...o_state.o_window__settings?.a_o_threshhold.map(o_threshhold=>{
-                                                return {
-                                                    class: 'o_threshhold', 
-                                                    style: "display:flex; flex-direction:row",
-                                                    a_o: [
-                                                        {
-                                                            s_tag: 'input', 
-                                                            type: 'number', 
-                                                            value: o_threshhold.n, 
-                                                            oninput: (o_e)=>{
-                                                                o_threshhold.n = parseFloat(o_e.target.value)
-                                                            }
-                                                        }, 
-                                                        {
-                                                            s_tag: 'input', 
-                                                            type: "color", 
-                                                            value: o_threshhold.s_col, 
-                                                            oninput: (o_e)=>{
-                                                                o_threshhold.s_col = o_e.target.value
-                                                            }
-                                                        }
-                                                    ]
-                                                }
-                                            })
-                                        ] 
-                                    },
+
+
                                     {
                                         class: 'fa-solid fa-xmark',
                                         style: "position:absolute; right: 0; top:0",
@@ -978,13 +1061,173 @@ document.body.appendChild(
                                             ].join(';'), 
                                             a_o: [
                                                 {
-                                                    innerText: o_window.s_title,
-                                                    style: 'font-size: 1rem; width:100%; text-align:center'
+                                                    style: 'position: absolute;top:0;left:0;width:100%;display:flex;flex-direction:row',
+                                                    a_o: [
+                                                        {
+                                                            innerText: o_window.s_title,
+                                                            style: 'font-size: 1rem; text-align:center', 
+                                                            class: "overlay_activator clickable",
+                                                            onpointerdown: async (o_e)=>{
+                                                                o_state.o_overlay.b_render = true;
+                                                                o_state.o_overlay.a_o = [
+                                                                    {
+                                                                        s_tag: "input", 
+                                                                        type: "text", 
+                                                                        oninput: async (o_e)=>{
+                                                                            o_state.s_searchterm_tmp = o_e.target.value;
+                                                                            await o_state.o_js__a_o_gpu_property._f_render();
+                                                                            console.log('asdf')
+                                                                            console.log(o_state.o_js__a_o_gpu_property)
+                                                                        }
+                                                                    },
+                                                                    f_o_assigned(
+                                                                        'o_js__a_o_gpu_property', 
+                                                                        ()=>{
+        
+                                                                            return {
+                                                                                style: "max-height: 300px; overflow-y:scroll",
+                                                                                a_o: o_state.a_o_gpu_property
+                                                                                    .filter(o_gpu_property=>{
+                                                                                        if(o_state.s_searchterm_tmp == ''){return true}
+                                                                                        return o_gpu_property.s_name.toLowerCase().includes(o_state.s_searchterm_tmp)
+                                                                                        || 
+                                                                                        o_gpu_property.s_description.toLowerCase().includes(o_state.s_searchterm_tmp)
+                                                                                    })
+                                                                                    .map(o_gpu_property=>{
+                                                                                    return {
+                                                                                        onpointerdown: async (o_e)=>{
+                                                                                            o_window.o_gpu_property = o_gpu_property
+                                                                                            o_window.s_title = o_gpu_property.s_name
+                                                                                            await o_state.o_js__a_o_window._f_render();
+                                                                                        },
+                                                                                        class: "clickable",
+                                                                                        data_value: o_gpu_property.s_name,
+                                                                                        a_o: [
+                                                                                            {
+                                                                                                innerHTML: f_s_html_highlighted(o_gpu_property.s_name.split('.').join(' '), o_state.s_searchterm_tmp)
+                                                                                            },
+                                                                                            {
+                                                                                                innerHTML: f_s_html_highlighted(o_gpu_property.s_description, o_state.s_searchterm_tmp)
+                                                                                            }
+                                                                                        ]
+                                                                                    }
+                                                                                })
+                                                                            }
+                                                                        }
+                                                                    )
+                                                                    
+                                                                ];
+                                                                let nx = o_e.clientX;
+                                                                let ny = o_e.clientY;
+                                                                let n_width = 500;
+                                                                let n_height = 300;
+                                                                let nx2 = Math.min(nx, window.innerWidth - n_width);
+                                                                let ny2 = Math.min(ny, window.innerHeight - n_height);
+                                                                o_state.o_overlay.s_style = [
+                                                                    'background: red',
+                                                                    `width: ${n_width}px`,
+                                                                    `height: ${n_height}px`,
+                                                                    'position:fixed',
+                                                                    'z-index:1111',
+                                                                    `left: ${nx2}px`,
+                                                                    `top: ${ny2}px`,
+                                                                ].join(';')
+                                                                o_state.o_js__o_overlay._f_render();
+        
+                                                            }
+                                                        },
+                                                        f_o_assigned(
+                                                            'o_js__b_use_normalized_value_percentage', 
+                                                            ()=>{
+                                                                return {
+                                                                    innerText: (o_window.b_use_normalized_value_percentage) ? '%': o_window?.o_gpu_property_value_last?.s_val?.split(' ')?.pop(),
+                                                                    class: "overlay_activator clickable",
+                                                                    onpointerdown: async (o_e)=>{
+                                                                        o_window.b_use_normalized_value_percentage = !o_window.b_use_normalized_value_percentage;
+                                                                        await o_state.o_js__b_use_normalized_value_percentage._f_render();
+                                                                    }
+                                                                }
+                                                            }
+                                                        )
+                                                        
+                                                    ]
                                                 },
+                                                f_o_assigned(
+                                                    'a_o_threshhold', 
+                                                    ()=>{
+                                                        return {
+                                                            style: 'position: absolute; top:0; right: 0',
+                                                            a_o: [
+                                                                ...o_window.a_o_threshhold.map(o_threshhold=>{
+                                                                    return {
+                                                                        class: "overlay_activator o_threshhold clickable", 
+                                                                        style : [
+                                                                            `width: 1rem`, 
+                                                                            `height: 1rem`, 
+                                                                            `background-color: ${o_threshhold.s_col}`
+                                                                        ].join(';'), 
+                                                                        innerText: `${parseInt(o_threshhold.n*100).toString().padStart(2, ' ')} %`,
+                                                                        onpointerdown: async (o_e)=>{
+                                                                            o_state.o_overlay.b_render = true; 
+                                                                            o_state.o_overlay.a_o = [
+                                                                                {
+                                                                                    class: 'o_threshhold', 
+                                                                                    style: "display:flex; flex-direction:row",
+                                                                                    a_o: [
+                                                                                        {
+                                                                                            s_tag: 'input', 
+                                                                                            type: 'number',
+                                                                                            step: 0.1, 
+                                                                                            value: o_threshhold.n, 
+                                                                                            oninput: (o_e)=>{
+                                                                                                o_threshhold.n = parseFloat(o_e.target.value)
+                                                                                            }
+                                                                                        }, 
+                                                                                        {
+                                                                                            s_tag: 'input', 
+                                                                                            type: "color", 
+                                                                                            value: o_threshhold.s_col, 
+                                                                                            oninput: (o_e)=>{
+                                                                                                o_threshhold.s_col = o_e.target.value
+                                                                                            }
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                            let nx = o_e.clientX;
+                                                                            let ny = o_e.clientY;
+                                                                            let n_width = 200;
+                                                                            let n_height = 20;
+                                                                            let nx2 = Math.min(nx, window.innerWidth - n_width);
+                                                                            let ny2 = Math.min(ny, window.innerHeight - n_height);
+                                                                            o_state.o_overlay.s_style = [
+                                                                                'background: red',
+                                                                                `width: ${n_width}px`,
+                                                                                `height: ${n_height}px`,
+                                                                                'position:fixed',
+                                                                                'z-index:1111',
+                                                                                `left: ${nx2}px`,
+                                                                                `top: ${ny2}px`,
+                                                                            ].join(';')
+                                                                            await o_state.o_js__o_overlay._f_render();
+                                                                        }
+                                                                    }
+                                                                }), 
+                                                                {
+                                                                    class: "settings fas fa-plus", 
+                                                                    onpointerdown:async ()=>{
+                                                                        console.log('asdf')
+                                                                    }
+                                                                }
+                                                            ],
+                                                        }
+                                                    }
+                                                ),
                                                 {
                                                     s_tag: "canvas", 
                                                 },
                                                 {
+                                                    style: "position:absolute;bottom:0;left:0",
                                                     class: "settings fas fa-cog", 
                                                     s_tag: "button", 
                                                 }, 

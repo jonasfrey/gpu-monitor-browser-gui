@@ -29,8 +29,22 @@ let o_gpu_property__power_draw = new O_gpu_property(
 
 let o_gpu_property__memory_info = new O_gpu_property(
     'Memory Info', 
-    'Information about the total memory, used memory, and free memory of the GPU.'
+    [
+        'Information about the total memory, used memory, and free memory of the GPU.',
+        ' FB memory usage on NVIDIA and VRAM usage on AMD.'
+    ].join('')
 );
+
+let o_gpu_property__memory_info_graphics_translation_table_amd_specific = new O_gpu_property(
+    'Memory Info GTT (AMD only)', 
+    'Information about Graphics Translation Table (GTT) memory usage, which is system memory that the AMD GPU can access.'
+);
+
+let o_gpu_property__memory_info_bar1_nvidia_specific = new O_gpu_property(
+    'Memory Info BAR1 (NVIDIA)', 
+    'Information about BAR1 memory usage, which is used by the NVIDIA GPU to communicate with the CPU by mapping part of its memory for CPU access.'
+);
+
 let o_gpu_property__pci_address = new O_gpu_property(
     'PCI Address', 
     'The PCI address uniquely identifying the location of the GPU on the system’s PCI bus.'
@@ -61,6 +75,8 @@ let a_o_gpu_property = [
     o_gpu_property__temperature,
     o_gpu_property__power_draw,
     o_gpu_property__memory_info,
+    o_gpu_property__memory_info_graphics_translation_table_amd_specific,
+    o_gpu_property__memory_info_bar1_nvidia_specific,
     o_gpu_property__pci_address
 ]
 
@@ -71,6 +87,8 @@ export {
     o_gpu_property__temperature,
     o_gpu_property__power_draw,
     o_gpu_property__memory_info,
+    o_gpu_property__memory_info_graphics_translation_table_amd_specific,
+    o_gpu_property__memory_info_bar1_nvidia_specific,
     o_gpu_property__pci_address,
 
 

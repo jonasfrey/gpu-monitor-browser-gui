@@ -124,6 +124,7 @@ class O_window{
         a_o_threshhold, 
         s_pci,
         s_name_brand_model_gpu, 
+        b_use_normalized_value_percentage
     ){
         this.n_trn_x_nor = n_trn_x_nor,
         this.n_trn_y_nor = n_trn_y_nor, 
@@ -137,6 +138,7 @@ class O_window{
         this.o_echart = null
         this.s_pci = s_pci
         this.s_name_brand_model_gpu = s_name_brand_model_gpu
+        this.b_use_normalized_value_percentage = b_use_normalized_value_percentage
     }
 }
 export {

@@ -26,7 +26,7 @@ import {
 } from "https://deno.land/x/handyhelpers@4.1.2/mod.js"
 
 import { O_gpu_property_value, O_gpu_info, O_gpu_readout_info } from "./localhost/classes.module.js";
-import { a_o_gpu_property, o_gpu_property__gpu_name, o_gpu_property__gpu_utilization, o_gpu_property__memory_info, o_gpu_property__pci_address, o_gpu_property__power_draw, o_gpu_property__temperature } from "./localhost/runtimedata.module.js";
+import { a_o_gpu_property, o_gpu_property__gpu_name, o_gpu_property__gpu_utilization, o_gpu_property__memory_info, o_gpu_property__memory_info_bar1_nvidia_specific, o_gpu_property__memory_info_graphics_translation_table_amd_specific, o_gpu_property__pci_address, o_gpu_property__power_draw, o_gpu_property__temperature } from "./localhost/runtimedata.module.js";
 
 let s_path_abs_file_current = new URL(import.meta.url).pathname;
 let s_path_abs_folder_current = s_path_abs_file_current.split('/').slice(0, -1).join('/');
@@ -214,9 +214,6 @@ let f_handler = async function(o_request){
                 }
             );
         }
-
-
-
         let a_o_gpu_info = []
         let o_nvidia_smi_xml;
         let a_o_gpunvidiaoramd = []
@@ -228,13 +225,17 @@ let f_handler = async function(o_request){
             o_nvidia_smi_xml = f_o_xml_parsed(s_xml);
             await Deno.writeTextFile('./o_xml.json', JSON.stringify(o_nvidia_smi_xml, null, 4))
             // console.log(o_nvidia_smi_xml)
-            a_o_gpunvidiaoramd = o_nvidia_smi_xml.nvidia_smi_log.gpu;
+            let v = o_nvidia_smi_xml.nvidia_smi_log.gpu;
+            if(!Array.isArray(v)){
+                v = [v]
+            }
+            a_o_gpunvidiaoramd = v
             // i could kotzen ! fucking xml structure is behinderet as fuck just use fucking json, what is so hard
             // now this absolutely stupid workaround is necessary
         }else{
             a_o_gpunvidiaoramd = JSON.parse((await f_o_command('amdgpu_top -d --json')).s_stdout);
         }
-
+        console.log(a_o_gpunvidiaoramd)
 
         a_o_gpu_info = a_o_gpunvidiaoramd.map(o_gpunvidiaoramd=>{
             console.log(o_gpunvidiaoramd)
@@ -245,37 +246,58 @@ let f_handler = async function(o_request){
                     )
                     if(o_gpu_property.s_name == o_gpu_property__gpu_name.s_name){
                         if(b_nvidia_smi){
-                            o_gpu_property_value.s_val = null;// todo , i will do this when i have a nvidia gpu for developing...
+                            o_gpu_property_value.s_val = o_gpunvidiaoramd.product_name;
                         }else{
                             o_gpu_property_value.s_val = o_gpunvidiaoramd?.DeviceName;
                         }
                     }
                     if(o_gpu_property.s_name == o_gpu_property__pci_address.s_name){
                         if(b_nvidia_smi){
-                            o_gpu_property_value.s_val = null;// todo , i will do this when i have a nvidia gpu for developing...
+                            o_gpu_property_value.s_val = o_gpunvidiaoramd.pci.pci_bus_id;
                         }else{
                             o_gpu_property_value.s_val = o_gpunvidiaoramd?.PCI;
                         }
                     }
                     if(o_gpu_property.s_name == o_gpu_property__gpu_utilization.s_name){
+                        o_gpu_property_value.s_val = '%';
                         if(b_nvidia_smi){
-                            o_gpu_property_value.n_nor = null;// todo , i will do this when i have a nvidia gpu for developing...
+                            o_gpu_property_value.n_nor = parseInt(o_gpunvidiaoramd.utilization.gpu_util)/100;
                         }else{
                             o_gpu_property_value.n_nor = o_gpunvidiaoramd?.gpu_activity?.GFX?.value/100;
                         }
                     }
                     if(o_gpu_property.s_name == o_gpu_property__temperature.s_name){
+                        o_gpu_property_value.s_val = '°C';
                         if(b_nvidia_smi){
-                            o_gpu_property_value.n_nor = null;// todo , i will do this when i have a nvidia gpu for developing...
+                            o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.temperature.gpu_temp
+                            )
+                            o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.temperature.gpu_temp_max_threshold
+                            )
+                            o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n
+
                         }else{
                             o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
                                 `${o_gpunvidiaoramd?.Sensors?.['Edge Temperature']?.value} ${o_gpunvidiaoramd?.Sensors?.['Edge Temperature'].unit}`
                             )
+                            o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
+                                `200 C`//static because amdgpu_top does not provide?
+                            )
+                            o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n
                         }
                     }
                     if(o_gpu_property.s_name == o_gpu_property__power_draw.s_name){
+                        o_gpu_property_value.s_val = 'Watt';
                         if(b_nvidia_smi){
-                            o_gpu_property_value.n_nor = null;// todo , i will do this when i have a nvidia gpu for developing...
+                            o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.gpu_power_readings.power_draw
+                            )
+                            o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.gpu_power_readings.current_power_limit
+                            )
+                            o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n; 
+
                         }else{
                             o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
                                 `${o_gpunvidiaoramd?.Sensors?.['GFX Power']?.value} ${o_gpunvidiaoramd?.Sensors?.['GFX Power'].unit}`
@@ -288,13 +310,53 @@ let f_handler = async function(o_request){
                     }
                     if(o_gpu_property.s_name == o_gpu_property__memory_info.s_name){
                         if(b_nvidia_smi){
-                            o_gpu_property_value.n_nor = null;// todo , i will do this when i have a nvidia gpu for developing...
+                            o_gpu_property_value.s_val = o_gpunvidiaoramd.fb_memory_usage.used.split(' ').pop().trim();
+                            o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.fb_memory_usage.used
+                            )
+                            o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.fb_memory_usage.total
+                            )
+                            o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n; 
                         }else{
+                            o_gpu_property_value.s_val = o_gpunvidiaoramd?.VRAM?.['Total VRAM Usage']?.unit;
+
                             o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
                                 `${o_gpunvidiaoramd?.VRAM?.['Total VRAM Usage']?.value} ${o_gpunvidiaoramd?.VRAM?.['Total VRAM Usage']?.unit}`
                             )
                             o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
                                 `${o_gpunvidiaoramd?.VRAM?.['Total VRAM']?.value} ${o_gpunvidiaoramd?.VRAM?.['Total VRAM']?.unit}`
+                            )
+                            o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n; 
+                        }
+                    }
+                    if(o_gpu_property.s_name == o_gpu_property__memory_info_bar1_nvidia_specific.s_name){
+                        o_gpu_property_value.s_val = o_gpunvidiaoramd.bar1_memory_usage.used.split(' ').pop().trim();
+
+                        if(b_nvidia_smi){
+                            o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.bar1_memory_usage.used                               
+                            )
+                            o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.bar1_memory_usage.total                                
+                            )
+                            o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n; 
+                        }else{
+
+                            o_gpu_property_value.s_val = 'AMD GPU does not have this metric'
+                        }
+                    }
+                    if(o_gpu_property.s_name == o_gpu_property__memory_info_graphics_translation_table_amd_specific.s_name){
+                        o_gpu_property_value.s_val = o_gpunvidiaoramd?.VRAM?.['Total GTT Usage']?.unit;
+
+                        if(b_nvidia_smi){
+                            o_gpu_property_value.s_val = 'NVIDIA GPU does not have this metric'
+                        }else{
+                            o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
+                                `${o_gpunvidiaoramd?.VRAM?.['Total GTT Usage']?.value} ${o_gpunvidiaoramd?.VRAM?.['Total GTT Usage']?.unit}`
+                            )
+                            o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
+                                `${o_gpunvidiaoramd?.VRAM?.['Total GTT']?.value} ${o_gpunvidiaoramd?.VRAM?.['Total GTT']?.unit}`
                             )
                             o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n; 
                         }
