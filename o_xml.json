@@ -6,7 +6,7 @@
         "@SYSTEM": ""
     },
     "nvidia_smi_log": {
-        "timestamp": "Fri Sep 13 14:17:42 2024",
+        "timestamp": "Sat Sep 14 11:13:44 2024",
         "driver_version": "535.171.04",
         "cuda_version": "12.2",
         "attached_gpus": "1",
@@ -76,8 +76,8 @@
                 "pci_gpu_link_info": {
                     "pcie_gen": {
                         "max_link_gen": "4",
-                        "current_link_gen": "2",
-                        "device_current_link_gen": "2",
+                        "current_link_gen": "4",
+                        "device_current_link_gen": "4",
                         "max_device_link_gen": "4",
                         "max_host_link_gen": "4"
                     },
@@ -92,13 +92,13 @@
                 },
                 "replay_counter": "0",
                 "replay_rollover_counter": "0",
-                "tx_util": "0 KB/s",
-                "rx_util": "9000 KB/s",
+                "tx_util": "155000 KB/s",
+                "rx_util": "269000 KB/s",
                 "atomic_caps_inbound": "N/A",
                 "atomic_caps_outbound": "N/A"
             },
             "fan_speed": "N/A",
-            "performance_state": "P5",
+            "performance_state": "P3",
             "clocks_event_reasons": {
                 "clocks_event_reason_gpu_idle": "Active",
                 "clocks_event_reason_applications_clocks_setting": "Not Active",
@@ -114,13 +114,13 @@
             "fb_memory_usage": {
                 "total": "8192 MiB",
                 "reserved": "243 MiB",
-                "used": "1709 MiB",
-                "free": "6240 MiB"
+                "used": "1562 MiB",
+                "free": "6386 MiB"
             },
             "bar1_memory_usage": {
                 "total": "8192 MiB",
-                "used": "34 MiB",
-                "free": "8158 MiB"
+                "used": "33 MiB",
+                "free": "8159 MiB"
             },
             "cc_protected_memory_usage": {
                 "total": "0 MiB",
@@ -129,8 +129,8 @@
             },
             "compute_mode": "Default",
             "utilization": {
-                "gpu_util": "9 %",
-                "memory_util": "3 %",
+                "gpu_util": "25 %",
+                "memory_util": "5 %",
                 "encoder_util": "0 %",
                 "decoder_util": "0 %",
                 "jpeg_util": "0 %",
@@ -188,7 +188,7 @@
             },
             "remapped_rows": "N/A",
             "temperature": {
-                "gpu_temp": "61 C",
+                "gpu_temp": "56 C",
                 "gpu_temp_tlimit": "N/A",
                 "gpu_temp_max_threshold": "101 C",
                 "gpu_temp_slow_threshold": "98 C",
@@ -202,8 +202,8 @@
                 "gpu_target_temp_max": "N/A"
             },
             "gpu_power_readings": {
-                "power_state": "P5",
-                "power_draw": "28.98 W",
+                "power_state": "P3",
+                "power_draw": "29.15 W",
                 "current_power_limit": "115.00 W",
                 "requested_power_limit": "115.00 W",
                 "default_power_limit": "115.00 W",
@@ -211,7 +211,7 @@
                 "max_power_limit": "150.00 W"
             },
             "module_power_readings": {
-                "power_state": "P5",
+                "power_state": "P3",
                 "power_draw": "N/A",
                 "current_power_limit": "N/A",
                 "requested_power_limit": "N/A",
@@ -220,10 +220,10 @@
                 "max_power_limit": "N/A"
             },
             "clocks": {
-                "graphics_clock": "735 MHz",
-                "sm_clock": "735 MHz",
-                "mem_clock": "810 MHz",
-                "video_clock": "645 MHz"
+                "graphics_clock": "1050 MHz",
+                "sm_clock": "1050 MHz",
+                "mem_clock": "6000 MHz",
+                "video_clock": "930 MHz"
             },
             "applications_clocks": {
                 "graphics_clock": "N/A",
@@ -629,74 +629,66 @@
                     {
                         "gpu_instance_id": "N/A",
                         "compute_instance_id": "N/A",
-                        "pid": "2745",
+                        "pid": "3042",
                         "type": "G",
                         "process_name": "/usr/lib/xorg/Xorg",
-                        "used_memory": "648 MiB"
+                        "used_memory": "422 MiB"
                     },
                     {
                         "gpu_instance_id": "N/A",
                         "compute_instance_id": "N/A",
-                        "pid": "5578",
+                        "pid": "5696",
                         "type": "G",
                         "process_name": "/usr/bin/gnome-shell",
-                        "used_memory": "120 MiB"
+                        "used_memory": "143 MiB"
                     },
                     {
                         "gpu_instance_id": "N/A",
                         "compute_instance_id": "N/A",
-                        "pid": "6383",
-                        "type": "G",
-                        "process_name": "/usr/libexec/xdg-desktop-portal-gnome",
-                        "used_memory": "51 MiB"
-                    },
-                    {
-                        "gpu_instance_id": "N/A",
-                        "compute_instance_id": "N/A",
-                        "pid": "7742",
-                        "type": "G",
-                        "process_name": "/opt/teamviewer/tv_bin/TeamViewer",
-                        "used_memory": "10 MiB"
-                    },
-                    {
-                        "gpu_instance_id": "N/A",
-                        "compute_instance_id": "N/A",
-                        "pid": "8020",
-                        "type": "G",
-                        "process_name": "/usr/share/teams/teams --type=gpu-process --field-trial-handle=14952860141914268418,17476379418879403920,131072 --enable-features=ContextBridgeMutability,WebComponentsV0Enabled --disable-features=CookiesWithoutSameSiteMustBeSecure,SameSiteByDefaultCookies,SpareRendererForSitePerProcess --enable-crash-reporter=a4ba951c-e8a7-4c67-98b2-3287d8bacfe1,no_channel --global-crash-keys=a4ba951c-e8a7-4c67-98b2-3287d8bacfe1,no_channel,_companyName=Microsoft,_productName=com.microsoft.teams.linux,_version=1.5.00.23861,logsFilePath=,sessionId=desktop-9b0918d9-f1b5-48dc-ae9a-87b70c474b2e --gpu-preferences=MAAAAAAAAAAgAAAQAAAAAAAAAAAAAAAAAABgAAAAAAAQAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA= --shared-files",
-                        "used_memory": "56 MiB"
-                    },
-                    {
-                        "gpu_instance_id": "N/A",
-                        "compute_instance_id": "N/A",
-                        "pid": "8186",
-                        "type": "G",
-                        "process_name": "/opt/google/chrome/chrome --type=gpu-process --crashpad-handler-pid=8132 --enable-crash-reporter=491cd1cf-a6b4-4b21-9883-18cd49d474f6, --no-subproc-heap-profiling --change-stack-guard-on-fork=enable --gpu-preferences=UAAAAAAAAAAgAAAEAAAAAAAAAAAAAAAAAABgAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAABAAAAAAAAAAEAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAA --shared-files --field-trial-handle=3,i,15430002174514898907,15307704902869281360,262144 --enable-features=WebXrInternals --variations-seed-version=20240912-050151.592000",
-                        "used_memory": "308 MiB"
-                    },
-                    {
-                        "gpu_instance_id": "N/A",
-                        "compute_instance_id": "N/A",
-                        "pid": "8296",
+                        "pid": "7597",
                         "type": "G",
                         "process_name": "/snap/firefox/4848/usr/lib/firefox/firefox",
-                        "used_memory": "170 MiB"
+                        "used_memory": "572 MiB"
                     },
                     {
                         "gpu_instance_id": "N/A",
                         "compute_instance_id": "N/A",
-                        "pid": "13480",
+                        "pid": "10666",
                         "type": "G",
-                        "process_name": "/usr/share/code/code --type=gpu-process --crashpad-handler-pid=13465 --enable-crash-reporter=42ae51cc-63a4-4cac-acca-a6b8fafb6b70,no_channel --user-data-dir=/home/legion5pro/.config/Code --gpu-preferences=WAAAAAAAAAAgAAAEAAAAAAAAAAAAAAAAAABgAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAGAAAAAAAAAAYAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --shared-files --field-trial-handle=0,i,8347521225616943193,1807162882423909569,262144 --disable-features=CalculateNativeWinOcclusion,SpareRendererForSitePerProcess",
+                        "process_name": "/usr/bin/nautilus",
+                        "used_memory": "22 MiB"
+                    },
+                    {
+                        "gpu_instance_id": "N/A",
+                        "compute_instance_id": "N/A",
+                        "pid": "14780",
+                        "type": "G",
+                        "process_name": "/usr/share/code/code --type=gpu-process --crashpad-handler-pid=14763 --enable-crash-reporter=42ae51cc-63a4-4cac-acca-a6b8fafb6b70,no_channel --user-data-dir=/home/legion5pro/.config/Code --gpu-preferences=WAAAAAAAAAAgAAAEAAAAAAAAAAAAAAAAAABgAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAGAAAAAAAAAAYAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --shared-files --field-trial-handle=0,i,5116085035890984529,16930586772311715502,262144 --disable-features=CalculateNativeWinOcclusion,SpareRendererForSitePerProcess",
                         "used_memory": "103 MiB"
                     },
                     {
                         "gpu_instance_id": "N/A",
                         "compute_instance_id": "N/A",
-                        "pid": "33979",
+                        "pid": "15643",
                         "type": "G",
-                        "process_name": "/usr/bin/nautilus",
-                        "used_memory": "30 MiB"
+                        "process_name": "/opt/google/chrome/chrome --type=gpu-process --crashpad-handler-pid=15587 --enable-crash-reporter=491cd1cf-a6b4-4b21-9883-18cd49d474f6, --no-subproc-heap-profiling --change-stack-guard-on-fork=enable --gpu-preferences=UAAAAAAAAAAgAAAEAAAAAAAAAAAAAAAAAABgAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAABAAAAAAAAAAEAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAA --shared-files --field-trial-handle=3,i,6408620067734454519,844555214126657175,262144 --enable-features=WebXrInternals --variations-seed-version=20240913-130113.518000",
+                        "used_memory": "99 MiB"
+                    },
+                    {
+                        "gpu_instance_id": "N/A",
+                        "compute_instance_id": "N/A",
+                        "pid": "35355",
+                        "type": "G",
+                        "process_name": "/home/legion5pro/.steam/debian-installation/ubuntu12_32/steam",
+                        "used_memory": "3 MiB"
+                    },
+                    {
+                        "gpu_instance_id": "N/A",
+                        "compute_instance_id": "N/A",
+                        "pid": "35805",
+                        "type": "G",
+                        "process_name": "./steamwebhelper",
+                        "used_memory": "3 MiB"
                     }
                 ]
             },

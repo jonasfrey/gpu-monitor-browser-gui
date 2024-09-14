@@ -50,6 +50,11 @@ let o_gpu_property__pci_address = new O_gpu_property(
     'The PCI address uniquely identifying the location of the GPU on the system’s PCI bus.'
 );
 
+let o_gpu_property__memory_info_per_process_nvidia_specific = new O_gpu_property(
+    'Processes memory info', 
+    'How much memory each process uses'
+);
+
 
 let o_graph_type__text = new O_graph_type(
     'Text information',
@@ -77,7 +82,9 @@ let a_o_gpu_property = [
     o_gpu_property__memory_info,
     o_gpu_property__memory_info_graphics_translation_table_amd_specific,
     o_gpu_property__memory_info_bar1_nvidia_specific,
-    o_gpu_property__pci_address
+    o_gpu_property__pci_address,
+    o_gpu_property__memory_info_per_process_nvidia_specific,
+
 ]
 
 export {
@@ -90,6 +97,7 @@ export {
     o_gpu_property__memory_info_graphics_translation_table_amd_specific,
     o_gpu_property__memory_info_bar1_nvidia_specific,
     o_gpu_property__pci_address,
+    o_gpu_property__memory_info_per_process_nvidia_specific,
 
 
 

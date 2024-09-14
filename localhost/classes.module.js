@@ -41,7 +41,8 @@ class O_gpu_property_value{
         s_unit,
         o_number_value_max, 
         o_number_value, 
-        n_nor
+        n_nor,
+        o_meta
     ){
         this.o_gpu_property = o_gpu_property
         this.s_val = s_val
@@ -49,6 +50,7 @@ class O_gpu_property_value{
         this.o_number_value_max = o_number_value_max
         this.o_number_value = o_number_value
         this.n_nor = n_nor
+        this.o_meta = o_meta
     }
 }
 

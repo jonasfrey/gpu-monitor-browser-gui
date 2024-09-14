@@ -4,6 +4,7 @@ import {
     f_v_before_return_response__fileserver
 } from "https://deno.land/x/websersocket@1.0.3/mod.js"
 
+
 import {
     f_s_ymd_hms__from_n_ts_ms_utc
 } from "https://deno.land/x/date_functions@1.4/mod.js"
@@ -13,7 +14,7 @@ import {
 import {
     O_ws_client
 } from "./classes.module.js"
-import { ensureDir } from "https://deno.land/std@0.224.0/fs/ensure_dir.ts";
+import { ensureDir, ensureFile as f_ensure_file } from "https://deno.land/std@0.224.0/fs/mod.ts";
 
 
 
@@ -26,7 +27,7 @@ import {
 } from "https://deno.land/x/handyhelpers@4.1.2/mod.js"
 
 import { O_gpu_property_value, O_gpu_info, O_gpu_readout_info } from "./localhost/classes.module.js";
-import { a_o_gpu_property, o_gpu_property__gpu_name, o_gpu_property__gpu_utilization, o_gpu_property__memory_info, o_gpu_property__memory_info_bar1_nvidia_specific, o_gpu_property__memory_info_graphics_translation_table_amd_specific, o_gpu_property__pci_address, o_gpu_property__power_draw, o_gpu_property__temperature } from "./localhost/runtimedata.module.js";
+import { a_o_gpu_property, o_gpu_property__gpu_name, o_gpu_property__gpu_utilization, o_gpu_property__memory_info, o_gpu_property__memory_info_bar1_nvidia_specific, o_gpu_property__memory_info_graphics_translation_table_amd_specific, o_gpu_property__memory_info_per_process_nvidia_specific, o_gpu_property__pci_address, o_gpu_property__power_draw, o_gpu_property__temperature } from "./localhost/runtimedata.module.js";
 
 let s_path_abs_file_current = new URL(import.meta.url).pathname;
 let s_path_abs_folder_current = s_path_abs_file_current.split('/').slice(0, -1).join('/');
@@ -149,6 +150,7 @@ let f_handler = async function(o_request){
     }
     if(o_url.pathname == '/f_a_o_configuration'){
         let a_o = []
+        await f_ensure_file(s_path_file_a_o_configuration)
         try {
             a_o = JSON.parse(await(Deno.readTextFile(s_path_file_a_o_configuration)));
         } catch (error) {
@@ -235,15 +237,15 @@ let f_handler = async function(o_request){
         }else{
             a_o_gpunvidiaoramd = JSON.parse((await f_o_command('amdgpu_top -d --json')).s_stdout);
         }
-        console.log(a_o_gpunvidiaoramd)
+        // console.log(a_o_gpunvidiaoramd)
 
         a_o_gpu_info = a_o_gpunvidiaoramd.map(o_gpunvidiaoramd=>{
-            console.log(o_gpunvidiaoramd)
             let a_o_gpu_property_value = a_o_gpu_property.map(
                 o_gpu_property=>{
                     let o_gpu_property_value = new O_gpu_property_value(
                         o_gpu_property,
                     )
+                    let a_o_gpu_property_value = []
                     if(o_gpu_property.s_name == o_gpu_property__gpu_name.s_name){
                         if(b_nvidia_smi){
                             o_gpu_property_value.s_val = o_gpunvidiaoramd.product_name;
@@ -361,6 +363,39 @@ let f_handler = async function(o_request){
                             o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n; 
                         }
                     }
+                    if(o_gpu_property.s_name == o_gpu_property__memory_info_per_process_nvidia_specific.s_name){
+                        if(b_nvidia_smi){
+                            a_o_gpu_property_value = o_gpunvidiaoramd.processes.process_info.map(o_process_info=>{
+                                let o_gpu_property_value = new O_gpu_property_value(
+                                    o_gpu_property
+                                )
+                                // {
+                                //     "gpu_instance_id": "N/A",
+                                //     "compute_instance_id": "N/A",
+                                //     "pid": "3592",
+                                //     "type": "G",
+                                //     "process_name": "/usr/lib/xorg/Xorg",
+                                //     "used_memory": "457 MiB"
+                                // },
+                                o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
+                                    o_process_info.used_memory                               
+                                )
+                                o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
+                                    o_gpunvidiaoramd.fb_memory_usage.total                               
+                                )
+                                o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n; 
+
+                                o_gpu_property_value.o_meta = o_process_info
+                                return o_gpu_property_value;
+                            })
+                        }else{
+
+                            o_gpu_property_value.s_val = 'AMD GPU does not have this metric'
+                        }
+                    }
+                    if(a_o_gpu_property_value.length == 0){
+                        a_o_gpu_property_value.push(o_gpu_property_value)
+                    }
                     // o_gpu_property__gpu_name,
                     // o_gpu_property__gpu_utilization,
                     // o_gpu_property__temperature,
@@ -368,9 +403,9 @@ let f_handler = async function(o_request){
                     // o_gpu_property__memory_info,
                     // o_gpu_property__pci_address,
 
-                    return o_gpu_property_value
+                    return a_o_gpu_property_value
                 }
-            )
+            ).flat()
 
             let o_gpu_info = new O_gpu_info(
                 a_o_gpu_property_value.find(
