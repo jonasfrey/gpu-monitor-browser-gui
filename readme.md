@@ -36,4 +36,9 @@ or more installation options on https://docs.deno.com/runtime/fundamentals/insta
 `sudo apt install amdgpu_top`
 
 
-# Run
+# Running / starting it 
+`deno run -A websersocket_0628a90e-0163-400d-bee6-e31e990e9197.js`
+then hit enter a few times to generate a self signed certificate (needed for local https server...)
+
+finally visit : https://[yourcomputername]:8443
+

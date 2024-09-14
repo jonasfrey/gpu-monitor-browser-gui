@@ -35,26 +35,7 @@ const b_deno_deploy = Deno.env.get("DENO_DEPLOYMENT_ID") !== undefined;
 
 let a_o_ws_client = []
 
-let f_o_fetch_cached = async function( 
-    n_ms_delta_max = 1000*60*5
-){
-    let n_ms_now = new Date().getTime();
-    let a_v_param = Array.from(arguments);
-    let o = await o_kv.get([a_v_param[1]]);
-    let b_update = (o?.value?.n_ms) ? Math.abs(o?.value?.n_ms-n_ms_now) > n_ms_delta_max : true;
-    if(b_update){
-        let o_resp = await fetch(...a_v_param.slice(1));
-        let o_data = await o_resp.json();
-        let o = {
-            n_ms: n_ms_now, 
-            o_data
-        };
-        let b_res = await o_kv.set([a_v_param[1]], o); 
-    }
-    return o?.value?.o_data
-}
 
-const o_kv = await Deno.openKv();
 // let o_config = await f_o_config();
 // console.log({o_config});
 
