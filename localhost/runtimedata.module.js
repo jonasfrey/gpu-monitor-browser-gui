@@ -78,6 +78,11 @@ let o_gpu_property__video_clock = new O_gpu_property(
 );
 
 
+let o_gpu_property__graphics_volt = new O_gpu_property(
+    'Graphics Voltage', 
+    'The voltage supplied to the GPU’s graphics core, measured in millivolts (mV). This indicates the power being used by the core for processing tasks.',
+);
+
 
 let o_graph_type__text = new O_graph_type(
     'Text information',
@@ -111,6 +116,7 @@ let a_o_gpu_property = [
     o_gpu_property__sm_clock,
     o_gpu_property__mem_clock,
     o_gpu_property__video_clock,
+    o_gpu_property__graphics_volt
 ]
 
 export {
@@ -128,6 +134,7 @@ export {
     o_gpu_property__sm_clock,
     o_gpu_property__mem_clock,
     o_gpu_property__video_clock,
+    o_gpu_property__graphics_volt,
 
 
     a_o_graph_type,
