@@ -27,7 +27,7 @@ import {
 } from "https://deno.land/x/handyhelpers@4.1.2/mod.js"
 
 import { O_gpu_property_value, O_gpu_info, O_gpu_readout_info } from "./localhost/classes.module.js";
-import { a_o_gpu_property, o_gpu_property__gpu_name, o_gpu_property__gpu_utilization, o_gpu_property__memory_info, o_gpu_property__memory_info_bar1_nvidia_specific, o_gpu_property__memory_info_graphics_translation_table_amd_specific, o_gpu_property__memory_info_per_process_nvidia_specific, o_gpu_property__pci_address, o_gpu_property__power_draw, o_gpu_property__temperature } from "./localhost/runtimedata.module.js";
+import { a_o_gpu_property, o_gpu_property__gpu_name, o_gpu_property__gpu_utilization, o_gpu_property__graphics_clock, o_gpu_property__mem_clock, o_gpu_property__memory_info, o_gpu_property__memory_info_bar1_nvidia_specific, o_gpu_property__memory_info_graphics_translation_table_amd_specific, o_gpu_property__memory_info_per_process_nvidia_specific, o_gpu_property__pci_address, o_gpu_property__power_draw, o_gpu_property__sm_clock, o_gpu_property__temperature, o_gpu_property__video_clock } from "./localhost/runtimedata.module.js";
 
 let s_path_abs_file_current = new URL(import.meta.url).pathname;
 let s_path_abs_folder_current = s_path_abs_file_current.split('/').slice(0, -1).join('/');
@@ -370,10 +370,63 @@ let f_handler = async function(o_request){
                                 return o_gpu_property_value;
                             })
                         }else{
-
                             o_gpu_property_value.s_val = 'AMD GPU does not have this metric'
                         }
                     }
+
+                    if(o_gpu_property.s_name == o_gpu_property__graphics_clock.s_name){
+                        if(b_nvidia_smi){
+                            o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.clocks.graphics_clock                               
+                            )
+                            o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.max_clocks.graphics_clock                               
+                            )
+                            o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n; 
+                        }else{
+                            // o_gpu_property_value.s_val = 'AMD GPU does not have this metric'
+                        }
+                    }
+                    if(o_gpu_property.s_name == o_gpu_property__sm_clock.s_name){
+                        if(b_nvidia_smi){
+                            o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.clocks.sm_clock                               
+                            )
+                            o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.max_clocks.sm_clock                               
+                            )
+                            o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n; 
+                        }else{
+                            // o_gpu_property_value.s_val = 'AMD GPU does not have this metric'
+                        }
+                    }
+                    if(o_gpu_property.s_name == o_gpu_property__mem_clock.s_name){
+                        if(b_nvidia_smi){
+                            o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.clocks.mem_clock                               
+                            )
+                            o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.max_clocks.mem_clock                               
+                            )
+                            o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n; 
+                        }else{
+                            // o_gpu_property_value.s_val = 'AMD GPU does not have this metric'
+                        }
+                    }
+                    if(o_gpu_property.s_name == o_gpu_property__video_clock.s_name){
+                        if(b_nvidia_smi){
+                            o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.clocks.video_clock                               
+                            )
+                            o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
+                                o_gpunvidiaoramd.max_clocks.video_clock                               
+                            )
+                            o_gpu_property_value.n_nor = o_gpu_property_value.o_number_value.n / o_gpu_property_value.o_number_value_max.n; 
+                        }else{
+                            // o_gpu_property_value.s_val = 'AMD GPU does not have this metric'
+                        }
+                    }
+
                     if(a_o_gpu_property_value.length == 0){
                         a_o_gpu_property_value.push(o_gpu_property_value)
                     }
@@ -429,9 +482,10 @@ let f_handler = async function(o_request){
 
 }
 
-let s_name_host = Deno.hostname(); // or maybe some ip adress 112.35.8.13
+let s_name_host = 'localhost';//Deno.hostname(); // or maybe some ip adress 112.35.8.13
 let b_development = s_name_host != 'the_server_name_here';
 let s_name_host2 = (b_development) ? 'localhost': s_name_host;
+
 // let o_info_certificates = {
 //     s_path_certificate_file: './self_signed_cert_0628a90e-0163-400d-bee6-e31e990e9197.crt',
 //     s_path_key_file: './self_signed_key_0628a90e-0163-400d-bee6-e31e990e9197.key'

@@ -490,15 +490,7 @@ let f_update_interval = async function(){
                         Math.max(o_state.a_o_gpu_readout_info.length-n_datapoints_x, 0)
                     )
                 ];
-                // console.log(a_o_gpu_readout_info)
-                let n_ts_ms_now = new Date().getTime();
-                let a_n_x = a_o_gpu_readout_info.map((o_gpu_readout_info, n_idx)=>{
-                    n_idx = parseInt(n_idx)
-                    let n_ms_diff = Math.floor(parseInt(o_gpu_readout_info.n_ts_ms - n_ts_ms_now)/100)*100
-                    // console.log(n_ms_diff);
-                    let s_timestring = `-`+f_s_timestring_from_n_ms(Math.abs(n_ms_diff));
-                    return s_timestring
-                });
+
 
                 let o_gpu_info = o_state.a_o_gpu_readout_info.at(-1).a_o_gpu_info.find(
                     o_gpu_info=>{
@@ -698,6 +690,7 @@ let f_update_interval = async function(){
 
                     }
                     let o_legend = {}
+                    let n_ts_ms_now = new Date().getTime();
     
                     if(o_window.o_graph_type.s_name == o_graph_type__xy.s_name){
                         let o_legend = {}
@@ -721,7 +714,14 @@ let f_update_interval = async function(){
                                     n_value_y = o_gpu_property_value.o_number_value.n;
                                 }
 
-                                return {n_y: n_value_y, n_x: n_idx};
+                                // console.log(a_o_gpu_readout_info)
+                                n_idx = parseInt(n_idx)
+                                let n_ms_diff = Math.floor(parseInt(o_gpu_readout_info.n_ts_ms - n_ts_ms_now)/100)*100
+                                // console.log(n_ms_diff);
+                                let s_timestring = `-`+f_s_timestring_from_n_ms(Math.abs(n_ms_diff));
+                                // return s_timestring
+
+                                return {n_y: n_value_y, n_x: s_timestring};
                             }
                         )
                         let a_o_serie = [
@@ -736,12 +736,14 @@ let f_update_interval = async function(){
                                 opacity: 0.3
                               }, 
                               lineStyle: {
-                                width: Math.sqrt(n_scl_min)*0.1  // Set the line width to make it thinner, use any value lower than default (2)
+                                width: 1//px
                             }
                             }
                         ]
                         if(o_window.o_gpu_property.s_name == o_gpu_property__memory_info_per_process_nvidia_specific.s_name){
 
+                            n_y_min = 0
+                            n_y_max = 50
                             let f_s_name_from_o_gpu_property_value_per_process = function(o){
                                 let s = o.o_meta.process_name.split(' ').shift()
                                 let a_s_part = s.split('/')
@@ -823,7 +825,7 @@ let f_update_interval = async function(){
                                                   opacity: 0.3
                                                 }, 
                                                 lineStyle: {
-                                                  width: Math.sqrt(n_scl_min)*0.1  // Set the line width to make it thinner, use any value lower than default (2)
+                                                  width: 1//px
                                               }
                                         }
                                         
@@ -848,7 +850,7 @@ let f_update_interval = async function(){
                                     show: true,
                                     lineStyle: {
                                         color: '#ccc',  
-                                        width: Math.sqrt(n_scl_min)*0.1
+                                        width: 1//px //Math.sqrt(n_scl_min)*0.1
                                     }
                                 },
                                 axisLabel: {

@@ -56,6 +56,29 @@ let o_gpu_property__memory_info_per_process_nvidia_specific = new O_gpu_property
 );
 
 
+
+let o_gpu_property__graphics_clock = new O_gpu_property(
+    'Graphics Clock', 
+    'The current clock speed of the GPU’s graphics core, measured in MHz. This controls the core processing power of the GPU.'
+);
+
+let o_gpu_property__sm_clock = new O_gpu_property(
+    'SM Clock', 
+    'The clock speed of the Streaming Multiprocessors (SM) on the GPU, which handle parallel workloads. Measured in MHz.'
+);
+
+let o_gpu_property__mem_clock = new O_gpu_property(
+    'Memory Clock', 
+    'The current clock speed of the GPU’s memory, measured in MHz. This influences the speed at which the GPU accesses its VRAM.'
+);
+
+let o_gpu_property__video_clock = new O_gpu_property(
+    'Video Clock', 
+    'The clock speed of the GPU’s video processing engine, measured in MHz. This is used for video encoding and decoding tasks.'
+);
+
+
+
 let o_graph_type__text = new O_graph_type(
     'Text information',
     './graph_text.png' 
@@ -84,7 +107,10 @@ let a_o_gpu_property = [
     o_gpu_property__memory_info_bar1_nvidia_specific,
     o_gpu_property__pci_address,
     o_gpu_property__memory_info_per_process_nvidia_specific,
-
+    o_gpu_property__graphics_clock,
+    o_gpu_property__sm_clock,
+    o_gpu_property__mem_clock,
+    o_gpu_property__video_clock,
 ]
 
 export {
@@ -98,7 +124,10 @@ export {
     o_gpu_property__memory_info_bar1_nvidia_specific,
     o_gpu_property__pci_address,
     o_gpu_property__memory_info_per_process_nvidia_specific,
-
+    o_gpu_property__graphics_clock,
+    o_gpu_property__sm_clock,
+    o_gpu_property__mem_clock,
+    o_gpu_property__video_clock,
 
 
     a_o_graph_type,
