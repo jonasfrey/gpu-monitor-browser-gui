@@ -84,6 +84,12 @@ let o_gpu_property__graphics_volt = new O_gpu_property(
 );
 
 
+let o_gpu_property__fan_speed = new O_gpu_property(
+    'Fan Speed', 
+    'fan speed'
+);
+
+
 let o_graph_type__text = new O_graph_type(
     'Text information',
     './graph_text.png' 
@@ -116,7 +122,8 @@ let a_o_gpu_property = [
     o_gpu_property__sm_clock,
     o_gpu_property__mem_clock,
     o_gpu_property__video_clock,
-    o_gpu_property__graphics_volt
+    o_gpu_property__graphics_volt,
+    o_gpu_property__fan_speed
 ]
 
 export {
@@ -135,6 +142,7 @@ export {
     o_gpu_property__mem_clock,
     o_gpu_property__video_clock,
     o_gpu_property__graphics_volt,
+    o_gpu_property__fan_speed,
 
 
     a_o_graph_type,

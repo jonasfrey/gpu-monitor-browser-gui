@@ -69,7 +69,9 @@ let a_o_gpu_readout_info= [
     await (async () => {
         let o = await fetch('./f_o_gpu_readout_info');
         if(!o.ok){
-            await f_o_throw_notification(o_state.o_state__notifier, await o.text(), 'error');
+            let s = await o.text();
+            console.error(s)
+            alert(s)
         }
         let o_data = await o.json();
         return o_data;
@@ -361,6 +363,12 @@ o_configuration__default = {
     "n_sec_interval": 1,
     "n_tickinterval": 10
 }
+// set the current gpu for the default configuration object
+for(let o of o_configuration__default.a_o_window ){
+    o.s_name_brand_model_gpu = a_o_gpu_readout_info.at(-1).a_o_gpu_info.at(-1).s_name_brand_model_gpu
+    o.s_pci = a_o_gpu_readout_info.at(-1).a_o_gpu_info.at(-1).s_pci
+}
+
 let a_o_configuration = await (await fetch('./f_a_o_configuration')).json();
 console.log(a_o_configuration)
 if(!a_o_configuration.find(o=>o.s_name == o_configuration__default.s_name)){
