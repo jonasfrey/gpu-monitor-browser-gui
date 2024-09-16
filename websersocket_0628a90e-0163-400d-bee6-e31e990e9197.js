@@ -568,6 +568,8 @@ let s_name_host2 = (b_development) ? 'localhost': s_name_host;
 //     s_path_certificate_file: './self_signed_cert_0628a90e-0163-400d-bee6-e31e990e9197.crt',
 //     s_path_key_file: './self_signed_key_0628a90e-0163-400d-bee6-e31e990e9197.key'
 // }
+console.log(import.meta.url)
+
 await f_websersocket_serve(
     [
         {
