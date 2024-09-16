@@ -1,6 +1,13 @@
 // here only struct/object/class/model definitions should be mentioned
 
 // for example
+
+class O_gpu_readout_object {
+  constructor(s_binary_name, o_gpu_readout) {
+    this.s_binary_name = s_binary_name;
+    this.o_gpu_readout = o_gpu_readout;
+  }
+}
 class O_gpu_readout_info {
   constructor(n_ts_ms, s_ymd_hms, a_o_gpu_info, o_nvidia_smi_xml) {
     this.n_ts_ms = n_ts_ms;
@@ -138,4 +145,5 @@ export {
   O_graph_type,
   O_threshhold,
   O_configuration,
+  O_gpu_readout_object,
 };

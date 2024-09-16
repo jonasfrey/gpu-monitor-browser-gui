@@ -24,6 +24,7 @@ import {
   f_render_from_o_webgl_program,
   f_o_number_value__from_s_input,
   f_a_n_nor__rgb__from_a_n_nor__hsl,
+  f_swap_in_array,
 } from "https://deno.land/x/handyhelpers@4.1.1/mod.js";
 
 window.f_o_number_value__from_s_input = f_o_number_value__from_s_input;
@@ -284,11 +285,11 @@ let f_update_interval = async function () {
           n_y_max = 100;
           s_y_axis_name = "%";
         } else {
-          n_value_gauge = o_window.o_gpu_property_value_last.o_number_value.n;
-          s_formatter = `{value} ${o_window.o_gpu_property_value_last.o_number_value.s_name_base_unit}`;
+          n_value_gauge = o_window.o_gpu_property_value_last?.o_number_value?.n;
+          s_formatter = `{value} ${o_window.o_gpu_property_value_last?.o_number_value?.s_name_base_unit}`;
           n_y_min = 0;
-          n_y_max = o_window.o_gpu_property_value_last.o_number_value_max.n;
-          s_y_axis_name = o_window.o_gpu_property_value_last.s_val;
+          n_y_max = o_window.o_gpu_property_value_last?.o_number_value_max?.n;
+          s_y_axis_name = o_window.o_gpu_property_value_last?.s_val;
         }
         n_value_gauge = parseInt(n_value_gauge);
 
@@ -467,8 +468,10 @@ let f_update_interval = async function () {
           let n_ts_ms_now = new Date().getTime();
 
           if (o_window.o_graph_type.s_name == o_graph_type__xy.s_name) {
-            let o_legend = {};
-            let a_o_xy = o_state.a_o_gpu_readout_info.map(
+            let o_legend = {
+              data: [o_window.o_gpu_property.s_name],
+            };
+            let a_o_xy = a_o_gpu_readout_info.map(
               (o_gpu_readout_info, n_idx) => {
                 // console.log(o_gpu_readout_info.a_o_gpu_info)
                 let o_gpu_info = o_gpu_readout_info.a_o_gpu_info.find(
@@ -529,6 +532,7 @@ let f_update_interval = async function () {
                 lineStyle: {
                   width: 1, //px
                 },
+                name: o_window.o_gpu_property.s_name,
               },
             ];
             if (
@@ -681,7 +685,16 @@ let f_update_interval = async function () {
                 },
               },
               series: a_o_serie,
+              // animation: false,
+              tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                  type: "cross",
+                },
+                formatter: "{a}: {c}%", // This adds the formatting to show the percentage
+              },
             };
+            console.log(o_option);
             o_window.o_echart.setOption(o_option);
 
             // o_window.o_echart.setOption({
@@ -1065,9 +1078,20 @@ document.body.appendChild(
             },
           },
           {
+            class: "fa-solid fa-ban",
+            s_tag: "button",
+            onpointerdown: async () => {
+              o_state.o_configuration.a_o_window =
+                o_state.o_configuration.a_o_window.filter((o) => {
+                  return o != o_window;
+                });
+              await o_state.o_js__a_o_window._f_render();
+            },
+          },
+          {
             class: "settings fas fa-cog",
             s_tag: "button",
-            onclick: async () => {
+            onpointerdown: async () => {
               o_state.b_render_global_settings = true;
               await o_state.o_js__global_settings._f_render();
             },
@@ -1133,7 +1157,7 @@ document.body.appendChild(
                   class: "fa-solid fa-xmark",
                   style: "position:absolute; right: 0; top:0",
                   s_tag: "button",
-                  onclick: async () => {
+                  onpointerdown: async () => {
                     o_state.b_render_global_settings = false;
                     await o_state.o_js__global_settings._f_render();
                     await o_state.o_js__a_o_window._f_render();
@@ -1149,354 +1173,399 @@ document.body.appendChild(
             },
             f_o_jsh: () => {
               return {
-                a_o: o_state.o_configuration.a_o_window.map((o_window) => {
-                  return {
-                    class: `clickable hovered`,
-                    onpointerdown: async function (o_e) {
-                      o_state.o_el_target_window_pointerdown = o_e.target;
-                      o_state.o_window_pointerdown_copy = Object.assign(
-                        {},
-                        o_window,
-                      );
-                      o_state.o_window__pointerdown = o_window;
-                      o_state.n_trn_x_nor_pointerdown =
-                        o_e.clientX / window.innerWidth;
-                      o_state.n_trn_y_nor_pointerdown =
-                        o_e.clientY / window.innerHeight;
-                    },
-
-                    style: [
-                      `top: ${parseInt(o_window.n_trn_y_nor * window.innerHeight)}px`,
-                      `left: ${parseInt(o_window.n_trn_x_nor * window.innerWidth)}px`,
-                      `width: ${parseInt(o_window.n_scl_x_nor * window.innerWidth)}px`,
-                      `height: ${parseInt(o_window.n_scl_y_nor * window.innerHeight)}px`,
-                      `position:absolute`,
-                      `z-index: ${o_window.n_trn_z_nor * o_state.o_configuration.a_o_window.length}`,
-                      // `background-color: rgba(${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},1)`
-                    ].join(";"),
-                    a_o: [
-                      // f_o_assigned(
-                      //     'o_js__o_window_settings',
-                      //     ()=>{
-                      //         if(!o_state.o_window__settings){
-                      //             return {}
-                      //         }
-                      //         // `${(o_state.o_window__settings?.o_graph_type.s_name == o_graph_type.s_name)?'hovered': ''}
-                      //         return {
-                      //             class: "o_window__settings",
-                      //             b_render: o_state?.o_window__settings != null,
-                      //             a_o: [
-                      //                 {
-                      //                     innerText: "Title"
-                      //                 },
-                      //                 f_o_assigned('o_js__s_title',
-                      //                     {
-                      //                         s_tag: 'input',
-                      //                         value: o_state?.o_window__settings?.s_title,
-                      //                         oninput: (o_e)=>{o_state.o_window__settings.s_title = o_e.target.value}
-                      //                     }
-                      //                 ),
-                      //                 {
-                      //                     innerText: "GPU"
-                      //                 },
-                      //                 f_o_assigned(
-                      //                     'o_js__a_o_gpu_readout_info',
-                      //                     {
-                      //                             a_o: o_state.a_o_gpu_readout_info.at(-1).a_o_gpu_info.map(o_gpu_info=>{
-                      //                                 let s_id_gpu = o_gpu_info.a_o_gpu_property_value.find(o2=>o2.o_gpu_property.s_name == '@id');
-                      //                                 let s_product_name = o_gpu_info.a_o_gpu_property_value.find(o2=>o2.o_gpu_property.s_name == 'product_name');
-                      //                                 return {
-                      //                                     class: [
-                      //                                         `clickable`,
-                      //                                         (o_state.o_window__settings.s_id_gpu == s_id_gpu)
-                      //                                             ? 'hovered': ''
-                      //                                     ].join(' '),
-                      //                                     onclick: async ()=>{
-                      //                                         o_state.o_window__settings.s_name_brand_model_gpu = s_product_name
-                      //                                         o_state.o_window__settings.s_id_gpu = s_id_gpu
-                      //                                         await o_state.o_js__a_o_gpu_readout_info._f_render();
-                      //                                     },
-                      //                                     innerText: s_product_name+s_id_gpu
-                      //                                 }
-                      //                         })
-                      //                     }
-                      //                 ),
-                      //                 {
-                      //                     innerText: "Graph type"
-                      //                 },
-                      //                 {
-                      //                     style: 'display:flex;flex-direction:row',
-                      //                     a_o:o_state.a_o_graph_type.map(o_graph_type=>{
-                      //                         return {
-                      //                             class: [
-                      //                                 `clickable`,
-                      //                                 (o_state.o_window__settings?.o_graph_type.s_name == o_graph_type.s_name)
-                      //                                     ? 'hovered': ''
-                      //                             ].join(' '),
-                      //                             onclick: async ()=>{
-                      //                                 o_state.o_window__settings.o_graph_type = o_graph_type
-                      //                                 await o_state.o_js__o_window_settings._f_render();
-                      //                             },
-                      //                             a_o: [
-                      //                                 {
-                      //                                     innerText: o_graph_type.s_name
-                      //                                 },
-                      //                                 {
-                      //                                     s_tag: "img",
-                      //                                     style: "max-width: 100px;max-height:100px",
-                      //                                     src: o_graph_type.s_name_img
-                      //                                 },
-                      //                             ]
-                      //                         }
-                      //                     })
-                      //                 },
-
-                      //                 {
-                      //                     class: 'fa-solid fa-xmark',
-                      //                     style: "position:absolute; right: 0; top:0",
-                      //                     s_tag: 'button',
-                      //                     onclick: async()=>{
-                      //                         o_state.o_window__settings = null;
-                      //                         await o_state.o_js__o_window_settings._f_render();
-                      //                         await o_state.o_js__a_o_window._f_render()
-                      //                     }
-                      //                 }
-                      //             ]
-                      //         }
-                      //     }
-                      // ),
-                      {
-                        style:
-                          "position: absolute;top:0;left:0;width:100%;display:flex;flex-direction:row",
-                        a_o: [
-                          {
-                            innerText: o_window.s_title,
-                            style: "font-size: 1rem; text-align:center",
-                            class: "overlay_activator clickable",
-                            onpointerdown: async (o_e) => {
-                              o_state.o_overlay.b_render = true;
-                              o_state.o_overlay.a_o = [
-                                {
-                                  s_tag: "input",
-                                  type: "text",
-                                  oninput: async (o_e) => {
-                                    o_state.s_searchterm_tmp = o_e.target.value;
-                                    await o_state.o_js__a_o_gpu_property._f_render();
-                                    console.log("asdf");
-                                    console.log(o_state.o_js__a_o_gpu_property);
-                                  },
-                                },
-                                f_o_assigned("o_js__a_o_gpu_property", () => {
-                                  return {
-                                    style:
-                                      "max-height: 300px; overflow-y:scroll",
-                                    a_o: o_state.a_o_gpu_property
-                                      .filter((o_gpu_property) => {
-                                        if (o_state.s_searchterm_tmp == "") {
-                                          return true;
-                                        }
-                                        return (
-                                          o_gpu_property.s_name
-                                            .toLowerCase()
-                                            .includes(
-                                              o_state.s_searchterm_tmp,
-                                            ) ||
-                                          o_gpu_property.s_description
-                                            .toLowerCase()
-                                            .includes(o_state.s_searchterm_tmp)
-                                        );
-                                      })
-                                      .map((o_gpu_property) => {
-                                        return {
-                                          onpointerdown: async (o_e) => {
-                                            o_window.o_gpu_property =
-                                              o_gpu_property;
-                                            o_window.s_title =
-                                              o_gpu_property.s_name;
-                                            await o_state.o_js__a_o_window._f_render();
-                                          },
-                                          class: "clickable",
-                                          data_value: o_gpu_property.s_name,
-                                          a_o: [
-                                            {
-                                              innerHTML: f_s_html_highlighted(
-                                                o_gpu_property.s_name
-                                                  .split(".")
-                                                  .join(" "),
-                                                o_state.s_searchterm_tmp,
-                                              ),
-                                            },
-                                            {
-                                              innerHTML: f_s_html_highlighted(
-                                                o_gpu_property.s_description,
-                                                o_state.s_searchterm_tmp,
-                                              ),
-                                            },
-                                          ],
-                                        };
-                                      }),
-                                  };
-                                }),
-                              ];
-                              let nx = o_e.clientX;
-                              let ny = o_e.clientY;
-                              let n_width = 500;
-                              let n_height = 300;
-                              let nx2 = Math.min(
-                                nx,
-                                window.innerWidth - n_width,
-                              );
-                              let ny2 = Math.min(
-                                ny,
-                                window.innerHeight - n_height,
-                              );
-                              o_state.o_overlay.s_style = [
-                                "background: red",
-                                `width: ${n_width}px`,
-                                `height: ${n_height}px`,
-                                "position:fixed",
-                                "z-index:1111",
-                                `left: ${nx2}px`,
-                                `top: ${ny2}px`,
-                              ].join(";");
-                              o_state.o_js__o_overlay._f_render();
-                            },
-                          },
-                          f_o_assigned(
-                            "o_js__b_use_normalized_value_percentage",
-                            () => {
-                              return {
-                                innerText:
-                                  o_window.b_use_normalized_value_percentage
-                                    ? "%"
-                                    : o_window?.o_gpu_property_value_last?.s_val
-                                        ?.split(" ")
-                                        ?.pop(),
-                                class: "overlay_activator clickable",
-                                onpointerdown: async (o_e) => {
-                                  o_window.b_use_normalized_value_percentage =
-                                    !o_window.b_use_normalized_value_percentage;
-                                  await o_state.o_js__b_use_normalized_value_percentage._f_render();
-                                },
-                              };
-                            },
-                          ),
-                        ],
+                a_o: o_state.o_configuration.a_o_window.map(
+                  (o_window, n_idx_a_o_window) => {
+                    n_idx_a_o_window = parseInt(n_idx_a_o_window);
+                    return {
+                      class: `clickable hovered`,
+                      onpointerdown: async function (o_e) {
+                        o_state.o_el_target_window_pointerdown = o_e.target;
+                        o_state.o_window_pointerdown_copy = Object.assign(
+                          {},
+                          o_window,
+                        );
+                        o_state.o_window__pointerdown = o_window;
+                        o_state.n_trn_x_nor_pointerdown =
+                          o_e.clientX / window.innerWidth;
+                        o_state.n_trn_y_nor_pointerdown =
+                          o_e.clientY / window.innerHeight;
+                        let o_window__last =
+                          o_state.o_configuration.a_o_window.at(-1);
+                        if (o_window__last != o_window) {
+                          // this will move the window on top, since its z-index is also the index in array
+                          let n_idx1 =
+                            o_state.o_configuration.a_o_window.indexOf(
+                              o_window,
+                            );
+                          let n_idx2 =
+                            o_state.o_configuration.a_o_window.indexOf(
+                              o_window__last,
+                            );
+                          o_state.o_configuration.a_o_window[n_idx1] =
+                            o_window__last;
+                          o_state.o_configuration.a_o_window[n_idx2] = o_window;
+                        }
                       },
-                      f_o_assigned("a_o_threshhold", () => {
-                        return {
-                          style: "position: absolute; top:0; right: 0",
+
+                      style: [
+                        `top: ${parseInt(o_window.n_trn_y_nor * window.innerHeight)}px`,
+                        `left: ${parseInt(o_window.n_trn_x_nor * window.innerWidth)}px`,
+                        `width: ${parseInt(o_window.n_scl_x_nor * window.innerWidth)}px`,
+                        `height: ${parseInt(o_window.n_scl_y_nor * window.innerHeight)}px`,
+                        `position:absolute`,
+                        `z-index: ${n_idx_a_o_window * o_state.o_configuration.a_o_window.length}`,
+                        // `background-color: rgba(${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},${parseInt(Math.random()*255)},1)`
+                      ].join(";"),
+                      a_o: [
+                        {
+                          style:
+                            "position: absolute;top:0;left:0;width:100%;display:flex;flex-direction:row",
                           a_o: [
-                            ...o_window.a_o_threshhold.map((o_threshhold) => {
-                              return {
-                                class:
-                                  "overlay_activator o_threshhold clickable",
-                                style: [
-                                  `width: 1rem`,
-                                  `height: 1rem`,
-                                  `background-color: ${o_threshhold.s_col}`,
-                                ].join(";"),
-                                innerText: `${parseInt(o_threshhold.n * 100)
-                                  .toString()
-                                  .padStart(2, " ")} %`,
-                                onpointerdown: async (o_e) => {
-                                  o_state.o_overlay.b_render = true;
-                                  o_state.o_overlay.a_o = [
-                                    {
-                                      class: "o_threshhold",
-                                      style: "display:flex; flex-direction:row",
-                                      a_o: [
-                                        {
-                                          s_tag: "input",
-                                          type: "number",
-                                          step: 0.1,
-                                          value: o_threshhold.n,
-                                          oninput: (o_e) => {
-                                            o_threshhold.n = parseFloat(
-                                              o_e.target.value,
-                                            );
-                                          },
-                                        },
-                                        {
-                                          s_tag: "input",
-                                          type: "color",
-                                          value: o_threshhold.s_col,
-                                          oninput: (o_e) => {
-                                            o_threshhold.s_col =
-                                              o_e.target.value;
-                                          },
-                                        },
-                                      ],
-                                    },
-                                  ];
-                                  let nx = o_e.clientX;
-                                  let ny = o_e.clientY;
-                                  let n_width = 200;
-                                  let n_height = 20;
-                                  let nx2 = Math.min(
-                                    nx,
-                                    window.innerWidth - n_width,
-                                  );
-                                  let ny2 = Math.min(
-                                    ny,
-                                    window.innerHeight - n_height,
-                                  );
-                                  o_state.o_overlay.s_style = [
-                                    "background: red",
-                                    `width: ${n_width}px`,
-                                    `height: ${n_height}px`,
-                                    "position:fixed",
-                                    "z-index:1111",
-                                    `left: ${nx2}px`,
-                                    `top: ${ny2}px`,
-                                  ].join(";");
-                                  await o_state.o_js__o_overlay._f_render();
-                                },
-                              };
-                            }),
                             {
-                              class: "settings fas fa-plus",
-                              onpointerdown: async () => {
-                                console.log("asdf");
+                              innerText: o_window.s_title,
+                              style: "font-size: 1rem; text-align:center",
+                              class: "overlay_activator clickable",
+                              onpointerdown: async (o_e) => {
+                                o_state.o_overlay.b_render = true;
+                                o_state.o_overlay.a_o = [
+                                  {
+                                    s_tag: "input",
+                                    type: "text",
+                                    oninput: async (o_e) => {
+                                      o_state.s_searchterm_tmp =
+                                        o_e.target.value;
+                                      await o_state.o_js__a_o_gpu_property._f_render();
+                                      console.log("asdf");
+                                      console.log(
+                                        o_state.o_js__a_o_gpu_property,
+                                      );
+                                    },
+                                  },
+                                  f_o_assigned("o_js__a_o_gpu_property", () => {
+                                    return {
+                                      style:
+                                        "max-height: 300px; overflow-y:scroll",
+                                      a_o: o_state.a_o_gpu_property
+                                        .filter((o_gpu_property) => {
+                                          if (o_state.s_searchterm_tmp == "") {
+                                            return true;
+                                          }
+                                          return (
+                                            o_gpu_property.s_name
+                                              .toLowerCase()
+                                              .includes(
+                                                o_state.s_searchterm_tmp,
+                                              ) ||
+                                            o_gpu_property.s_description
+                                              .toLowerCase()
+                                              .includes(
+                                                o_state.s_searchterm_tmp,
+                                              )
+                                          );
+                                        })
+                                        .map((o_gpu_property) => {
+                                          return {
+                                            onpointerdown: async (o_e) => {
+                                              o_window.o_gpu_property =
+                                                o_gpu_property;
+                                              o_window.s_title =
+                                                o_gpu_property.s_name;
+                                              await o_state.o_js__a_o_window._f_render();
+                                            },
+                                            class: "clickable",
+                                            data_value: o_gpu_property.s_name,
+                                            a_o: [
+                                              {
+                                                innerHTML: f_s_html_highlighted(
+                                                  o_gpu_property.s_name
+                                                    .split(".")
+                                                    .join(" "),
+                                                  o_state.s_searchterm_tmp,
+                                                ),
+                                              },
+                                              {
+                                                innerHTML: f_s_html_highlighted(
+                                                  o_gpu_property.s_description,
+                                                  o_state.s_searchterm_tmp,
+                                                ),
+                                              },
+                                            ],
+                                          };
+                                        }),
+                                    };
+                                  }),
+                                ];
+                                let nx = o_e.clientX;
+                                let ny = o_e.clientY;
+                                let n_width = 500;
+                                let n_height = 300;
+                                let nx2 = Math.min(
+                                  nx,
+                                  window.innerWidth - n_width,
+                                );
+                                let ny2 = Math.min(
+                                  ny,
+                                  window.innerHeight - n_height,
+                                );
+                                o_state.o_overlay.s_style = [
+                                  "background: red",
+                                  `width: ${n_width}px`,
+                                  `height: ${n_height}px`,
+                                  "position:fixed",
+                                  "z-index:1111",
+                                  `left: ${nx2}px`,
+                                  `top: ${ny2}px`,
+                                ].join(";");
+                                o_state.o_js__o_overlay._f_render();
                               },
                             },
+                            f_o_assigned(
+                              "o_js__b_use_normalized_value_percentage",
+                              () => {
+                                return {
+                                  innerText:
+                                    o_window.b_use_normalized_value_percentage
+                                      ? "%"
+                                      : o_window?.o_gpu_property_value_last?.s_val
+                                          ?.split(" ")
+                                          ?.pop(),
+                                  class: "overlay_activator clickable",
+                                  onpointerdown: async (o_e) => {
+                                    o_window.b_use_normalized_value_percentage =
+                                      !o_window.b_use_normalized_value_percentage;
+                                    await o_state.o_js__b_use_normalized_value_percentage._f_render();
+                                  },
+                                };
+                              },
+                            ),
                           ],
-                        };
-                      }),
-                      {
-                        s_tag: "canvas",
-                      },
-                      f_o_assigned(
-                        "o_settings",
-                        () => {
+                        },
+                        f_o_assigned("a_o_threshhold", () => {
                           return {
-                            b_render: o_window.b_render_settings == true,
-                            style:
-                              "left: 0;top:0;width:100%;background-color:rgba(255,0,0,0.5)",
-                            innerText: "overlay",
+                            style: "position: absolute; top:0; right: 0",
+                            a_o: [
+                              ...o_window.a_o_threshhold.map((o_threshhold) => {
+                                return {
+                                  class:
+                                    "overlay_activator o_threshhold clickable",
+                                  style: [
+                                    `width: 1rem`,
+                                    `height: 1rem`,
+                                    `background-color: ${o_threshhold.s_col}`,
+                                  ].join(";"),
+                                  innerText: `${parseInt(o_threshhold.n * 100)
+                                    .toString()
+                                    .padStart(2, " ")} %`,
+                                  onpointerdown: async (o_e) => {
+                                    o_state.o_overlay.b_render = true;
+                                    o_state.o_overlay.a_o = [
+                                      {
+                                        class: "o_threshhold",
+                                        style:
+                                          "display:flex; flex-direction:row",
+                                        a_o: [
+                                          {
+                                            s_tag: "input",
+                                            type: "number",
+                                            step: 0.1,
+                                            value: o_threshhold.n,
+                                            oninput: (o_e) => {
+                                              o_threshhold.n = parseFloat(
+                                                o_e.target.value,
+                                              );
+                                            },
+                                          },
+                                          {
+                                            s_tag: "input",
+                                            type: "color",
+                                            value: o_threshhold.s_col,
+                                            oninput: (o_e) => {
+                                              o_threshhold.s_col =
+                                                o_e.target.value;
+                                            },
+                                          },
+                                        ],
+                                      },
+                                    ];
+                                    let nx = o_e.clientX;
+                                    let ny = o_e.clientY;
+                                    let n_width = 200;
+                                    let n_height = 20;
+                                    let nx2 = Math.min(
+                                      nx,
+                                      window.innerWidth - n_width,
+                                    );
+                                    let ny2 = Math.min(
+                                      ny,
+                                      window.innerHeight - n_height,
+                                    );
+                                    o_state.o_overlay.s_style = [
+                                      "background: red",
+                                      `width: ${n_width}px`,
+                                      `height: ${n_height}px`,
+                                      "position:fixed",
+                                      "z-index:1111",
+                                      `left: ${nx2}px`,
+                                      `top: ${ny2}px`,
+                                    ].join(";");
+                                    await o_state.o_js__o_overlay._f_render();
+                                  },
+                                };
+                              }),
+                              {
+                                class: "settings fas fa-plus",
+                                onpointerdown: async () => {
+                                  console.log("asdf");
+                                },
+                              },
+                            ],
                           };
+                        }),
+                        {
+                          b_render:
+                            o_window.o_graph_type.s_name ==
+                            o_graph_type__text.s_name,
+                          innerText: o_window.o_gpu_property_value_last.s_val,
+                          s_tag: "h2",
+                          style: [
+                            "width: 100%;",
+                            "left: 50%;",
+                            "top: 50%;",
+                            "position: absolute;",
+                            "transform: translate(-50%, -50%);",
+                            "text-align: center;",
+                          ].join(""),
                         },
-                        o_window,
-                      ),
-                      {
-                        style: "position:absolute;bottom:0;left:0",
-                        class: "settings fas fa-cog",
-                        s_tag: "button",
-                        onpointerdown: async () => {
-                          o_window.b_render_settings =
-                            o_window.b_render_settings == false;
-                          await o_window?.o_settings._f_render();
+                        {
+                          s_tag: "canvas",
                         },
-                      },
-                      {
-                        style: "position:absolute; right:0;bottom:0",
-                        class:
-                          "resize fa-solid fa-up-right-and-down-left-from-center",
-                        s_tag: "button",
-                      },
-                    ],
-                  };
-                }),
+                        f_o_assigned(
+                          "o_settings",
+                          () => {
+                            if (o_window.b_render_settings != true) {
+                              return {};
+                            }
+                            return {
+                              b_render: o_window.b_render_settings == true,
+                              style:
+                                "left: 0;top:0;width:100%;background-color:rgba(255,0,0,0.5)",
+
+                              innerText: "overlay",
+                              class: "o_window__settings",
+                              a_o: [
+                                {
+                                  innerText: "Title",
+                                },
+                                f_o_assigned("o_js__s_title", {
+                                  s_tag: "input",
+                                  value: o_window?.s_title,
+                                  oninput: (o_e) => {
+                                    o_window.s_title = o_e.target.value;
+                                  },
+                                }),
+                                {
+                                  innerText: "GPU",
+                                },
+                                f_o_assigned("o_js__a_o_gpu_readout_info", {
+                                  a_o: o_state.a_o_gpu_readout_info
+                                    .at(-1)
+                                    .a_o_gpu_info.map((o_gpu_info) => {
+                                      let s_id_gpu =
+                                        o_gpu_info.a_o_gpu_property_value.find(
+                                          (o2) =>
+                                            o2.o_gpu_property.s_name == "@id",
+                                        );
+                                      let s_product_name =
+                                        o_gpu_info.a_o_gpu_property_value.find(
+                                          (o2) =>
+                                            o2.o_gpu_property.s_name ==
+                                            "product_name",
+                                        );
+                                      return {
+                                        class: [
+                                          `clickable`,
+                                          o_window.s_id_gpu == s_id_gpu
+                                            ? "hovered"
+                                            : "",
+                                        ].join(" "),
+                                        onpointerdown: async () => {
+                                          o_window.s_name_brand_model_gpu =
+                                            s_product_name;
+                                          o_window.s_id_gpu = s_id_gpu;
+                                          await o_state.o_js__a_o_gpu_readout_info._f_render();
+                                        },
+                                        innerText: s_product_name + s_id_gpu,
+                                      };
+                                    }),
+                                }),
+                                {
+                                  innerText: "Graph type",
+                                },
+                                {
+                                  style: "display:flex;flex-direction:row",
+                                  a_o: o_state.a_o_graph_type.map(
+                                    (o_graph_type) => {
+                                      return {
+                                        class: [
+                                          `clickable`,
+                                          o_window?.o_graph_type.s_name ==
+                                          o_graph_type.s_name
+                                            ? "hovered"
+                                            : "",
+                                        ].join(" "),
+                                        onpointerdown: async () => {
+                                          o_window.o_graph_type = o_graph_type;
+                                        },
+                                        a_o: [
+                                          {
+                                            innerText: o_graph_type.s_name,
+                                          },
+                                          {
+                                            s_tag: "img",
+                                            style:
+                                              "max-width: 100px;max-height:100px",
+                                            src: o_graph_type.s_name_img,
+                                          },
+                                        ],
+                                      };
+                                    },
+                                  ),
+                                },
+
+                                {
+                                  class: "fa-solid fa-xmark",
+                                  style: "position:absolute; right: 0; top:0",
+                                  s_tag: "button",
+                                  onpointerdown: async () => {
+                                    o_window.b_render_settings = false;
+                                    await o_state.o_js__a_o_window._f_render();
+                                  },
+                                },
+                              ],
+                            };
+                          },
+                          o_window,
+                        ),
+                        {
+                          style: "position:absolute;bottom:0;left:0",
+                          class: "settings fas fa-cog",
+                          s_tag: "button",
+                          onpointerdown: async () => {
+                            o_window.b_render_settings =
+                              o_window.b_render_settings == false;
+                            await o_window?.o_settings._f_render();
+                          },
+                        },
+                        {
+                          style: "position:absolute; right:0;bottom:0",
+                          class:
+                            "resize fa-solid fa-up-right-and-down-left-from-center",
+                          s_tag: "button",
+                        },
+                      ],
+                    };
+                  },
+                ),
               };
             },
           }),
@@ -1504,14 +1573,14 @@ document.body.appendChild(
           {
             s_tag: "button",
             innerText: "add graph",
-            onclick: async () => {
+            onpointerdown: async () => {
               let n_new = o_state.o_configuration.a_o_window.length + 1;
               o_state.o_configuration.a_o_window.push(
                 Object.assign({}, o_window__default),
               );
               for (let n_idx in o_state.o_configuration.a_o_window) {
                 let n_nor = parseInt(n_idx) / n_new;
-                o_state.o_configuration.a_o_window[n_idx].n_trn_z_nor = n_nor;
+                // o_state.o_configuration.a_o_window[n_idx].n_trn_z_nor = n_nor;
               }
               await o_state.o_js__a_o_window._f_render();
             },

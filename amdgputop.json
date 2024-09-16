@@ -1,0 +1,100 @@
+[
+  {
+    "ASIC Name": "Polaris10",
+    "CU per Shader Array": { "max": 9, "min": 9 },
+    "Chip Class": "GFX8",
+    "DeviceID": 26591,
+    "DeviceName": "AMD Radeon RX 590 Series",
+    "GL1 Cache per Shader Array": 0,
+    "GPU Clock": { "max": 1545, "min": 300 },
+    "GPU Family": "Volcanic Islands/Polaris (VI)",
+    "GPU Type": "dGPU",
+    "GTT Size": 16789442560,
+    "L1 Cache per CU": 16384,
+    "L2 Cache": 2097152,
+    "L3 Cache": 0,
+    "Memory Clock": { "max": 2000, "min": 400 },
+    "PCI": "0000:0a:00.0",
+    "PCIe Link": {
+      "max_dpm_link": { "gen": 3, "width": 16 },
+      "max_gpu_link": { "gen": 3, "width": 16 },
+      "max_system_link": { "gen": 4, "width": 16 },
+      "min_dpm_link": { "gen": 1, "width": 8 }
+    },
+    "Power Cap": { "current": 175, "max": 175, "min": 0 },
+    "Power Profiles": [
+      "BOOTUP_DEFAULT",
+      "3D_FULL_SCREEN",
+      "POWER_SAVING",
+      "VIDEO",
+      "VR",
+      "COMPUTE",
+      "CUSTOM"
+    ],
+    "RenderBackend": 8,
+    "RenderBackend Type": "RB",
+    "ResizableBAR": false,
+    "RevisionID": 225,
+    "Sensors": {
+      "Average Power": null,
+      "Edge Temperature": { "unit": "C", "value": 49 },
+      "Fan": { "unit": "RPM", "value": 1221 },
+      "Fan Max": { "unit": "RPM", "value": 3800 },
+      "GFX Power": { "unit": "W", "value": 57 },
+      "GFX_MCLK": { "unit": "MHz", "value": 2000 },
+      "GFX_SCLK": { "unit": "MHz", "value": 1322 },
+      "Input Power": { "unit": "W", "value": 57 },
+      "Junction Temperature": null,
+      "Memory Temperature": null,
+      "PCI Power State": "D0",
+      "PCIe Link Speed": { "gen": 3, "width": 16 },
+      "Power Profile": "3D_FULL_SCREEN",
+      "VDDGFX": { "unit": "mV", "value": 1000 },
+      "VDDNB": null
+    },
+    "Shader Array per Shader Engine": 1,
+    "Shader Engine": 4,
+    "Total Compute Unit": 36,
+    "Total ROP": 32,
+    "VBIOS": {
+      "date": "2019/01/17 21:57",
+      "name": "C94441 POLARIS 30 XT A1 GDDR5 P10FF K0115OAX.MLC 2019",
+      "pn": "113-C94441_100",
+      "ver_str": "015.050.003.000.000000"
+    },
+    "VRAM": {
+      "Total GTT": { "unit": "MiB", "value": 16011 },
+      "Total GTT Usage": { "unit": "MiB", "value": 165 },
+      "Total VRAM": { "unit": "MiB", "value": 8192 },
+      "Total VRAM Usage": { "unit": "MiB", "value": 2507 }
+    },
+    "VRAM Bit width": 256,
+    "VRAM Size": 8589934592,
+    "VRAM Type": "GDDR5",
+    "Video Caps": {
+      "AV1": { "Decode": null, "Encode": null },
+      "HEVC": {
+        "Decode": { "height": 4096, "width": 4096 },
+        "Encode": { "height": 2304, "width": 4096 }
+      },
+      "JPEG": { "Decode": { "height": 4096, "width": 4096 }, "Encode": null },
+      "MPEG2": { "Decode": { "height": 4096, "width": 4096 }, "Encode": null },
+      "MPEG4": { "Decode": { "height": 4096, "width": 4096 }, "Encode": null },
+      "MPEG4_AVC": {
+        "Decode": { "height": 4096, "width": 4096 },
+        "Encode": { "height": 2304, "width": 4096 }
+      },
+      "VC1": { "Decode": { "height": 4096, "width": 4096 }, "Encode": null },
+      "VP9": { "Decode": null, "Encode": null }
+    },
+    "amdgpu_top_version": { "major": 0, "minor": 9, "patch": 1 },
+    "drm_version": { "major": 3, "minor": 57, "patchlevel": 0 },
+    "gfx_target_version": "gfx803",
+    "gpu_activity": {
+      "GFX": { "unit": "%", "value": 1 },
+      "MediaEngine": { "unit": "%", "value": null },
+      "Memory": { "unit": "%", "value": 1 }
+    },
+    "gpu_metrics": null
+  }
+]
