@@ -81,7 +81,6 @@ let f_b_amdgpu_top_installed = async function () {
 let s_path_file_a_o_configuration = "./gitignored/a_o_configuration.json";
 
 let f_handler = async function (o_request) {
-  console.log(import.meta.url);
   // websocket 'request' handling here
   if (o_request.headers.get("Upgrade") == "websocket") {
     const { socket: o_socket, response: o_response } =
@@ -657,4 +656,3 @@ await f_websersocket_serve([
       : false,
   ].filter((v) => v),
 ]);
-console.log(import.meta.url);
