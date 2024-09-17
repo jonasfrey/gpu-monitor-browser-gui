@@ -1,0 +1,1472 @@
+
+Attributes queryable via mintuser-MS-7C52:0.0:
+
+  Attribute 'OperatingSystem' (mintuser-MS-7C52:0.0): 0.
+    The valid values for 'OperatingSystem' are in the range 0 - 2 (inclusive).
+    'OperatingSystem' is a read-only attribute.
+    'OperatingSystem' can use the following target types: X Screen, GPU.
+
+  Attribute 'NvidiaDriverVersion' (mintuser-MS-7C52:0.0): 535.161.07 
+    'NvidiaDriverVersion' is a string attribute.
+    'NvidiaDriverVersion' is a read-only attribute.
+    'NvidiaDriverVersion' can use the following target types: X Screen, GPU.
+
+  Attribute 'NvControlVersion' (mintuser-MS-7C52:0.0): 1.29 
+    'NvControlVersion' is a string attribute.
+    'NvControlVersion' is a read-only attribute.
+    'NvControlVersion' can use the following target types: X Screen.
+
+  Attribute 'GLXServerVersion' (mintuser-MS-7C52:0.0): 1.4 
+    'GLXServerVersion' is a string attribute.
+    'GLXServerVersion' is a read-only attribute.
+    'GLXServerVersion' can use the following target types: X Screen.
+
+  Attribute 'GLXClientVersion' (mintuser-MS-7C52:0.0): 1.4 
+    'GLXClientVersion' is a string attribute.
+    'GLXClientVersion' is a read-only attribute.
+    'GLXClientVersion' can use the following target types: X Screen.
+
+  Attribute 'OpenGLVersion' (mintuser-MS-7C52:0.0): 4.6.0 NVIDIA 535.161.07 
+    'OpenGLVersion' is a string attribute.
+    'OpenGLVersion' is a read-only attribute.
+    'OpenGLVersion' can use the following target types: X Screen.
+
+  Attribute 'XRandRVersion' (mintuser-MS-7C52:0.0): 1.6 
+    'XRandRVersion' is a string attribute.
+    'XRandRVersion' is a read-only attribute.
+    'XRandRVersion' can use the following target types: X Screen.
+
+  Attribute 'XF86VidModeVersion' (mintuser-MS-7C52:0.0): 2.2 
+    'XF86VidModeVersion' is a string attribute.
+    'XF86VidModeVersion' is a read-only attribute.
+    'XF86VidModeVersion' can use the following target types: X Screen.
+
+  Attribute 'XvVersion' (mintuser-MS-7C52:0.0): 2.2 
+    'XvVersion' is a string attribute.
+    'XvVersion' is a read-only attribute.
+    'XvVersion' can use the following target types: X Screen.
+
+  Attribute 'TwinView' (mintuser-MS-7C52:0.0): 0.
+    'TwinView' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'TwinView' is a read-only attribute.
+    'TwinView' can use the following target types: X Screen.
+
+  Attribute 'ConnectedDisplays' (mintuser-MS-7C52:0.0): 0x00001100.
+    'ConnectedDisplays' is a bitmask attribute.
+    'ConnectedDisplays' is a read-only attribute.
+    'ConnectedDisplays' can use the following target types: X Screen, GPU.
+
+  Attribute 'EnabledDisplays' (mintuser-MS-7C52:0.0): 0x00000100.
+    'EnabledDisplays' is a bitmask attribute.
+    'EnabledDisplays' is a read-only attribute.
+    'EnabledDisplays' can use the following target types: X Screen, GPU.
+
+  Attribute 'AssociatedDisplays' (mintuser-MS-7C52:0.0): 0x00007f00.
+    'AssociatedDisplays' is a bitmask attribute.
+    'AssociatedDisplays' can use the following target types: X Screen.
+
+  Attribute 'InitialPixmapPlacement' (mintuser-MS-7C52:0.0): 2.
+    The valid values for 'InitialPixmapPlacement' are in the range 0 - 4 (inclusive).
+    'InitialPixmapPlacement' can use the following target types: X Screen.
+
+  Attribute 'MultiGpuDisplayOwner' (mintuser-MS-7C52:0.0): 0.
+    'MultiGpuDisplayOwner' is an integer attribute.
+    'MultiGpuDisplayOwner' is a read-only attribute.
+    'MultiGpuDisplayOwner' can use the following target types: X Screen.
+
+  Attribute 'GlyphCache' (mintuser-MS-7C52:0.0): 1.
+    'GlyphCache' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'GlyphCache' can use the following target types: X Screen.
+
+  Attribute 'Depth30Allowed' (mintuser-MS-7C52:0.0): 1.
+    'Depth30Allowed' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'Depth30Allowed' is a read-only attribute.
+    'Depth30Allowed' can use the following target types: X Screen, GPU.
+
+  Attribute 'NoScanout' (mintuser-MS-7C52:0.0): 0.
+    'NoScanout' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'NoScanout' is a read-only attribute.
+    'NoScanout' can use the following target types: X Screen, GPU.
+
+  Attribute 'XServerUniqueId' (mintuser-MS-7C52:0.0): -866450171.
+    'XServerUniqueId' is an integer attribute.
+    'XServerUniqueId' is a read-only attribute.
+    'XServerUniqueId' can use the following target types: X Screen.
+
+  Attribute 'PixmapCache' (mintuser-MS-7C52:0.0): 1.
+    'PixmapCache' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'PixmapCache' can use the following target types: X Screen.
+
+  Attribute 'PixmapCacheRoundSizeKB' (mintuser-MS-7C52:0.0): 1024.
+    The valid values for 'PixmapCacheRoundSizeKB' are in the range 4 - 1048576 (inclusive).
+    'PixmapCacheRoundSizeKB' can use the following target types: X Screen.
+
+  Attribute 'AccelerateTrapezoids' (mintuser-MS-7C52:0.0): 1.
+    'AccelerateTrapezoids' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'AccelerateTrapezoids' can use the following target types: X Screen.
+
+  Attribute 'ScreenPosition' (mintuser-MS-7C52:0.0): x=0, y=0, width=4096, height=2304 
+    'ScreenPosition' is a string attribute.
+    'ScreenPosition' is a read-only attribute.
+    'ScreenPosition' can use the following target types: X Screen.
+
+  Attribute 'SyncToVBlank' (mintuser-MS-7C52:0.0): 1.
+    'SyncToVBlank' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'SyncToVBlank' can use the following target types: X Screen.
+
+  Attribute 'LogAniso' (mintuser-MS-7C52:0.0): 0.
+    The valid values for 'LogAniso' are in the range 0 - 4 (inclusive).
+    'LogAniso' can use the following target types: X Screen.
+
+  Attribute 'FSAA' (mintuser-MS-7C52:0.0): 0.
+    Valid values for 'FSAA' are: 0, 1, 5, 9, 10 and 11.
+    'FSAA' can use the following target types: X Screen.
+
+  Attribute 'TextureClamping' (mintuser-MS-7C52:0.0): 1.
+    'TextureClamping' is an integer attribute.
+    'TextureClamping' can use the following target types: X Screen.
+
+  Attribute 'FXAA' (mintuser-MS-7C52:0.0): 0.
+    'FXAA' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FXAA' can use the following target types: X Screen.
+
+  Attribute 'AllowFlipping' (mintuser-MS-7C52:0.0): 1.
+    'AllowFlipping' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'AllowFlipping' can use the following target types: X Screen.
+
+  Attribute 'FSAAAppControlled' (mintuser-MS-7C52:0.0): 1.
+    'FSAAAppControlled' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FSAAAppControlled' can use the following target types: X Screen.
+
+  Attribute 'LogAnisoAppControlled' (mintuser-MS-7C52:0.0): 1.
+    'LogAnisoAppControlled' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'LogAnisoAppControlled' can use the following target types: X Screen.
+
+  Attribute 'OpenGLImageSettings' (mintuser-MS-7C52:0.0): 1.
+    The valid values for 'OpenGLImageSettings' are in the range 0 - 3 (inclusive).
+    'OpenGLImageSettings' can use the following target types: X Screen.
+
+  Attribute 'FSAAAppEnhanced' (mintuser-MS-7C52:0.0): 0.
+    'FSAAAppEnhanced' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FSAAAppEnhanced' can use the following target types: X Screen.
+
+  Attribute 'SliMosaicModeAvailable' (mintuser-MS-7C52:0.0): 0.
+    'SliMosaicModeAvailable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'SliMosaicModeAvailable' is a read-only attribute.
+    'SliMosaicModeAvailable' can use the following target types: X Screen, GPU.
+
+  Attribute 'ShowGraphicsVisualIndicator' (mintuser-MS-7C52:0.0): 0.
+    'ShowGraphicsVisualIndicator' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'ShowGraphicsVisualIndicator' can use the following target types: X Screen.
+
+  Attribute 'BusType' (mintuser-MS-7C52:0.0): 2.
+    The valid values for 'BusType' are in the range 0 - 3 (inclusive).
+    'BusType' is a read-only attribute.
+    'BusType' can use the following target types: X Screen, GPU.
+
+  Attribute 'PCIEMaxLinkSpeed' (mintuser-MS-7C52:0.0): 8000.
+    'PCIEMaxLinkSpeed' is an integer attribute.
+    'PCIEMaxLinkSpeed' is a read-only attribute.
+    'PCIEMaxLinkSpeed' can use the following target types: X Screen, GPU.
+
+  Attribute 'PCIEMaxLinkWidth' (mintuser-MS-7C52:0.0): 8.
+    The valid values for 'PCIEMaxLinkWidth' are in the range 1 - 16 (inclusive).
+    'PCIEMaxLinkWidth' is a read-only attribute.
+    'PCIEMaxLinkWidth' can use the following target types: X Screen, GPU.
+
+  Attribute 'PCIECurrentLinkSpeed' (mintuser-MS-7C52:0.0): 8000.
+    'PCIECurrentLinkSpeed' is an integer attribute.
+    'PCIECurrentLinkSpeed' is a read-only attribute.
+    'PCIECurrentLinkSpeed' can use the following target types: X Screen, GPU.
+
+  Attribute 'PCIECurrentLinkWidth' (mintuser-MS-7C52:0.0): 8.
+    'PCIECurrentLinkWidth' is an integer attribute.
+    'PCIECurrentLinkWidth' is a read-only attribute.
+    'PCIECurrentLinkWidth' can use the following target types: X Screen, GPU.
+
+  Attribute 'VideoRam' (mintuser-MS-7C52:0.0): 16773120.
+    'VideoRam' is an integer attribute.
+    'VideoRam' is a read-only attribute.
+    'VideoRam' can use the following target types: X Screen, GPU.
+
+  Attribute 'Irq' (mintuser-MS-7C52:0.0): 78.
+    'Irq' is an integer attribute.
+    'Irq' is a read-only attribute.
+    'Irq' can use the following target types: X Screen, GPU.
+
+  Attribute 'CUDACores' (mintuser-MS-7C52:0.0): 4352.
+    'CUDACores' is an integer attribute.
+    'CUDACores' is a read-only attribute.
+    'CUDACores' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUMemoryInterface' (mintuser-MS-7C52:0.0): 128.
+    'GPUMemoryInterface' is an integer attribute.
+    'GPUMemoryInterface' is a read-only attribute.
+    'GPUMemoryInterface' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUCoreTemp' (mintuser-MS-7C52:0.0): 34.
+    'GPUCoreTemp' is an integer attribute.
+    'GPUCoreTemp' is a read-only attribute.
+    'GPUCoreTemp' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUCurrentClockFreqs' (mintuser-MS-7C52:0.0): 1020,9000.
+    'GPUCurrentClockFreqs' is a packed integer attribute.
+    'GPUCurrentClockFreqs' is a read-only attribute.
+    'GPUCurrentClockFreqs' can use the following target types: X Screen, GPU.
+
+  Attribute 'BusRate' (mintuser-MS-7C52:0.0): 8.
+    The valid values for 'BusRate' are in the range 1 - 16 (inclusive).
+    'BusRate' is a read-only attribute.
+    'BusRate' can use the following target types: X Screen, GPU.
+
+  Attribute 'PCIEGen' (mintuser-MS-7C52:0.0): 3.
+    'PCIEGen' is an integer attribute.
+    'PCIEGen' is a read-only attribute.
+    'PCIEGen' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUErrors' (mintuser-MS-7C52:0.0): 0.
+    'GPUErrors' is an integer attribute.
+    'GPUErrors' is a read-only attribute.
+    'GPUErrors' can use the following target types: X Screen.
+
+  Attribute 'GPUPowerSource' (mintuser-MS-7C52:0.0): 0.
+    'GPUPowerSource' is an integer attribute.
+    'GPUPowerSource' is a read-only attribute.
+    'GPUPowerSource' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUCurrentPerfLevel' (mintuser-MS-7C52:0.0): 4.
+    'GPUCurrentPerfLevel' is an integer attribute.
+    'GPUCurrentPerfLevel' is a read-only attribute.
+    'GPUCurrentPerfLevel' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUAdaptiveClockState' (mintuser-MS-7C52:0.0): 1.
+    'GPUAdaptiveClockState' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'GPUAdaptiveClockState' is a read-only attribute.
+    'GPUAdaptiveClockState' can use the following target types: X Screen, GPU.
+
+  Attribute 'ECCConfigurationSupported' (mintuser-MS-7C52:0.0): 0.
+    'ECCConfigurationSupported' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'ECCConfigurationSupported' is a read-only attribute.
+    'ECCConfigurationSupported' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUCurrentClockFreqsString' (mintuser-MS-7C52:0.0): nvclock=1020, nvclockmin=210, nvclockmax=3105, nvclockeditable=47, memclock=9000, memclockmin=9001, memclockmax=9001, memclockeditable=1, memTransferRate=18000, memTransferRatemin=18002, memTransferRatemax=18002, memTransferRateeditable=1 
+    'GPUCurrentClockFreqsString' is a string attribute.
+    'GPUCurrentClockFreqsString' is a read-only attribute.
+    'GPUCurrentClockFreqsString' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUPerfModes' (mintuser-MS-7C52:0.0): perf=0, nvclock=210, nvclockmin=210, nvclockmax=405, nvclockeditable=1, memclock=405, memclockmin=405, memclockmax=405, memclockeditable=1, memTransferRate=810, memTransferRatemin=810, memTransferRatemax=810, memTransferRateeditable=1 ; perf=1, nvclock=210, nvclockmin=210, nvclockmax=3105, nvclockeditable=149, memclock=810, memclockmin=810, memclockmax=810, memclockeditable=1, memTransferRate=1620, memTransferRatemin=1620, memTransferRatemax=1620, memTransferRateeditable=1 ; perf=2, nvclock=210, nvclockmin=210, nvclockmax=3105, nvclockeditable=42, memclock=5001, memclockmin=5001, memclockmax=5001, memclockeditable=1, memTransferRate=10002, memTransferRatemin=10002, memTransferRatemax=10002, memTransferRateeditable=1 ; perf=3, nvclock=210, nvclockmin=210, nvclockmax=3105, nvclockeditable=137, memclock=8751, memclockmin=8751, memclockmax=8751, memclockeditable=1, memTransferRate=17502, memTransferRatemin=17502, memTransferRatemax=17502, memTransferRateeditable=1 ; perf=4, nvclock=210, nvclockmin=210, nvclockmax=3105, nvclockeditable=47, memclock=9001, memclockmin=9001, memclockmax=9001, memclockeditable=1, memTransferRate=18002, memTransferRatemin=18002, memTransferRatemax=18002, memTransferRateeditable=1 
+    'GPUPerfModes' is a string attribute.
+    'GPUPerfModes' is a read-only attribute.
+    'GPUPerfModes' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUSlowdownTempThreshold' (mintuser-MS-7C52:0.0): 97.
+    'GPUSlowdownTempThreshold' is an integer attribute.
+    'GPUSlowdownTempThreshold' is a read-only attribute.
+    'GPUSlowdownTempThreshold' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUShutdownTempThreshold' (mintuser-MS-7C52:0.0): 102.
+    'GPUShutdownTempThreshold' is an integer attribute.
+    'GPUShutdownTempThreshold' is a read-only attribute.
+    'GPUShutdownTempThreshold' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUMaxOperatingTempThreshold' (mintuser-MS-7C52:0.0): 90.
+    'GPUMaxOperatingTempThreshold' is an integer attribute.
+    'GPUMaxOperatingTempThreshold' is a read-only attribute.
+    'GPUMaxOperatingTempThreshold' can use the following target types: X Screen, GPU.
+
+  Attribute 'FrameLockAvailable' (mintuser-MS-7C52:0.0; display device: TV-0): 0.
+    'FrameLockAvailable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FrameLockAvailable' is a read-only attribute.
+    'FrameLockAvailable' is display device specific.
+    'FrameLockAvailable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'FrameLockFirmwareUnsupported' (mintuser-MS-7C52:0.0): 0.
+    'FrameLockFirmwareUnsupported' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FrameLockFirmwareUnsupported' is a read-only attribute.
+    'FrameLockFirmwareUnsupported' can use the following target types: X Screen, GPU.
+
+  Attribute 'DigitalVibrance' (mintuser-MS-7C52:0.0; display device: TV-0): 0.
+    The valid values for 'DigitalVibrance' are in the range -1024 - 1023 (inclusive).
+    'DigitalVibrance' is display device specific.
+    'DigitalVibrance' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ImageSharpeningDefault' (mintuser-MS-7C52:0.0; display device: TV-0): 127.
+    'ImageSharpeningDefault' is an integer attribute.
+    'ImageSharpeningDefault' is a read-only attribute.
+    'ImageSharpeningDefault' is display device specific.
+    'ImageSharpeningDefault' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'RefreshRate' (mintuser-MS-7C52:0.0; display device: TV-0): 239.96 Hz.
+    'RefreshRate' is an integer attribute.
+    'RefreshRate' is a read-only attribute.
+    'RefreshRate' is display device specific.
+    'RefreshRate' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'RefreshRate3' (mintuser-MS-7C52:0.0; display device: TV-0): 239.958 Hz.
+    'RefreshRate3' is an integer attribute.
+    'RefreshRate3' is a read-only attribute.
+    'RefreshRate3' is display device specific.
+    'RefreshRate3' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ColorSpace' (mintuser-MS-7C52:0.0; display device: TV-0): 0.
+    Valid values for 'ColorSpace' are: 0, 1 and 2.
+    'ColorSpace' is display device specific.
+    'ColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ColorRange' (mintuser-MS-7C52:0.0; display device: TV-0): 0.
+    Valid values for 'ColorRange' are: 0 and 1.
+    'ColorRange' is display device specific.
+    'ColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorSpace' (mintuser-MS-7C52:0.0; display device: TV-0): 0.
+    Valid values for 'CurrentColorSpace' are: 0, 1, 2 and 3.
+    'CurrentColorSpace' is a read-only attribute.
+    'CurrentColorSpace' is display device specific.
+    'CurrentColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorRange' (mintuser-MS-7C52:0.0; display device: TV-0): 0.
+    Valid values for 'CurrentColorRange' are: 0 and 1.
+    'CurrentColorRange' is a read-only attribute.
+    'CurrentColorRange' is display device specific.
+    'CurrentColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentMetaModeID' (mintuser-MS-7C52:0.0): 50.
+    'CurrentMetaModeID' is an integer attribute.
+    'CurrentMetaModeID' can use the following target types: X Screen.
+
+  Attribute 'CurrentMetaMode' (mintuser-MS-7C52:0.0): id=50, switchable=yes, source=RandR :: DPY-0: 2560x1440_240 @4096x2304 +0+0 {Transform=(1.599991,0.000000,0.000000,0.000000,1.599991,0.000000,0.000000,0.000000,1.000000), ViewPortIn=4096x2304, ViewPortOut=2560x1440+0+0, ResamplingMethod=Bilinear} 
+    'CurrentMetaMode' is a string attribute.
+    'CurrentMetaMode' can use the following target types: X Screen.
+
+  Attribute 'XineramaInfoOrder' (mintuser-MS-7C52:0.0): DP-0 
+    'XineramaInfoOrder' is a string attribute.
+    'XineramaInfoOrder' can use the following target types: X Screen.
+
+  Attribute 'DisplayPortConnectorType' (mintuser-MS-7C52:0.0; display device: TV-0): 1.
+    'DisplayPortConnectorType' is an integer attribute.
+    'DisplayPortConnectorType' is a read-only attribute.
+    'DisplayPortConnectorType' is display device specific.
+    'DisplayPortConnectorType' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DisplayPortIsMultiStream' (mintuser-MS-7C52:0.0; display device: TV-0): 0.
+    'DisplayPortIsMultiStream' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayPortIsMultiStream' is a read-only attribute.
+    'DisplayPortIsMultiStream' is display device specific.
+    'DisplayPortIsMultiStream' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DisplayPortSinkIsAudioCapable' (mintuser-MS-7C52:0.0; display device: TV-0): 1.
+    'DisplayPortSinkIsAudioCapable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayPortSinkIsAudioCapable' is a read-only attribute.
+    'DisplayPortSinkIsAudioCapable' is display device specific.
+    'DisplayPortSinkIsAudioCapable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'XVideoSyncToDisplay' (mintuser-MS-7C52:0.0): 0x00000100.
+    'XVideoSyncToDisplay' is a bitmask attribute.
+    'XVideoSyncToDisplay' can use the following target types: X Screen.
+
+  Attribute 'XVideoSyncToDisplayID' (mintuser-MS-7C52:0.0): -1.
+    'XVideoSyncToDisplayID' is an integer attribute.
+    'XVideoSyncToDisplayID' can use the following target types: X Screen.
+
+  Attribute 'CurrentXVideoSyncToDisplayID' (mintuser-MS-7C52:0.0): 0.
+    'CurrentXVideoSyncToDisplayID' is an integer attribute.
+    'CurrentXVideoSyncToDisplayID' is a read-only attribute.
+    'CurrentXVideoSyncToDisplayID' can use the following target types: X Screen.
+
+Attributes queryable via mintuser-MS-7C52:0[gpu:0]:
+
+  Attribute 'OperatingSystem' (mintuser-MS-7C52:0[gpu:0]): 0.
+    The valid values for 'OperatingSystem' are in the range 0 - 2 (inclusive).
+    'OperatingSystem' is a read-only attribute.
+    'OperatingSystem' can use the following target types: X Screen, GPU.
+
+  Attribute 'NvidiaDriverVersion' (mintuser-MS-7C52:0[gpu:0]): 535.161.07 
+    'NvidiaDriverVersion' is a string attribute.
+    'NvidiaDriverVersion' is a read-only attribute.
+    'NvidiaDriverVersion' can use the following target types: GPU.
+
+  Attribute 'ConnectedDisplays' (mintuser-MS-7C52:0[gpu:0]): 0x00001100.
+    'ConnectedDisplays' is a bitmask attribute.
+    'ConnectedDisplays' is a read-only attribute.
+    'ConnectedDisplays' can use the following target types: X Screen, GPU.
+
+  Attribute 'EnabledDisplays' (mintuser-MS-7C52:0[gpu:0]): 0x00000100.
+    'EnabledDisplays' is a bitmask attribute.
+    'EnabledDisplays' is a read-only attribute.
+    'EnabledDisplays' can use the following target types: X Screen, GPU.
+
+  Attribute 'Depth30Allowed' (mintuser-MS-7C52:0[gpu:0]): 1.
+    'Depth30Allowed' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'Depth30Allowed' is a read-only attribute.
+    'Depth30Allowed' can use the following target types: X Screen, GPU.
+
+  Attribute 'NoScanout' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'NoScanout' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'NoScanout' is a read-only attribute.
+    'NoScanout' can use the following target types: X Screen, GPU.
+
+  Attribute 'SliMosaicModeAvailable' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'SliMosaicModeAvailable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'SliMosaicModeAvailable' is a read-only attribute.
+    'SliMosaicModeAvailable' can use the following target types: X Screen, GPU.
+
+  Attribute 'BusType' (mintuser-MS-7C52:0[gpu:0]): 2.
+    The valid values for 'BusType' are in the range 0 - 3 (inclusive).
+    'BusType' is a read-only attribute.
+    'BusType' can use the following target types: X Screen, GPU.
+
+  Attribute 'PCIEMaxLinkSpeed' (mintuser-MS-7C52:0[gpu:0]): 8000.
+    'PCIEMaxLinkSpeed' is an integer attribute.
+    'PCIEMaxLinkSpeed' is a read-only attribute.
+    'PCIEMaxLinkSpeed' can use the following target types: X Screen, GPU.
+
+  Attribute 'PCIEMaxLinkWidth' (mintuser-MS-7C52:0[gpu:0]): 8.
+    'PCIEMaxLinkWidth' is an integer attribute.
+    'PCIEMaxLinkWidth' is a read-only attribute.
+    'PCIEMaxLinkWidth' can use the following target types: GPU.
+
+  Attribute 'PCIECurrentLinkSpeed' (mintuser-MS-7C52:0[gpu:0]): 8000.
+    'PCIECurrentLinkSpeed' is an integer attribute.
+    'PCIECurrentLinkSpeed' is a read-only attribute.
+    'PCIECurrentLinkSpeed' can use the following target types: X Screen, GPU.
+
+  Attribute 'PCIECurrentLinkWidth' (mintuser-MS-7C52:0[gpu:0]): 8.
+    'PCIECurrentLinkWidth' is an integer attribute.
+    'PCIECurrentLinkWidth' is a read-only attribute.
+    'PCIECurrentLinkWidth' can use the following target types: GPU.
+
+  Attribute 'VideoRam' (mintuser-MS-7C52:0[gpu:0]): 16773120.
+    'VideoRam' is an integer attribute.
+    'VideoRam' is a read-only attribute.
+    'VideoRam' can use the following target types: X Screen, GPU.
+
+  Attribute 'TotalDedicatedGPUMemory' (mintuser-MS-7C52:0[gpu:0]): 16380.
+    'TotalDedicatedGPUMemory' is an integer attribute.
+    'TotalDedicatedGPUMemory' is a read-only attribute.
+    'TotalDedicatedGPUMemory' can use the following target types: GPU.
+
+  Attribute 'GPUResizableBAR' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'GPUResizableBAR' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'GPUResizableBAR' is a read-only attribute.
+    'GPUResizableBAR' can use the following target types: GPU.
+
+  Attribute 'UsedDedicatedGPUMemory' (mintuser-MS-7C52:0[gpu:0]): 1335.
+    'UsedDedicatedGPUMemory' is an integer attribute.
+    'UsedDedicatedGPUMemory' is a read-only attribute.
+    'UsedDedicatedGPUMemory' can use the following target types: GPU.
+
+  Attribute 'Irq' (mintuser-MS-7C52:0[gpu:0]): 78.
+    'Irq' is an integer attribute.
+    'Irq' is a read-only attribute.
+    'Irq' can use the following target types: GPU.
+
+  Attribute 'CUDACores' (mintuser-MS-7C52:0[gpu:0]): 4352.
+    'CUDACores' is an integer attribute.
+    'CUDACores' is a read-only attribute.
+    'CUDACores' can use the following target types: GPU.
+
+  Attribute 'GPUMemoryInterface' (mintuser-MS-7C52:0[gpu:0]): 128.
+    'GPUMemoryInterface' is an integer attribute.
+    'GPUMemoryInterface' is a read-only attribute.
+    'GPUMemoryInterface' can use the following target types: GPU.
+
+  Attribute 'GPUCoreTemp' (mintuser-MS-7C52:0[gpu:0]): 34.
+    'GPUCoreTemp' is an integer attribute.
+    'GPUCoreTemp' is a read-only attribute.
+    'GPUCoreTemp' can use the following target types: GPU.
+
+  Attribute 'GPUCurrentClockFreqs' (mintuser-MS-7C52:0[gpu:0]): 1020,9000.
+    'GPUCurrentClockFreqs' is a packed integer attribute.
+    'GPUCurrentClockFreqs' is a read-only attribute.
+    'GPUCurrentClockFreqs' can use the following target types: X Screen, GPU.
+
+  Attribute 'BusRate' (mintuser-MS-7C52:0[gpu:0]): 8.
+    'BusRate' is an integer attribute.
+    'BusRate' is a read-only attribute.
+    'BusRate' can use the following target types: GPU.
+
+  Attribute 'PCIDomain' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'PCIDomain' is an integer attribute.
+    'PCIDomain' is a read-only attribute.
+    'PCIDomain' can use the following target types: GPU.
+
+  Attribute 'PCIBus' (mintuser-MS-7C52:0[gpu:0]): 41.
+    'PCIBus' is an integer attribute.
+    'PCIBus' is a read-only attribute.
+    'PCIBus' can use the following target types: GPU.
+
+  Attribute 'PCIDevice' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'PCIDevice' is an integer attribute.
+    'PCIDevice' is a read-only attribute.
+    'PCIDevice' can use the following target types: GPU.
+
+  Attribute 'PCIFunc' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'PCIFunc' is an integer attribute.
+    'PCIFunc' is a read-only attribute.
+    'PCIFunc' can use the following target types: GPU.
+
+  Attribute 'PCIID' (mintuser-MS-7C52:0[gpu:0]): 4318,10245.
+    'PCIID' is a packed integer attribute.
+    'PCIID' is a read-only attribute.
+    'PCIID' can use the following target types: GPU.
+
+  Attribute 'PCIEGen' (mintuser-MS-7C52:0[gpu:0]): 3.
+    'PCIEGen' is an integer attribute.
+    'PCIEGen' is a read-only attribute.
+    'PCIEGen' can use the following target types: GPU.
+
+  Attribute 'GPUPowerSource' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'GPUPowerSource' is an integer attribute.
+    'GPUPowerSource' is a read-only attribute.
+    'GPUPowerSource' can use the following target types: GPU.
+
+  Attribute 'GPUCurrentPerfLevel' (mintuser-MS-7C52:0[gpu:0]): 4.
+    'GPUCurrentPerfLevel' is an integer attribute.
+    'GPUCurrentPerfLevel' is a read-only attribute.
+    'GPUCurrentPerfLevel' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUAdaptiveClockState' (mintuser-MS-7C52:0[gpu:0]): 1.
+    'GPUAdaptiveClockState' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'GPUAdaptiveClockState' is a read-only attribute.
+    'GPUAdaptiveClockState' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUPowerMizerMode' (mintuser-MS-7C52:0[gpu:0]): 2.
+    Valid values for 'GPUPowerMizerMode' are: 0, 1 and 2.
+    'GPUPowerMizerMode' can use the following target types: GPU.
+
+  Attribute 'GPUPowerMizerDefaultMode' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'GPUPowerMizerDefaultMode' is an integer attribute.
+    'GPUPowerMizerDefaultMode' is a read-only attribute.
+    'GPUPowerMizerDefaultMode' can use the following target types: GPU.
+
+  Attribute 'ECCSupported' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'ECCSupported' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'ECCSupported' is a read-only attribute.
+    'ECCSupported' can use the following target types: GPU.
+
+  Attribute 'ECCConfigurationSupported' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'ECCConfigurationSupported' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'ECCConfigurationSupported' is a read-only attribute.
+    'ECCConfigurationSupported' can use the following target types: GPU.
+
+  Attribute 'GPUFanControlState' (mintuser-MS-7C52:0[gpu:0]): 1.
+    'GPUFanControlState' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'GPUFanControlState' can use the following target types: GPU.
+
+  Attribute 'BaseMosaic' (mintuser-MS-7C52:0[gpu:0]): 0.
+    Valid values for 'BaseMosaic' are: 0.
+    'BaseMosaic' is a read-only attribute.
+    'BaseMosaic' can use the following target types: GPU.
+
+  Attribute 'MultiGpuPrimaryPossible' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'MultiGpuPrimaryPossible' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'MultiGpuPrimaryPossible' is a read-only attribute.
+    'MultiGpuPrimaryPossible' can use the following target types: GPU.
+
+  Attribute 'MultiGpuMasterPossible' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'MultiGpuMasterPossible' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'MultiGpuMasterPossible' is a read-only attribute.
+    'MultiGpuMasterPossible' can use the following target types: GPU.
+
+  Attribute 'VideoEncoderUtilization' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'VideoEncoderUtilization' is an integer attribute.
+    'VideoEncoderUtilization' is a read-only attribute.
+    'VideoEncoderUtilization' can use the following target types: GPU.
+
+  Attribute 'VideoDecoderUtilization' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'VideoDecoderUtilization' is an integer attribute.
+    'VideoDecoderUtilization' is a read-only attribute.
+    'VideoDecoderUtilization' can use the following target types: GPU.
+
+  Attribute 'GPUCurrentClockFreqsString' (mintuser-MS-7C52:0[gpu:0]): nvclock=1020, nvclockmin=210, nvclockmax=3105, nvclockeditable=47, memclock=9000, memclockmin=9001, memclockmax=9001, memclockeditable=1, memTransferRate=18000, memTransferRatemin=18002, memTransferRatemax=18002, memTransferRateeditable=1 
+    'GPUCurrentClockFreqsString' is a string attribute.
+    'GPUCurrentClockFreqsString' is a read-only attribute.
+    'GPUCurrentClockFreqsString' can use the following target types: X Screen, GPU.
+
+  Attribute 'GPUPerfModes' (mintuser-MS-7C52:0[gpu:0]): perf=0, nvclock=210, nvclockmin=210, nvclockmax=405, nvclockeditable=1, memclock=405, memclockmin=405, memclockmax=405, memclockeditable=1, memTransferRate=810, memTransferRatemin=810, memTransferRatemax=810, memTransferRateeditable=1 ; perf=1, nvclock=210, nvclockmin=210, nvclockmax=3105, nvclockeditable=149, memclock=810, memclockmin=810, memclockmax=810, memclockeditable=1, memTransferRate=1620, memTransferRatemin=1620, memTransferRatemax=1620, memTransferRateeditable=1 ; perf=2, nvclock=210, nvclockmin=210, nvclockmax=3105, nvclockeditable=42, memclock=5001, memclockmin=5001, memclockmax=5001, memclockeditable=1, memTransferRate=10002, memTransferRatemin=10002, memTransferRatemax=10002, memTransferRateeditable=1 ; perf=3, nvclock=210, nvclockmin=210, nvclockmax=3105, nvclockeditable=137, memclock=8751, memclockmin=8751, memclockmax=8751, memclockeditable=1, memTransferRate=17502, memTransferRatemin=17502, memTransferRatemax=17502, memTransferRateeditable=1 ; perf=4, nvclock=210, nvclockmin=210, nvclockmax=3105, nvclockeditable=47, memclock=9001, memclockmin=9001, memclockmax=9001, memclockeditable=1, memTransferRate=18002, memTransferRatemin=18002, memTransferRatemax=18002, memTransferRateeditable=1 
+    'GPUPerfModes' is a string attribute.
+    'GPUPerfModes' is a read-only attribute.
+    'GPUPerfModes' can use the following target types: X Screen, GPU.
+
+  Attribute 'GpuUUID' (mintuser-MS-7C52:0[gpu:0]): GPU-7f38b234-1f86-09b0-2d9c-a3ae33730a0f 
+    'GpuUUID' is a string attribute.
+    'GpuUUID' is a read-only attribute.
+    'GpuUUID' can use the following target types: GPU.
+
+  Attribute 'GPUUtilization' (mintuser-MS-7C52:0[gpu:0]): graphics=37, memory=18, video=0, PCIe=0 
+    'GPUUtilization' is a string attribute.
+    'GPUUtilization' is a read-only attribute.
+    'GPUUtilization' can use the following target types: GPU.
+
+  Attribute 'GPUSlowdownTempThreshold' (mintuser-MS-7C52:0[gpu:0]): 97.
+    'GPUSlowdownTempThreshold' is an integer attribute.
+    'GPUSlowdownTempThreshold' is a read-only attribute.
+    'GPUSlowdownTempThreshold' can use the following target types: GPU.
+
+  Attribute 'GPUShutdownTempThreshold' (mintuser-MS-7C52:0[gpu:0]): 102.
+    'GPUShutdownTempThreshold' is an integer attribute.
+    'GPUShutdownTempThreshold' is a read-only attribute.
+    'GPUShutdownTempThreshold' can use the following target types: GPU.
+
+  Attribute 'GPUMaxOperatingTempThreshold' (mintuser-MS-7C52:0[gpu:0]): 90.
+    'GPUMaxOperatingTempThreshold' is an integer attribute.
+    'GPUMaxOperatingTempThreshold' is a read-only attribute.
+    'GPUMaxOperatingTempThreshold' can use the following target types: X Screen, GPU.
+
+  Attribute 'FrameLockAvailable' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    'FrameLockAvailable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FrameLockAvailable' is a read-only attribute.
+    'FrameLockAvailable' is display device specific.
+    'FrameLockAvailable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'FrameLockFirmwareUnsupported' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'FrameLockFirmwareUnsupported' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FrameLockFirmwareUnsupported' is a read-only attribute.
+    'FrameLockFirmwareUnsupported' can use the following target types: X Screen, GPU.
+
+  Attribute 'Dithering' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    'Dithering' is an integer attribute.
+    'Dithering' is display device specific.
+    'Dithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDithering' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    'CurrentDithering' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'CurrentDithering' is a read-only attribute.
+    'CurrentDithering' is display device specific.
+    'CurrentDithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringMode' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    Valid values for 'DitheringMode' are: 0, 1, 2 and 3.
+    'DitheringMode' is display device specific.
+    'DitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringMode' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    'CurrentDitheringMode' is an integer attribute.
+    'CurrentDitheringMode' is a read-only attribute.
+    'CurrentDitheringMode' is display device specific.
+    'CurrentDitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringDepth' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    'DitheringDepth' is an integer attribute.
+    'DitheringDepth' is display device specific.
+    'DitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringDepth' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    'CurrentDitheringDepth' is an integer attribute.
+    'CurrentDitheringDepth' is a read-only attribute.
+    'CurrentDitheringDepth' is display device specific.
+    'CurrentDitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'DigitalVibrance' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    The valid values for 'DigitalVibrance' are in the range -1024 - 1023 (inclusive).
+    'DigitalVibrance' is display device specific.
+    'DigitalVibrance' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ImageSharpeningDefault' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 127.
+    'ImageSharpeningDefault' is an integer attribute.
+    'ImageSharpeningDefault' is a read-only attribute.
+    'ImageSharpeningDefault' is display device specific.
+    'ImageSharpeningDefault' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'RefreshRate' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 239.96 Hz.
+    'RefreshRate' is an integer attribute.
+    'RefreshRate' is a read-only attribute.
+    'RefreshRate' is display device specific.
+    'RefreshRate' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'RefreshRate3' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 239.958 Hz.
+    'RefreshRate3' is an integer attribute.
+    'RefreshRate3' is a read-only attribute.
+    'RefreshRate3' is display device specific.
+    'RefreshRate3' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ColorSpace' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    Valid values for 'ColorSpace' are: 0, 1 and 2.
+    'ColorSpace' is display device specific.
+    'ColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ColorRange' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    Valid values for 'ColorRange' are: 0 and 1.
+    'ColorRange' is display device specific.
+    'ColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorSpace' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    Valid values for 'CurrentColorSpace' are: 0, 1, 2 and 3.
+    'CurrentColorSpace' is a read-only attribute.
+    'CurrentColorSpace' is display device specific.
+    'CurrentColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorRange' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    Valid values for 'CurrentColorRange' are: 0 and 1.
+    'CurrentColorRange' is a read-only attribute.
+    'CurrentColorRange' is display device specific.
+    'CurrentColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'SynchronousPaletteUpdates' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    'SynchronousPaletteUpdates' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'SynchronousPaletteUpdates' is display device specific.
+    'SynchronousPaletteUpdates' can use the following target types: GPU, Display Device.
+
+  Attribute 'Hdmi3D' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    'Hdmi3D' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'Hdmi3D' is a read-only attribute.
+    'Hdmi3D' is display device specific.
+    'Hdmi3D' can use the following target types: GPU, Display Device.
+
+  Attribute 'DisplayPortConnectorType' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 1.
+    'DisplayPortConnectorType' is an integer attribute.
+    'DisplayPortConnectorType' is a read-only attribute.
+    'DisplayPortConnectorType' is display device specific.
+    'DisplayPortConnectorType' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DisplayPortIsMultiStream' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 0.
+    'DisplayPortIsMultiStream' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayPortIsMultiStream' is a read-only attribute.
+    'DisplayPortIsMultiStream' is display device specific.
+    'DisplayPortIsMultiStream' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DisplayPortSinkIsAudioCapable' (mintuser-MS-7C52:0[gpu:0]; display device: TV-0): 1.
+    'DisplayPortSinkIsAudioCapable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayPortSinkIsAudioCapable' is a read-only attribute.
+    'DisplayPortSinkIsAudioCapable' is display device specific.
+    'DisplayPortSinkIsAudioCapable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DynamicBoostSupport' (mintuser-MS-7C52:0[gpu:0]): 0.
+    'DynamicBoostSupport' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DynamicBoostSupport' is a read-only attribute.
+    'DynamicBoostSupport' can use the following target types: GPU.
+
+Attributes queryable via mintuser-MS-7C52:0[fan:0]:
+
+  Attribute 'GPUTargetFanSpeed' (mintuser-MS-7C52:0[fan:0]): 68.
+    The valid values for 'GPUTargetFanSpeed' are in the range 0 - 100 (inclusive).
+    'GPUTargetFanSpeed' can use the following target types: Fan.
+
+  Attribute 'GPUCurrentFanSpeed' (mintuser-MS-7C52:0[fan:0]): 68.
+    The valid values for 'GPUCurrentFanSpeed' are in the range 0 - 100 (inclusive).
+    'GPUCurrentFanSpeed' is a read-only attribute.
+    'GPUCurrentFanSpeed' can use the following target types: Fan.
+
+  Attribute 'GPUCurrentFanSpeedRPM' (mintuser-MS-7C52:0[fan:0]): 2464.
+    'GPUCurrentFanSpeedRPM' is an integer attribute.
+    'GPUCurrentFanSpeedRPM' is a read-only attribute.
+    'GPUCurrentFanSpeedRPM' can use the following target types: Fan.
+
+  Attribute 'GPUFanControlType' (mintuser-MS-7C52:0[fan:0]): 2.
+    'GPUFanControlType' is an integer attribute.
+    'GPUFanControlType' is a read-only attribute.
+    'GPUFanControlType' can use the following target types: Fan.
+
+  Attribute 'GPUFanTarget' (mintuser-MS-7C52:0[fan:0]): 0x00000007.
+    'GPUFanTarget' is a bitmask attribute.
+    'GPUFanTarget' is a read-only attribute.
+    'GPUFanTarget' can use the following target types: Fan.
+
+Attributes queryable via mintuser-MS-7C52:0[thermalsensor:0]:
+
+  Attribute 'ThermalSensorReading' (mintuser-MS-7C52:0[thermalsensor:0]): 34.
+    The valid values for 'ThermalSensorReading' are in the range 0 - 127 (inclusive).
+    'ThermalSensorReading' is a read-only attribute.
+    'ThermalSensorReading' can use the following target types: Thermal Sensor.
+
+  Attribute 'ThermalSensorProvider' (mintuser-MS-7C52:0[thermalsensor:0]): 1.
+    'ThermalSensorProvider' is an integer attribute.
+    'ThermalSensorProvider' is a read-only attribute.
+    'ThermalSensorProvider' can use the following target types: Thermal Sensor.
+
+  Attribute 'ThermalSensorTarget' (mintuser-MS-7C52:0[thermalsensor:0]): 1.
+    'ThermalSensorTarget' is an integer attribute.
+    'ThermalSensorTarget' is a read-only attribute.
+    'ThermalSensorTarget' can use the following target types: Thermal Sensor.
+
+Attributes queryable via mintuser-MS-7C52:0[dpy:0]:
+
+  Attribute 'FrameLockAvailable' (mintuser-MS-7C52:0[dpy:0]): 0.
+    'FrameLockAvailable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FrameLockAvailable' is a read-only attribute.
+    'FrameLockAvailable' is display device specific.
+    'FrameLockAvailable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'Dithering' (mintuser-MS-7C52:0[dpy:0]): 0.
+    'Dithering' is an integer attribute.
+    'Dithering' is display device specific.
+    'Dithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDithering' (mintuser-MS-7C52:0[dpy:0]): 0.
+    'CurrentDithering' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'CurrentDithering' is a read-only attribute.
+    'CurrentDithering' is display device specific.
+    'CurrentDithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringMode' (mintuser-MS-7C52:0[dpy:0]): 0.
+    Valid values for 'DitheringMode' are: 0, 1, 2 and 3.
+    'DitheringMode' is display device specific.
+    'DitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringMode' (mintuser-MS-7C52:0[dpy:0]): 0.
+    'CurrentDitheringMode' is an integer attribute.
+    'CurrentDitheringMode' is a read-only attribute.
+    'CurrentDitheringMode' is display device specific.
+    'CurrentDitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringDepth' (mintuser-MS-7C52:0[dpy:0]): 0.
+    'DitheringDepth' is an integer attribute.
+    'DitheringDepth' is display device specific.
+    'DitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringDepth' (mintuser-MS-7C52:0[dpy:0]): 0.
+    'CurrentDitheringDepth' is an integer attribute.
+    'CurrentDitheringDepth' is a read-only attribute.
+    'CurrentDitheringDepth' is display device specific.
+    'CurrentDitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'DigitalVibrance' (mintuser-MS-7C52:0[dpy:0]): 0.
+    The valid values for 'DigitalVibrance' are in the range -1024 - 1023 (inclusive).
+    'DigitalVibrance' is display device specific.
+    'DigitalVibrance' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ImageSharpeningDefault' (mintuser-MS-7C52:0[dpy:0]): 127.
+    'ImageSharpeningDefault' is an integer attribute.
+    'ImageSharpeningDefault' is a read-only attribute.
+    'ImageSharpeningDefault' is display device specific.
+    'ImageSharpeningDefault' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'RefreshRate' (mintuser-MS-7C52:0[dpy:0]): 239.96 Hz.
+    'RefreshRate' is an integer attribute.
+    'RefreshRate' is a read-only attribute.
+    'RefreshRate' is display device specific.
+    'RefreshRate' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'RefreshRate3' (mintuser-MS-7C52:0[dpy:0]): 239.958 Hz.
+    'RefreshRate3' is an integer attribute.
+    'RefreshRate3' is a read-only attribute.
+    'RefreshRate3' is display device specific.
+    'RefreshRate3' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ColorSpace' (mintuser-MS-7C52:0[dpy:0]): 0.
+    Valid values for 'ColorSpace' are: 0, 1 and 2.
+    'ColorSpace' is display device specific.
+    'ColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ColorRange' (mintuser-MS-7C52:0[dpy:0]): 0.
+    Valid values for 'ColorRange' are: 0 and 1.
+    'ColorRange' is display device specific.
+    'ColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorSpace' (mintuser-MS-7C52:0[dpy:0]): 0.
+    Valid values for 'CurrentColorSpace' are: 0, 1, 2 and 3.
+    'CurrentColorSpace' is a read-only attribute.
+    'CurrentColorSpace' is display device specific.
+    'CurrentColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorRange' (mintuser-MS-7C52:0[dpy:0]): 0.
+    Valid values for 'CurrentColorRange' are: 0 and 1.
+    'CurrentColorRange' is a read-only attribute.
+    'CurrentColorRange' is display device specific.
+    'CurrentColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'SynchronousPaletteUpdates' (mintuser-MS-7C52:0[dpy:0]): 0.
+    'SynchronousPaletteUpdates' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'SynchronousPaletteUpdates' is display device specific.
+    'SynchronousPaletteUpdates' can use the following target types: GPU, Display Device.
+
+  Attribute 'RandROutputID' (mintuser-MS-7C52:0[dpy:0]): 444.
+    'RandROutputID' is an integer attribute.
+    'RandROutputID' is a read-only attribute.
+    'RandROutputID' is display device specific.
+    'RandROutputID' can use the following target types: Display Device.
+
+  Attribute 'Hdmi3D' (mintuser-MS-7C52:0[dpy:0]): 0.
+    'Hdmi3D' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'Hdmi3D' is a read-only attribute.
+    'Hdmi3D' is display device specific.
+    'Hdmi3D' can use the following target types: GPU, Display Device.
+
+  Attribute 'DisplayPortConnectorType' (mintuser-MS-7C52:0[dpy:0]): 1.
+    'DisplayPortConnectorType' is an integer attribute.
+    'DisplayPortConnectorType' is a read-only attribute.
+    'DisplayPortConnectorType' is display device specific.
+    'DisplayPortConnectorType' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DisplayPortIsMultiStream' (mintuser-MS-7C52:0[dpy:0]): 0.
+    'DisplayPortIsMultiStream' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayPortIsMultiStream' is a read-only attribute.
+    'DisplayPortIsMultiStream' is display device specific.
+    'DisplayPortIsMultiStream' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DisplayPortSinkIsAudioCapable' (mintuser-MS-7C52:0[dpy:0]): 1.
+    'DisplayPortSinkIsAudioCapable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayPortSinkIsAudioCapable' is a read-only attribute.
+    'DisplayPortSinkIsAudioCapable' is display device specific.
+    'DisplayPortSinkIsAudioCapable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DisplayVRRMode' (mintuser-MS-7C52:0[dpy:0]): 0.
+    'DisplayVRRMode' is an integer attribute.
+    'DisplayVRRMode' is a read-only attribute.
+    'DisplayVRRMode' is display device specific.
+    'DisplayVRRMode' can use the following target types: Display Device.
+
+  Attribute 'DisplayVRRMinRefreshRate' (mintuser-MS-7C52:0[dpy:0]): 0.
+    The valid values for 'DisplayVRRMinRefreshRate' are in the range 0 - 0 (inclusive).
+    'DisplayVRRMinRefreshRate' is a read-only attribute.
+    'DisplayVRRMinRefreshRate' is display device specific.
+    'DisplayVRRMinRefreshRate' can use the following target types: Display Device.
+
+  Attribute 'DisplayVRREnabled' (mintuser-MS-7C52:0[dpy:0]): 0.
+    'DisplayVRREnabled' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayVRREnabled' is a read-only attribute.
+    'DisplayVRREnabled' is display device specific.
+    'DisplayVRREnabled' can use the following target types: Display Device.
+
+Attributes queryable via mintuser-MS-7C52:0[dpy:1]:
+
+  Attribute 'FrameLockAvailable' (mintuser-MS-7C52:0[dpy:1]): 0.
+    'FrameLockAvailable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FrameLockAvailable' is a read-only attribute.
+    'FrameLockAvailable' is display device specific.
+    'FrameLockAvailable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'Dithering' (mintuser-MS-7C52:0[dpy:1]): 0.
+    'Dithering' is an integer attribute.
+    'Dithering' is display device specific.
+    'Dithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDithering' (mintuser-MS-7C52:0[dpy:1]): 0.
+    'CurrentDithering' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'CurrentDithering' is a read-only attribute.
+    'CurrentDithering' is display device specific.
+    'CurrentDithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringMode' (mintuser-MS-7C52:0[dpy:1]): 0.
+    Valid values for 'DitheringMode' are: 0, 1, 2 and 3.
+    'DitheringMode' is display device specific.
+    'DitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringMode' (mintuser-MS-7C52:0[dpy:1]): 0.
+    'CurrentDitheringMode' is an integer attribute.
+    'CurrentDitheringMode' is a read-only attribute.
+    'CurrentDitheringMode' is display device specific.
+    'CurrentDitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringDepth' (mintuser-MS-7C52:0[dpy:1]): 0.
+    'DitheringDepth' is an integer attribute.
+    'DitheringDepth' is display device specific.
+    'DitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringDepth' (mintuser-MS-7C52:0[dpy:1]): 0.
+    'CurrentDitheringDepth' is an integer attribute.
+    'CurrentDitheringDepth' is a read-only attribute.
+    'CurrentDitheringDepth' is display device specific.
+    'CurrentDitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'ColorSpace' (mintuser-MS-7C52:0[dpy:1]): 0.
+    Valid values for 'ColorSpace' are: 0.
+    'ColorSpace' is display device specific.
+    'ColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ColorRange' (mintuser-MS-7C52:0[dpy:1]): 0.
+    Valid values for 'ColorRange' are: 0 and 1.
+    'ColorRange' is display device specific.
+    'ColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorSpace' (mintuser-MS-7C52:0[dpy:1]): 0.
+    Valid values for 'CurrentColorSpace' are: 0 and 3.
+    'CurrentColorSpace' is a read-only attribute.
+    'CurrentColorSpace' is display device specific.
+    'CurrentColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorRange' (mintuser-MS-7C52:0[dpy:1]): 0.
+    Valid values for 'CurrentColorRange' are: 0 and 1.
+    'CurrentColorRange' is a read-only attribute.
+    'CurrentColorRange' is display device specific.
+    'CurrentColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'SynchronousPaletteUpdates' (mintuser-MS-7C52:0[dpy:1]): 0.
+    'SynchronousPaletteUpdates' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'SynchronousPaletteUpdates' is display device specific.
+    'SynchronousPaletteUpdates' can use the following target types: GPU, Display Device.
+
+  Attribute 'RandROutputID' (mintuser-MS-7C52:0[dpy:1]): 477.
+    'RandROutputID' is an integer attribute.
+    'RandROutputID' is a read-only attribute.
+    'RandROutputID' is display device specific.
+    'RandROutputID' can use the following target types: Display Device.
+
+  Attribute 'DisplayVRRMode' (mintuser-MS-7C52:0[dpy:1]): 0.
+    'DisplayVRRMode' is an integer attribute.
+    'DisplayVRRMode' is a read-only attribute.
+    'DisplayVRRMode' is display device specific.
+    'DisplayVRRMode' can use the following target types: Display Device.
+
+  Attribute 'DisplayVRREnabled' (mintuser-MS-7C52:0[dpy:1]): 0.
+    'DisplayVRREnabled' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayVRREnabled' is a read-only attribute.
+    'DisplayVRREnabled' is display device specific.
+    'DisplayVRREnabled' can use the following target types: Display Device.
+
+Attributes queryable via mintuser-MS-7C52:0[dpy:2]:
+
+  Attribute 'FrameLockAvailable' (mintuser-MS-7C52:0[dpy:2]): 0.
+    'FrameLockAvailable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FrameLockAvailable' is a read-only attribute.
+    'FrameLockAvailable' is display device specific.
+    'FrameLockAvailable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'Dithering' (mintuser-MS-7C52:0[dpy:2]): 0.
+    'Dithering' is an integer attribute.
+    'Dithering' is display device specific.
+    'Dithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDithering' (mintuser-MS-7C52:0[dpy:2]): 0.
+    'CurrentDithering' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'CurrentDithering' is a read-only attribute.
+    'CurrentDithering' is display device specific.
+    'CurrentDithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringMode' (mintuser-MS-7C52:0[dpy:2]): 0.
+    Valid values for 'DitheringMode' are: 0, 1, 2 and 3.
+    'DitheringMode' is display device specific.
+    'DitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringMode' (mintuser-MS-7C52:0[dpy:2]): 0.
+    'CurrentDitheringMode' is an integer attribute.
+    'CurrentDitheringMode' is a read-only attribute.
+    'CurrentDitheringMode' is display device specific.
+    'CurrentDitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringDepth' (mintuser-MS-7C52:0[dpy:2]): 0.
+    'DitheringDepth' is an integer attribute.
+    'DitheringDepth' is display device specific.
+    'DitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringDepth' (mintuser-MS-7C52:0[dpy:2]): 0.
+    'CurrentDitheringDepth' is an integer attribute.
+    'CurrentDitheringDepth' is a read-only attribute.
+    'CurrentDitheringDepth' is display device specific.
+    'CurrentDitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'ColorSpace' (mintuser-MS-7C52:0[dpy:2]): 0.
+    Valid values for 'ColorSpace' are: 0, 1 and 2.
+    'ColorSpace' is display device specific.
+    'ColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ColorRange' (mintuser-MS-7C52:0[dpy:2]): 0.
+    Valid values for 'ColorRange' are: 0 and 1.
+    'ColorRange' is display device specific.
+    'ColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorSpace' (mintuser-MS-7C52:0[dpy:2]): 0.
+    Valid values for 'CurrentColorSpace' are: 0, 1, 2 and 3.
+    'CurrentColorSpace' is a read-only attribute.
+    'CurrentColorSpace' is display device specific.
+    'CurrentColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorRange' (mintuser-MS-7C52:0[dpy:2]): 0.
+    Valid values for 'CurrentColorRange' are: 0 and 1.
+    'CurrentColorRange' is a read-only attribute.
+    'CurrentColorRange' is display device specific.
+    'CurrentColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'SynchronousPaletteUpdates' (mintuser-MS-7C52:0[dpy:2]): 0.
+    'SynchronousPaletteUpdates' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'SynchronousPaletteUpdates' is display device specific.
+    'SynchronousPaletteUpdates' can use the following target types: GPU, Display Device.
+
+  Attribute 'RandROutputID' (mintuser-MS-7C52:0[dpy:2]): 478.
+    'RandROutputID' is an integer attribute.
+    'RandROutputID' is a read-only attribute.
+    'RandROutputID' is display device specific.
+    'RandROutputID' can use the following target types: Display Device.
+
+  Attribute 'DisplayPortConnectorType' (mintuser-MS-7C52:0[dpy:2]): 0.
+    'DisplayPortConnectorType' is an integer attribute.
+    'DisplayPortConnectorType' is a read-only attribute.
+    'DisplayPortConnectorType' is display device specific.
+    'DisplayPortConnectorType' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DisplayPortIsMultiStream' (mintuser-MS-7C52:0[dpy:2]): 0.
+    'DisplayPortIsMultiStream' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayPortIsMultiStream' is a read-only attribute.
+    'DisplayPortIsMultiStream' is display device specific.
+    'DisplayPortIsMultiStream' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DisplayPortSinkIsAudioCapable' (mintuser-MS-7C52:0[dpy:2]): 0.
+    'DisplayPortSinkIsAudioCapable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayPortSinkIsAudioCapable' is a read-only attribute.
+    'DisplayPortSinkIsAudioCapable' is display device specific.
+    'DisplayPortSinkIsAudioCapable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DisplayVRRMode' (mintuser-MS-7C52:0[dpy:2]): 0.
+    'DisplayVRRMode' is an integer attribute.
+    'DisplayVRRMode' is a read-only attribute.
+    'DisplayVRRMode' is display device specific.
+    'DisplayVRRMode' can use the following target types: Display Device.
+
+  Attribute 'DisplayVRREnabled' (mintuser-MS-7C52:0[dpy:2]): 0.
+    'DisplayVRREnabled' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayVRREnabled' is a read-only attribute.
+    'DisplayVRREnabled' is display device specific.
+    'DisplayVRREnabled' can use the following target types: Display Device.
+
+Attributes queryable via mintuser-MS-7C52:0[dpy:3]:
+
+  Attribute 'FrameLockAvailable' (mintuser-MS-7C52:0[dpy:3]): 0.
+    'FrameLockAvailable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FrameLockAvailable' is a read-only attribute.
+    'FrameLockAvailable' is display device specific.
+    'FrameLockAvailable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'Dithering' (mintuser-MS-7C52:0[dpy:3]): 0.
+    'Dithering' is an integer attribute.
+    'Dithering' is display device specific.
+    'Dithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDithering' (mintuser-MS-7C52:0[dpy:3]): 0.
+    'CurrentDithering' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'CurrentDithering' is a read-only attribute.
+    'CurrentDithering' is display device specific.
+    'CurrentDithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringMode' (mintuser-MS-7C52:0[dpy:3]): 0.
+    Valid values for 'DitheringMode' are: 0, 1, 2 and 3.
+    'DitheringMode' is display device specific.
+    'DitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringMode' (mintuser-MS-7C52:0[dpy:3]): 0.
+    'CurrentDitheringMode' is an integer attribute.
+    'CurrentDitheringMode' is a read-only attribute.
+    'CurrentDitheringMode' is display device specific.
+    'CurrentDitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringDepth' (mintuser-MS-7C52:0[dpy:3]): 0.
+    'DitheringDepth' is an integer attribute.
+    'DitheringDepth' is display device specific.
+    'DitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringDepth' (mintuser-MS-7C52:0[dpy:3]): 0.
+    'CurrentDitheringDepth' is an integer attribute.
+    'CurrentDitheringDepth' is a read-only attribute.
+    'CurrentDitheringDepth' is display device specific.
+    'CurrentDitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'ColorSpace' (mintuser-MS-7C52:0[dpy:3]): 0.
+    Valid values for 'ColorSpace' are: 0.
+    'ColorSpace' is display device specific.
+    'ColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ColorRange' (mintuser-MS-7C52:0[dpy:3]): 0.
+    Valid values for 'ColorRange' are: 0 and 1.
+    'ColorRange' is display device specific.
+    'ColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorSpace' (mintuser-MS-7C52:0[dpy:3]): 0.
+    Valid values for 'CurrentColorSpace' are: 0 and 3.
+    'CurrentColorSpace' is a read-only attribute.
+    'CurrentColorSpace' is display device specific.
+    'CurrentColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorRange' (mintuser-MS-7C52:0[dpy:3]): 0.
+    Valid values for 'CurrentColorRange' are: 0 and 1.
+    'CurrentColorRange' is a read-only attribute.
+    'CurrentColorRange' is display device specific.
+    'CurrentColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'SynchronousPaletteUpdates' (mintuser-MS-7C52:0[dpy:3]): 0.
+    'SynchronousPaletteUpdates' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'SynchronousPaletteUpdates' is display device specific.
+    'SynchronousPaletteUpdates' can use the following target types: GPU, Display Device.
+
+  Attribute 'RandROutputID' (mintuser-MS-7C52:0[dpy:3]): 479.
+    'RandROutputID' is an integer attribute.
+    'RandROutputID' is a read-only attribute.
+    'RandROutputID' is display device specific.
+    'RandROutputID' can use the following target types: Display Device.
+
+  Attribute 'DisplayVRRMode' (mintuser-MS-7C52:0[dpy:3]): 0.
+    'DisplayVRRMode' is an integer attribute.
+    'DisplayVRRMode' is a read-only attribute.
+    'DisplayVRRMode' is display device specific.
+    'DisplayVRRMode' can use the following target types: Display Device.
+
+  Attribute 'DisplayVRREnabled' (mintuser-MS-7C52:0[dpy:3]): 0.
+    'DisplayVRREnabled' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayVRREnabled' is a read-only attribute.
+    'DisplayVRREnabled' is display device specific.
+    'DisplayVRREnabled' can use the following target types: Display Device.
+
+Attributes queryable via mintuser-MS-7C52:0[dpy:4]:
+
+  Attribute 'FrameLockAvailable' (mintuser-MS-7C52:0[dpy:4]): 0.
+    'FrameLockAvailable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FrameLockAvailable' is a read-only attribute.
+    'FrameLockAvailable' is display device specific.
+    'FrameLockAvailable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'Dithering' (mintuser-MS-7C52:0[dpy:4]): 0.
+    'Dithering' is an integer attribute.
+    'Dithering' is display device specific.
+    'Dithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDithering' (mintuser-MS-7C52:0[dpy:4]): 0.
+    'CurrentDithering' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'CurrentDithering' is a read-only attribute.
+    'CurrentDithering' is display device specific.
+    'CurrentDithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringMode' (mintuser-MS-7C52:0[dpy:4]): 0.
+    Valid values for 'DitheringMode' are: 0, 1, 2 and 3.
+    'DitheringMode' is display device specific.
+    'DitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringMode' (mintuser-MS-7C52:0[dpy:4]): 0.
+    'CurrentDitheringMode' is an integer attribute.
+    'CurrentDitheringMode' is a read-only attribute.
+    'CurrentDitheringMode' is display device specific.
+    'CurrentDitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringDepth' (mintuser-MS-7C52:0[dpy:4]): 0.
+    'DitheringDepth' is an integer attribute.
+    'DitheringDepth' is display device specific.
+    'DitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringDepth' (mintuser-MS-7C52:0[dpy:4]): 0.
+    'CurrentDitheringDepth' is an integer attribute.
+    'CurrentDitheringDepth' is a read-only attribute.
+    'CurrentDitheringDepth' is display device specific.
+    'CurrentDitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'ColorSpace' (mintuser-MS-7C52:0[dpy:4]): 0.
+    Valid values for 'ColorSpace' are: 0, 1 and 2.
+    'ColorSpace' is display device specific.
+    'ColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ColorRange' (mintuser-MS-7C52:0[dpy:4]): 0.
+    Valid values for 'ColorRange' are: 0 and 1.
+    'ColorRange' is display device specific.
+    'ColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorSpace' (mintuser-MS-7C52:0[dpy:4]): 0.
+    Valid values for 'CurrentColorSpace' are: 0, 1, 2 and 3.
+    'CurrentColorSpace' is a read-only attribute.
+    'CurrentColorSpace' is display device specific.
+    'CurrentColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorRange' (mintuser-MS-7C52:0[dpy:4]): 0.
+    Valid values for 'CurrentColorRange' are: 0 and 1.
+    'CurrentColorRange' is a read-only attribute.
+    'CurrentColorRange' is display device specific.
+    'CurrentColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'SynchronousPaletteUpdates' (mintuser-MS-7C52:0[dpy:4]): 0.
+    'SynchronousPaletteUpdates' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'SynchronousPaletteUpdates' is display device specific.
+    'SynchronousPaletteUpdates' can use the following target types: GPU, Display Device.
+
+  Attribute 'RandROutputID' (mintuser-MS-7C52:0[dpy:4]): 480.
+    'RandROutputID' is an integer attribute.
+    'RandROutputID' is a read-only attribute.
+    'RandROutputID' is display device specific.
+    'RandROutputID' can use the following target types: Display Device.
+
+  Attribute 'DisplayVRRMode' (mintuser-MS-7C52:0[dpy:4]): 0.
+    'DisplayVRRMode' is an integer attribute.
+    'DisplayVRRMode' is a read-only attribute.
+    'DisplayVRRMode' is display device specific.
+    'DisplayVRRMode' can use the following target types: Display Device.
+
+  Attribute 'DisplayVRREnabled' (mintuser-MS-7C52:0[dpy:4]): 0.
+    'DisplayVRREnabled' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayVRREnabled' is a read-only attribute.
+    'DisplayVRREnabled' is display device specific.
+    'DisplayVRREnabled' can use the following target types: Display Device.
+
+Attributes queryable via mintuser-MS-7C52:0[dpy:5]:
+
+  Attribute 'FrameLockAvailable' (mintuser-MS-7C52:0[dpy:5]): 0.
+    'FrameLockAvailable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FrameLockAvailable' is a read-only attribute.
+    'FrameLockAvailable' is display device specific.
+    'FrameLockAvailable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'Dithering' (mintuser-MS-7C52:0[dpy:5]): 0.
+    'Dithering' is an integer attribute.
+    'Dithering' is display device specific.
+    'Dithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDithering' (mintuser-MS-7C52:0[dpy:5]): 0.
+    'CurrentDithering' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'CurrentDithering' is a read-only attribute.
+    'CurrentDithering' is display device specific.
+    'CurrentDithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringMode' (mintuser-MS-7C52:0[dpy:5]): 0.
+    Valid values for 'DitheringMode' are: 0, 1, 2 and 3.
+    'DitheringMode' is display device specific.
+    'DitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringMode' (mintuser-MS-7C52:0[dpy:5]): 0.
+    'CurrentDitheringMode' is an integer attribute.
+    'CurrentDitheringMode' is a read-only attribute.
+    'CurrentDitheringMode' is display device specific.
+    'CurrentDitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringDepth' (mintuser-MS-7C52:0[dpy:5]): 0.
+    'DitheringDepth' is an integer attribute.
+    'DitheringDepth' is display device specific.
+    'DitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringDepth' (mintuser-MS-7C52:0[dpy:5]): 0.
+    'CurrentDitheringDepth' is an integer attribute.
+    'CurrentDitheringDepth' is a read-only attribute.
+    'CurrentDitheringDepth' is display device specific.
+    'CurrentDitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'ColorSpace' (mintuser-MS-7C52:0[dpy:5]): 0.
+    Valid values for 'ColorSpace' are: 0, 1 and 2.
+    'ColorSpace' is display device specific.
+    'ColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ColorRange' (mintuser-MS-7C52:0[dpy:5]): 0.
+    Valid values for 'ColorRange' are: 0 and 1.
+    'ColorRange' is display device specific.
+    'ColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorSpace' (mintuser-MS-7C52:0[dpy:5]): 0.
+    Valid values for 'CurrentColorSpace' are: 0, 1, 2 and 3.
+    'CurrentColorSpace' is a read-only attribute.
+    'CurrentColorSpace' is display device specific.
+    'CurrentColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorRange' (mintuser-MS-7C52:0[dpy:5]): 0.
+    Valid values for 'CurrentColorRange' are: 0 and 1.
+    'CurrentColorRange' is a read-only attribute.
+    'CurrentColorRange' is display device specific.
+    'CurrentColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'SynchronousPaletteUpdates' (mintuser-MS-7C52:0[dpy:5]): 0.
+    'SynchronousPaletteUpdates' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'SynchronousPaletteUpdates' is display device specific.
+    'SynchronousPaletteUpdates' can use the following target types: GPU, Display Device.
+
+  Attribute 'RandROutputID' (mintuser-MS-7C52:0[dpy:5]): 484.
+    'RandROutputID' is an integer attribute.
+    'RandROutputID' is a read-only attribute.
+    'RandROutputID' is display device specific.
+    'RandROutputID' can use the following target types: Display Device.
+
+  Attribute 'DisplayPortConnectorType' (mintuser-MS-7C52:0[dpy:5]): 0.
+    'DisplayPortConnectorType' is an integer attribute.
+    'DisplayPortConnectorType' is a read-only attribute.
+    'DisplayPortConnectorType' is display device specific.
+    'DisplayPortConnectorType' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DisplayPortIsMultiStream' (mintuser-MS-7C52:0[dpy:5]): 0.
+    'DisplayPortIsMultiStream' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayPortIsMultiStream' is a read-only attribute.
+    'DisplayPortIsMultiStream' is display device specific.
+    'DisplayPortIsMultiStream' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DisplayPortSinkIsAudioCapable' (mintuser-MS-7C52:0[dpy:5]): 0.
+    'DisplayPortSinkIsAudioCapable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayPortSinkIsAudioCapable' is a read-only attribute.
+    'DisplayPortSinkIsAudioCapable' is display device specific.
+    'DisplayPortSinkIsAudioCapable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'DisplayVRRMode' (mintuser-MS-7C52:0[dpy:5]): 0.
+    'DisplayVRRMode' is an integer attribute.
+    'DisplayVRRMode' is a read-only attribute.
+    'DisplayVRRMode' is display device specific.
+    'DisplayVRRMode' can use the following target types: Display Device.
+
+  Attribute 'DisplayVRREnabled' (mintuser-MS-7C52:0[dpy:5]): 0.
+    'DisplayVRREnabled' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayVRREnabled' is a read-only attribute.
+    'DisplayVRREnabled' is display device specific.
+    'DisplayVRREnabled' can use the following target types: Display Device.
+
+Attributes queryable via mintuser-MS-7C52:0[dpy:6]:
+
+  Attribute 'FrameLockAvailable' (mintuser-MS-7C52:0[dpy:6]): 0.
+    'FrameLockAvailable' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'FrameLockAvailable' is a read-only attribute.
+    'FrameLockAvailable' is display device specific.
+    'FrameLockAvailable' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'Dithering' (mintuser-MS-7C52:0[dpy:6]): 0.
+    'Dithering' is an integer attribute.
+    'Dithering' is display device specific.
+    'Dithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDithering' (mintuser-MS-7C52:0[dpy:6]): 0.
+    'CurrentDithering' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'CurrentDithering' is a read-only attribute.
+    'CurrentDithering' is display device specific.
+    'CurrentDithering' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringMode' (mintuser-MS-7C52:0[dpy:6]): 0.
+    Valid values for 'DitheringMode' are: 0, 1, 2 and 3.
+    'DitheringMode' is display device specific.
+    'DitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringMode' (mintuser-MS-7C52:0[dpy:6]): 0.
+    'CurrentDitheringMode' is an integer attribute.
+    'CurrentDitheringMode' is a read-only attribute.
+    'CurrentDitheringMode' is display device specific.
+    'CurrentDitheringMode' can use the following target types: GPU, Display Device.
+
+  Attribute 'DitheringDepth' (mintuser-MS-7C52:0[dpy:6]): 0.
+    'DitheringDepth' is an integer attribute.
+    'DitheringDepth' is display device specific.
+    'DitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'CurrentDitheringDepth' (mintuser-MS-7C52:0[dpy:6]): 0.
+    'CurrentDitheringDepth' is an integer attribute.
+    'CurrentDitheringDepth' is a read-only attribute.
+    'CurrentDitheringDepth' is display device specific.
+    'CurrentDitheringDepth' can use the following target types: GPU, Display Device.
+
+  Attribute 'ColorSpace' (mintuser-MS-7C52:0[dpy:6]): 0.
+    Valid values for 'ColorSpace' are: 0.
+    'ColorSpace' is display device specific.
+    'ColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'ColorRange' (mintuser-MS-7C52:0[dpy:6]): 0.
+    Valid values for 'ColorRange' are: 0 and 1.
+    'ColorRange' is display device specific.
+    'ColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorSpace' (mintuser-MS-7C52:0[dpy:6]): 0.
+    Valid values for 'CurrentColorSpace' are: 0 and 3.
+    'CurrentColorSpace' is a read-only attribute.
+    'CurrentColorSpace' is display device specific.
+    'CurrentColorSpace' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'CurrentColorRange' (mintuser-MS-7C52:0[dpy:6]): 0.
+    Valid values for 'CurrentColorRange' are: 0 and 1.
+    'CurrentColorRange' is a read-only attribute.
+    'CurrentColorRange' is display device specific.
+    'CurrentColorRange' can use the following target types: X Screen, GPU, Display Device.
+
+  Attribute 'SynchronousPaletteUpdates' (mintuser-MS-7C52:0[dpy:6]): 0.
+    'SynchronousPaletteUpdates' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'SynchronousPaletteUpdates' is display device specific.
+    'SynchronousPaletteUpdates' can use the following target types: GPU, Display Device.
+
+  Attribute 'RandROutputID' (mintuser-MS-7C52:0[dpy:6]): 485.
+    'RandROutputID' is an integer attribute.
+    'RandROutputID' is a read-only attribute.
+    'RandROutputID' is display device specific.
+    'RandROutputID' can use the following target types: Display Device.
+
+  Attribute 'DisplayVRRMode' (mintuser-MS-7C52:0[dpy:6]): 0.
+    'DisplayVRRMode' is an integer attribute.
+    'DisplayVRRMode' is a read-only attribute.
+    'DisplayVRRMode' is display device specific.
+    'DisplayVRRMode' can use the following target types: Display Device.
+
+  Attribute 'DisplayVRREnabled' (mintuser-MS-7C52:0[dpy:6]): 0.
+    'DisplayVRREnabled' is a boolean attribute; valid values are: 1 (on/true) and 0 (off/false).
+    'DisplayVRREnabled' is a read-only attribute.
+    'DisplayVRREnabled' is display device specific.
+    'DisplayVRREnabled' can use the following target types: Display Device.
+

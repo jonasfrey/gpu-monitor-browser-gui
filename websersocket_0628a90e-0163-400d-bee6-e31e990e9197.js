@@ -17,13 +17,14 @@ import { f_o_config } from "./functions.module.js";
 import {
   f_o_number_value__from_s_input,
   f_a_o_number_value_temperature_from_s_temp,
-} from "https://deno.land/x/handyhelpers@4.1.3/mod.js";
+} from "https://deno.land/x/handyhelpers@4.1.5/mod.js";
 
 import {
   O_gpu_property_value,
   O_gpu_info,
   O_gpu_readout_info,
   O_gpu_readout_object,
+  O_gpu_fan,
 } from "./localhost/classes.module.js";
 import {
   a_o_gpu_property,
@@ -93,6 +94,82 @@ let f_o_gpu_in_machine = async function () {
 };
 let s_path_file_a_o_configuration = "./gitignored/a_o_configuration.json";
 
+let f_a_o_fan_available_nvidia = async function(){
+  let s_command = `nvidia-settings -q GPUFanTarget | grep -i "Attribute 'GPUFanTarget'"`
+  let o = await f_o_command(s_command);
+  let a_o_fan = o.s_stdout.split('\n').map(s=>s.trim()).map(s=>{
+
+    const o_regex = /\[fan:(\d+)\]/;
+  
+    // Use o_regex to find the match in the input string
+    const a_s_match = s.match(o_regex);
+
+    let n_id_fan = 0;
+    // If a a_s_match is found, return the fan number as an integer, otherwise return null
+    if (a_s_match && a_s_match[1]) {
+      n_id_fan = parseInt(a_s_match[1], 10);
+    }else{
+      return false
+    }
+
+    return new O_gpu_fan(
+      n_id_fan,
+      null, 
+      false, 
+      0.0
+    );
+  }).filter(v=>v);
+
+  return a_o_fan;
+}
+let f_set_fan_control_auto_nvidia = async function(){
+  let s_command_toggle_manual_control = `nvidia-settings -a "[gpu:0]/GPUFanControlState=0"`;
+  let o1 = await f_o_command(s_command_toggle_manual_control);
+  return true
+}
+let f_set_fan_control_manual_nvidia = async function(){
+  let s_command_toggle_manual_control = `nvidia-settings -a "[gpu:0]/GPUFanControlState=1"`;
+  let o1 = await f_o_command(s_command_toggle_manual_control);
+  return true
+}
+let f_set_fan_speed_nvidia = async function(n_nor_speed){
+  await f_set_fan_control_auto_nvidia();
+  let s_command_set_fan_speed = `nvidia-settings -a "[fan:0]/GPUTargetFanSpeed=${parseInt(n_nor_speed*100)}"`
+  let o2 = await f_o_command(s_command_set_fan_speed);
+}
+let f_n_rpm_fanspeed_nvidia = async function() {
+  let s_command = `nvidia-settings -q [fan:0]/GPUCurrentFanSpeedRPM`;
+  let o = await f_o_command(s_command);
+  let s_stdout = o.s_stdout;
+
+  // Check if the command was not found or another error occurred
+  if (s_stdout.includes(': command not found')) {
+    throw new Error(`The command ${s_command} was not found. Is nvidia-settings installed? Is this even a system with an NVIDIA GPU?`);
+  }
+
+  // Check if the output contains 'Attribute' indicating that the command ran successfully
+  if (!s_stdout.includes('Attribute')) {
+    throw new Error(`Unexpected output: ${s_stdout}`);
+  }
+
+  // Extract the fan speed RPM from the output using regex
+  let a_s_match = s_stdout.match(/GPUCurrentFanSpeedRPM' \(.+?\): (\d+)\./);
+
+  // If extraction fails, return null
+  if (!a_s_match) {
+    return null;
+  }
+
+  // Convert the matched value to an integer, including the case where it's 0
+  let n_fan_speed = parseInt(a_s_match[1], 10);
+
+  // Return null if the fan speed is not a valid number (shouldn't happen unless there's an issue)
+  if (isNaN(n_fan_speed)) {
+    return null;
+  }
+
+  return n_fan_speed;
+};
 let f_handler = async function (o_request) {
   // websocket 'request' handling here
   if (o_request.headers.get("Upgrade") == "websocket") {
@@ -191,6 +268,32 @@ let f_handler = async function (o_request) {
     });
   }
 
+
+  if (o_url.pathname == "/f_a_o_gpu_fan") {
+    let a_o = await f_a_o_fan_available_nvidia();
+    return new Response(JSON.stringify(a_o), {
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+  }
+
+  if(o_url.pathname == '/f_set_fan_control_manual_nvidia'){
+    let v = await f_set_fan_control_manual_nvidia();
+    return new Response('ok', {status: 200});
+  }
+  if(o_url.pathname == '/f_set_fan_control_auto_nvidia'){
+    let v = await f_set_fan_control_auto_nvidia();
+    return new Response('ok', {status: 200});
+  }
+  if (o_url.pathname == "/f_set_fan_speed_nvidia") {
+    let o = await o_request.json();
+    let v = await f_set_fan_speed_nvidia(o.n_nor_speed);
+    return new Response('ok', {status: 200});
+  }
+
+  
+
   if (o_url.pathname == "/f_o_gpu_readout_info") {
     let s_xml = "";
     let b_nvidia_smi = await f_b_nvidia_smi_installed();
@@ -214,7 +317,6 @@ let f_handler = async function (o_request) {
     let a_o_gpu_info = [];
     let o_nvidia_smi_xml;
     let a_o_gpu_readout_object = [];
-    console.log(o_gpu_in_machine);
     let s_binary_nvidia_smi = "nvidia-smi";
     let s_binary_amdgpu_top = "amdgpu_top";
     if (b_nvidia_smi && o_gpu_in_machine.b_nvidia) {
@@ -253,22 +355,21 @@ let f_handler = async function (o_request) {
     }
     // console.log(a_o_gpu_readout_object)
 
-    a_o_gpu_info = a_o_gpu_readout_object.map((o_gpu_readout_object) => {
+    a_o_gpu_info = a_o_gpu_readout_object.map(async (o_gpu_readout_object) => {
       let o_gpu_readout = o_gpu_readout_object.o_gpu_readout;
-      console.log();
       let a_o_gpu_property_value = a_o_gpu_property
-        .map((o_gpu_property) => {
+      .map(async (o_gpu_property) => {
           let o_gpu_property_value = new O_gpu_property_value(o_gpu_property);
           let a_o_gpu_property_value = [];
           if (o_gpu_property.s_name == o_gpu_property__gpu_name.s_name) {
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               o_gpu_property_value.s_val = o_gpu_readout.product_name;
             } else {
               o_gpu_property_value.s_val = o_gpu_readout?.DeviceName;
             }
           }
           if (o_gpu_property.s_name == o_gpu_property__pci_address.s_name) {
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               o_gpu_property_value.s_val = o_gpu_readout.pci.pci_bus_id;
             } else {
               o_gpu_property_value.s_val = o_gpu_readout?.PCI;
@@ -276,7 +377,7 @@ let f_handler = async function (o_request) {
           }
           if (o_gpu_property.s_name == o_gpu_property__gpu_utilization.s_name) {
             o_gpu_property_value.s_val = "%";
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               o_gpu_property_value.o_number_value =
                 f_o_number_value__from_s_input(
                   o_gpu_readout.utilization.gpu_util,
@@ -286,7 +387,6 @@ let f_handler = async function (o_request) {
               o_gpu_property_value.n_nor =
                 parseInt(o_gpu_readout.utilization.gpu_util) / 100;
             } else {
-              console.log({ o_gpu_readout });
               o_gpu_property_value.o_number_value_max =
                 f_o_number_value__from_s_input("100 %");
               o_gpu_property_value.o_number_value =
@@ -299,7 +399,7 @@ let f_handler = async function (o_request) {
           }
           if (o_gpu_property.s_name == o_gpu_property__temperature.s_name) {
             o_gpu_property_value.s_val = "°C";
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               o_gpu_property_value.o_number_value =
                 f_o_number_value__from_s_input(
                   o_gpu_readout.temperature.gpu_temp,
@@ -329,7 +429,7 @@ let f_handler = async function (o_request) {
           }
           if (o_gpu_property.s_name == o_gpu_property__power_draw.s_name) {
             o_gpu_property_value.s_val = "Watt";
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               o_gpu_property_value.o_number_value =
                 f_o_number_value__from_s_input(
                   o_gpu_readout.gpu_power_readings.power_draw,
@@ -356,7 +456,7 @@ let f_handler = async function (o_request) {
             }
           }
           if (o_gpu_property.s_name == o_gpu_property__memory_info.s_name) {
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               o_gpu_property_value.s_val = o_gpu_readout.fb_memory_usage.used
                 .split(" ")
                 .pop()
@@ -393,7 +493,7 @@ let f_handler = async function (o_request) {
             o_gpu_property.s_name ==
             o_gpu_property__memory_info_bar1_nvidia_specific.s_name
           ) {
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               o_gpu_property_value.s_val = o_gpu_readout.bar1_memory_usage.used
                 .split(" ")
                 .pop()
@@ -417,7 +517,7 @@ let f_handler = async function (o_request) {
             o_gpu_property.s_name ==
             o_gpu_property__memory_info_graphics_translation_table_amd_specific.s_name
           ) {
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               o_gpu_property_value.s_val =
                 "NVIDIA GPU does not have this metric";
             } else {
@@ -440,7 +540,7 @@ let f_handler = async function (o_request) {
             o_gpu_property.s_name ==
             o_gpu_property__memory_info_per_process_nvidia_specific.s_name
           ) {
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               a_o_gpu_property_value = o_gpu_readout.processes.process_info.map(
                 (o_process_info) => {
                   let o_gpu_property_value = new O_gpu_property_value(
@@ -474,7 +574,7 @@ let f_handler = async function (o_request) {
           }
 
           if (o_gpu_property.s_name == o_gpu_property__graphics_clock.s_name) {
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               o_gpu_property_value.o_number_value =
                 f_o_number_value__from_s_input(
                   o_gpu_readout.clocks.graphics_clock,
@@ -502,7 +602,7 @@ let f_handler = async function (o_request) {
             }
           }
           if (o_gpu_property.s_name == o_gpu_property__sm_clock.s_name) {
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               o_gpu_property_value.o_number_value =
                 f_o_number_value__from_s_input(o_gpu_readout.clocks.sm_clock);
               o_gpu_property_value.o_number_value_max =
@@ -517,7 +617,7 @@ let f_handler = async function (o_request) {
             }
           }
           if (o_gpu_property.s_name == o_gpu_property__mem_clock.s_name) {
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               o_gpu_property_value.o_number_value =
                 f_o_number_value__from_s_input(o_gpu_readout.clocks.mem_clock);
               o_gpu_property_value.o_number_value_max =
@@ -543,7 +643,7 @@ let f_handler = async function (o_request) {
             }
           }
           if (o_gpu_property.s_name == o_gpu_property__video_clock.s_name) {
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               o_gpu_property_value.o_number_value =
                 f_o_number_value__from_s_input(
                   o_gpu_readout.clocks.video_clock,
@@ -562,7 +662,7 @@ let f_handler = async function (o_request) {
 
           if (o_gpu_property.s_name == o_gpu_property__graphics_volt.s_name) {
             let n_mv_max_estimation = 1200; // according to chatgpt most gpus have a max of 1200 millivolt
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
               o_gpu_property_value.o_number_value =
                 f_o_number_value__from_s_input(
                   o_gpu_readout.voltage.graphics_volt,
@@ -586,11 +686,34 @@ let f_handler = async function (o_request) {
           }
 
           if (o_gpu_property.s_name == o_gpu_property__fan_speed.s_name) {
-            if (o_gpu_readout_object.s_name == s_binary_nvidia_smi) {
-              o_gpu_property_value.o_number_value =
-                f_o_number_value__from_s_input(o_gpu_readout.fan_speed);
-              o_gpu_property_value.o_number_value_max =
-                f_o_number_value__from_s_input("100 %");
+
+            if (o_gpu_readout_object.s_binary_name == s_binary_nvidia_smi) {
+              let n_rpm = null;
+              try {
+                n_rpm = await f_n_rpm_fanspeed_nvidia();
+              } catch (error) {
+                console.log(error)
+              }
+              console.log(n_rpm)
+
+              if(n_rpm != null){
+                o_gpu_property_value.o_number_value = f_o_number_value__from_s_input(`${n_rpm} RPM`);
+                // a bit sketchy, we assume o_gpu_readout.fan_speed always returns %
+                let n_percent = parseInt(o_gpu_readout.fan_speed);
+                // if the fan speed is 0, it will be turned off when not much gpu is used
+                // this calulation wont work
+                let n_rpm_max = parseInt(parseFloat(o_gpu_property_value.o_number_value.n / n_percent)*100)
+                if(isNaN(n_rpm_max)){
+                  n_rpm_max = 5000
+                }
+                o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(`${n_rpm_max} RPM`);
+              }else{
+
+                o_gpu_property_value.o_number_value =
+                  f_o_number_value__from_s_input(o_gpu_readout.fan_speed);
+                o_gpu_property_value.o_number_value_max =
+                  f_o_number_value__from_s_input("100 %");
+              }
               // on nvidia rtx 4060 there is just a percentage % unit, no 'rpm',
               // o_gpu_property_value.o_number_value_max = f_o_number_value__from_s_input(
               //     `${n_mv_max_estimation} mV`
@@ -626,10 +749,13 @@ let f_handler = async function (o_request) {
           return a_o_gpu_property_value;
         })
         .flat();
+      a_o_gpu_property_value = (await Promise.all(a_o_gpu_property_value)).flat();
 
       let o_gpu_info = new O_gpu_info(
         a_o_gpu_property_value.find(
-          (o) => o.o_gpu_property.s_name == o_gpu_property__pci_address.s_name,
+          (o) => {
+            return o.o_gpu_property.s_name == o_gpu_property__pci_address.s_name
+          },
         )?.s_val,
         a_o_gpu_property_value.find(
           (o) => o.o_gpu_property.s_name == o_gpu_property__gpu_name.s_name,
@@ -638,6 +764,7 @@ let f_handler = async function (o_request) {
       );
       return o_gpu_info;
     });
+    a_o_gpu_info = (await Promise.all(a_o_gpu_info)).flat()
 
     let n_ts_ms = new Date().getTime();
     let s_ymd_hms = f_s_ymd_hms__from_n_ts_ms_utc(n_ts_ms);
@@ -645,7 +772,6 @@ let f_handler = async function (o_request) {
       n_ts_ms,
       s_ymd_hms,
       a_o_gpu_info,
-      o_nvidia_smi_xml,
     );
 
     return new Response(JSON.stringify(o_gpu_readout_info), {

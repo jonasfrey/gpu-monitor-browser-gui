@@ -9,11 +9,10 @@ class O_gpu_readout_object {
   }
 }
 class O_gpu_readout_info {
-  constructor(n_ts_ms, s_ymd_hms, a_o_gpu_info, o_nvidia_smi_xml) {
+  constructor(n_ts_ms, s_ymd_hms, a_o_gpu_info) {
     this.n_ts_ms = n_ts_ms;
     this.s_ymd_hms = s_ymd_hms;
     this.a_o_gpu_info = a_o_gpu_info;
-    this.o_nvidia_smi_xml = o_nvidia_smi_xml;
   }
 }
 class O_gpu_info {
@@ -134,6 +133,19 @@ class O_window {
     this.b_render_settings = b_render_settings;
   }
 }
+class O_gpu_fan{
+  constructor(
+    n_id,
+    o_gpu_info,
+    b_manual_control,
+    n_nor_speed
+  ){
+      this.n_id = n_id
+      this.o_gpu_info  = o_gpu_info
+      this.b_manual_control = b_manual_control
+      this.n_nor_speed = n_nor_speed
+  }
+}
 export {
   O_gpu_info,
   O_gpu_readout_info,
@@ -146,4 +158,5 @@ export {
   O_threshhold,
   O_configuration,
   O_gpu_readout_object,
+  O_gpu_fan
 };

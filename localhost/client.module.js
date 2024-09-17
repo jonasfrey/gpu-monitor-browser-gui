@@ -18,16 +18,9 @@ import {
 } from "https://deno.land/x/f_o_html_from_o_js@3.5/localhost/jsh_modules/notifire/mod.js";
 
 import {
-  f_o_webgl_program,
-  f_delete_o_webgl_program,
-  f_resize_canvas_from_o_webgl_program,
-  f_render_from_o_webgl_program,
-  f_o_number_value__from_s_input,
   f_a_n_nor__rgb__from_a_n_nor__hsl,
-  f_swap_in_array,
-} from "https://deno.land/x/handyhelpers@4.1.1/mod.js";
+} from "https://deno.land/x/handyhelpers@4.1.4/mod.js";
 
-window.f_o_number_value__from_s_input = f_o_number_value__from_s_input;
 import { f_s_hms__from_n_ts_ms_utc } from "https://deno.land/x/date_functions@1.4/mod.js";
 import {
   O_graph,
@@ -41,6 +34,7 @@ import {
 import {
   a_o_gpu_property,
   a_o_graph_type,
+  o_gpu_property__fan_speed,
   o_gpu_property__gpu_utilization,
   o_gpu_property__memory_info_per_process_nvidia_specific,
   o_graph_type__gauge,
@@ -128,8 +122,11 @@ if (
 ) {
   a_o_configuration.push(o_configuration__default);
 }
+let a_o_gpu_fan = await (await fetch("./f_a_o_gpu_fan")).json();
+
 
 let o_state = {
+  a_o_gpu_fan,
   o_overlay: {
     b_render: false,
     a_o: [],
@@ -166,7 +163,6 @@ let o_state = {
 o_state.o_configuration = o_state.a_o_configuration[0];
 
 let f_update_e_chart = function (o_echart) {
-  console.log(o_echart);
   let o_window = o_state.o_configuration.a_o_window.find((o_window, n_idx) => {
     return o_window.o_echart == o_echart;
   });
@@ -189,8 +185,6 @@ let f_update_e_chart = function (o_echart) {
     o_el.style.height = canvasHeight + "px";
     // window.o_el = o_el
     // Log to verify the dimensions
-    console.log(canvasWidth);
-    console.log(o_el);
 
     // Get the current chart options
 
@@ -218,7 +212,6 @@ let f_update_interval = async function () {
   return new Promise((f_res, f_rej) => {
     clearInterval(o_state.n_id_interval);
     o_state.n_id_interval = window.setInterval(async function () {
-      console.log("interval");
       let n_datapoints_x =
         (o_state.o_configuration.n_min_backview * 60) /
         o_state.o_configuration.n_sec_interval;
@@ -294,7 +287,6 @@ let f_update_interval = async function () {
         n_value_gauge = parseInt(n_value_gauge);
 
         if (!o_window.o_echart) {
-          console.log(o_div);
           o_window.o_echart = echarts.init(o_div);
 
           var option = {
@@ -309,7 +301,6 @@ let f_update_interval = async function () {
           let n_scl_x = o_el?.clientWidth;
           let n_scl_y = o_el?.clientHeight;
           let n_scl_min = Math.min(n_scl_x, n_scl_y);
-          console.log(n_scl_min);
 
           if (o_window.o_graph_type.s_name == o_graph_type__gauge.s_name) {
             let a_o_threshhold = o_window.a_o_threshhold;
@@ -340,7 +331,6 @@ let f_update_interval = async function () {
             }
             let s_col_titile = "grey";
             let o_center = { center: ["50%", "60%"] };
-            console.log(s_col_gauge_level);
             let n_font_nor = 0.1;
             let s_col_bg = "#1e1e1e";
             let s_col_border = "#1e1e1e";
@@ -630,12 +620,7 @@ let f_update_interval = async function () {
                               o_gpu_property_value_per_process2.o_number_value
                                 .n;
                           }
-                          console.log({
-                            n_value_y,
-                            process_name:
-                              o_gpu_property_value_per_process2.o_meta
-                                .process_name,
-                          });
+
                           return n_value_y;
                         },
                       ),
@@ -694,7 +679,6 @@ let f_update_interval = async function () {
                 formatter: "{a}: {c}%", // This adds the formatting to show the percentage
               },
             };
-            console.log(o_option);
             o_window.o_echart.setOption(o_option);
 
             // o_window.o_echart.setOption({
@@ -817,6 +801,9 @@ f_add_css(
 );
 f_add_css(
   `
+    button.disabled{
+      color: red;
+    }
     .o_window__settings{
         width: 100vw;
         height: 100vh;
@@ -1179,6 +1166,7 @@ document.body.appendChild(
                     return {
                       class: `clickable hovered`,
                       onpointerdown: async function (o_e) {
+                        
                         o_state.o_el_target_window_pointerdown = o_e.target;
                         o_state.o_window_pointerdown_copy = Object.assign(
                           {},
@@ -1562,6 +1550,76 @@ document.body.appendChild(
                             "resize fa-solid fa-up-right-and-down-left-from-center",
                           s_tag: "button",
                         },
+                        {
+                          style: 'position: absolute;bottom:0;left: 0;',
+                          b_render: (o_window.o_gpu_property.s_name == o_gpu_property__fan_speed.s_name && o_state.a_o_gpu_fan.length > 0),
+                          a_o: [
+                            {
+                              s_tag: "input", 
+                              type: "range", 
+                              min: 0, 
+                              max: 1.0, 
+                              step: 0.01, 
+                              value: o_window.o_gpu_property_value_last.n_nor, 
+                              onchange: async (o_e)=>{
+                                let n_speed_nor = parseFloat(o_e.target.value);
+                                if(o_state.a_o_gpu_fan[0].b_manual_control){
+                                  let o = await fetch(
+                                    "./f_set_fan_speed_nvidia", 
+                                    {body: JSON.stringify({n_speed_nor, 'content-type': 'application/json'})}
+                                  );
+                                  if (!o.ok) {
+                                    let s = await o.text();
+                                    console.error(s);
+                                    alert(s);
+                                  }
+                                  let o_data = await o.json();
+                                  console.log(o_data);
+                                }
+                              }
+                            },
+                            {
+                              s_tag: `button`,
+                              class: `${(o_state.a_o_gpu_fan[0].b_manual_control == false) ? 'disabled': ''}`, 
+                              a_o:[
+                                {
+                                  s_tag: "span",
+                                  style: 'padding-right: 1rem',
+                                  innerText: `${(o_state.a_o_gpu_fan[0].b_manual_control == false) ? `auto` : 'manual'} ${o_window.o_gpu_property_value_last.n_nor}`,
+                                },
+                                {
+                                  class: `fa-solid fa-fan`,
+                                }
+                              ],
+                              onpointerdown: async ()=>{
+                                o_state.a_o_gpu_fan[0].b_manual_control = !o_state.a_o_gpu_fan[0].b_manual_control
+                                if(o_state.a_o_gpu_fan[0].b_manual_control == true){
+                                  let o = await fetch(
+                                    "./f_set_fan_control_manual_nvidia", 
+                                  );
+                                  if (!o.ok) {
+                                    let s = await o.text();
+                                    console.error(s);
+                                    alert(s);
+                                  }
+                                  let o_data = await o.json();
+                                  console.log(o_data);
+                                }else{
+                                  let o = await fetch(
+                                    "./f_set_fan_control_auto_nvidia", 
+                                  );
+                                  if (!o.ok) {
+                                    let s = await o.text();
+                                    console.error(s);
+                                    alert(s);
+                                  }
+                                  let o_data = await o.json();
+                                  console.log(o_data);
+                                }
+                              }
+                            }
+                          ]
+                        }
                       ],
                     };
                   },

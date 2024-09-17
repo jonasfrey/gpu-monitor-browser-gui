@@ -6,7 +6,7 @@
         "@SYSTEM": ""
     },
     "nvidia_smi_log": {
-        "timestamp": "Sun Sep 15 23:41:31 2024",
+        "timestamp": "Tue Sep 17 15:21:36 2024",
         "driver_version": "535.161.07",
         "cuda_version": "12.2",
         "attached_gpus": "1",
@@ -92,15 +92,15 @@
                 },
                 "replay_counter": "0",
                 "replay_rollover_counter": "0",
-                "tx_util": "329000 KB/s",
-                "rx_util": "235000 KB/s",
+                "tx_util": "0 KB/s",
+                "rx_util": "1000 KB/s",
                 "atomic_caps_inbound": "N/A",
                 "atomic_caps_outbound": "N/A"
             },
-            "fan_speed": "66 %",
+            "fan_speed": "0 %",
             "performance_state": "P0",
             "clocks_event_reasons": {
-                "clocks_event_reason_gpu_idle": "Not Active",
+                "clocks_event_reason_gpu_idle": "Active",
                 "clocks_event_reason_applications_clocks_setting": "Not Active",
                 "clocks_event_reason_sw_power_cap": "Not Active",
                 "clocks_event_reason_hw_slowdown": "Not Active",
@@ -114,13 +114,13 @@
             "fb_memory_usage": {
                 "total": "16380 MiB",
                 "reserved": "299 MiB",
-                "used": "2068 MiB",
-                "free": "14011 MiB"
+                "used": "1328 MiB",
+                "free": "14751 MiB"
             },
             "bar1_memory_usage": {
                 "total": "256 MiB",
-                "used": "8 MiB",
-                "free": "248 MiB"
+                "used": "9 MiB",
+                "free": "247 MiB"
             },
             "cc_protected_memory_usage": {
                 "total": "0 MiB",
@@ -129,8 +129,8 @@
             },
             "compute_mode": "Default",
             "utilization": {
-                "gpu_util": "97 %",
-                "memory_util": "4 %",
+                "gpu_util": "14 %",
+                "memory_util": "11 %",
                 "encoder_util": "0 %",
                 "decoder_util": "0 %",
                 "jpeg_util": "0 %",
@@ -200,8 +200,8 @@
                 }
             },
             "temperature": {
-                "gpu_temp": "68 C",
-                "gpu_temp_tlimit": "4 C",
+                "gpu_temp": "59 C",
+                "gpu_temp_tlimit": "23 C",
                 "gpu_temp_max_tlimit_threshold": "-7 C",
                 "gpu_temp_slow_tlimit_threshold": "-2 C",
                 "gpu_temp_max_gpu_tlimit_threshold": "0 C",
@@ -215,7 +215,7 @@
             },
             "gpu_power_readings": {
                 "power_state": "P0",
-                "power_draw": "138.10 W",
+                "power_draw": "36.26 W",
                 "current_power_limit": "165.00 W",
                 "requested_power_limit": "165.00 W",
                 "default_power_limit": "165.00 W",
@@ -232,10 +232,10 @@
                 "max_power_limit": "N/A"
             },
             "clocks": {
-                "graphics_clock": "2730 MHz",
-                "sm_clock": "2730 MHz",
+                "graphics_clock": "2190 MHz",
+                "sm_clock": "2190 MHz",
                 "mem_clock": "9000 MHz",
-                "video_clock": "2130 MHz"
+                "video_clock": "1845 MHz"
             },
             "applications_clocks": {
                 "graphics_clock": "N/A",
@@ -262,7 +262,7 @@
                 "auto_boost_default": "N/A"
             },
             "voltage": {
-                "graphics_volt": "1075.000 mV"
+                "graphics_volt": "875.000 mV"
             },
             "fabric": {
                 "state": "N/A",
@@ -1095,31 +1095,55 @@
                         "pid": "1832",
                         "type": "G",
                         "process_name": "/usr/lib/xorg/Xorg",
-                        "used_memory": "668 MiB"
+                        "used_memory": "798 MiB"
                     },
                     {
                         "gpu_instance_id": "N/A",
                         "compute_instance_id": "N/A",
-                        "pid": "2495",
+                        "pid": "2472",
                         "type": "G",
                         "process_name": "cinnamon",
-                        "used_memory": "98 MiB"
+                        "used_memory": "73 MiB"
                     },
                     {
                         "gpu_instance_id": "N/A",
                         "compute_instance_id": "N/A",
-                        "pid": "13727",
+                        "pid": "2804",
                         "type": "G",
                         "process_name": "/usr/lib/firefox/firefox",
-                        "used_memory": "1021 MiB"
+                        "used_memory": "9 MiB"
                     },
                     {
                         "gpu_instance_id": "N/A",
                         "compute_instance_id": "N/A",
-                        "pid": "14612",
+                        "pid": "3479",
                         "type": "G",
-                        "process_name": "/usr/share/code/code --type=gpu-process --crashpad-handler-pid=14598 --enable-crash-reporter=976be4d2-a52d-4ac6-943e-5870eb257327,no_channel --user-data-dir=/home/mintuser/.config/Code --gpu-preferences=WAAAAAAAAAAgAAAEAAAAAAAAAAAAAAAAAABgAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAGAAAAAAAAAAYAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --shared-files --field-trial-handle=0,i,7268007683344549359,3249622094580471627,262144 --disable-features=CalculateNativeWinOcclusion,SpareRendererForSitePerProcess",
-                        "used_memory": "235 MiB"
+                        "process_name": "/usr/share/code/code --type=gpu-process --crashpad-handler-pid=3465 --enable-crash-reporter=976be4d2-a52d-4ac6-943e-5870eb257327,no_channel --user-data-dir=/home/mintuser/.config/Code --gpu-preferences=WAAAAAAAAAAgAAAEAAAAAAAAAAAAAAAAAABgAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAGAAAAAAAAAAYAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --shared-files --field-trial-handle=0,i,12388518887929057115,15918694608603350231,262144 --disable-features=CalculateNativeWinOcclusion,SpareRendererForSitePerProcess",
+                        "used_memory": "167 MiB"
+                    },
+                    {
+                        "gpu_instance_id": "N/A",
+                        "compute_instance_id": "N/A",
+                        "pid": "3906",
+                        "type": "G",
+                        "process_name": "/usr/lib/chromium/chromium --type=gpu-process --enable-gpu-rasterization --ozone-platform=x11 --use-angle=gl --crashpad-handler-pid=3876 --enable-crash-reporter=,for Linux Mint --change-stack-guard-on-fork=enable --gpu-preferences=WAAAAAAAAAAgAAAEAAAAAAAAAAAAAAAAAABgAAAAAAA4AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAGAAAAAAAAAAYAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --use-gl=angle --shared-files --field-trial-handle=0,i,15435256641150591609,9034592842293978136,262144 --enable-features=UseChromeOSDirectVideoDecoder,VaapiVideoDecodeLinuxGL,VaapiVideoDecoder,VaapiVideoEncoder --disable-features=GlobalVaapiLock,TFLiteLanguageDetectionEnabled --variations-seed-version",
+                        "used_memory": "94 MiB"
+                    },
+                    {
+                        "gpu_instance_id": "N/A",
+                        "compute_instance_id": "N/A",
+                        "pid": "34868",
+                        "type": "G",
+                        "process_name": "/usr/bin/nvidia-settings",
+                        "used_memory": "36 MiB"
+                    },
+                    {
+                        "gpu_instance_id": "N/A",
+                        "compute_instance_id": "N/A",
+                        "pid": "183805",
+                        "type": "G",
+                        "process_name": "/tmp/.mount_Bambu_dZWlbM/bin/bambu-studio",
+                        "used_memory": "98 MiB"
                     }
                 ]
             },
