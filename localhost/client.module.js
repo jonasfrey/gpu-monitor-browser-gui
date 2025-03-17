@@ -1563,7 +1563,7 @@ document.body.appendChild(
                               value: o_window.o_gpu_property_value_last.n_nor, 
                               onchange: async (o_e)=>{
                                 let n_speed_nor = parseFloat(o_e.target.value);
-                                if(o_state.a_o_gpu_fan[0].b_manual_control){
+                                if(o_state.a_o_gpu_fan?.[0]?.b_manual_control){
                                   let o = await fetch(
                                     "./f_set_fan_speed_nvidia", 
                                     {body: JSON.stringify({n_speed_nor, 'content-type': 'application/json'})}
@@ -1580,12 +1580,12 @@ document.body.appendChild(
                             },
                             {
                               s_tag: `button`,
-                              class: `${(o_state.a_o_gpu_fan[0].b_manual_control == false) ? 'disabled': ''}`, 
+                              class: `${(o_state.a_o_gpu_fan?.[0]?.b_manual_control == false) ? 'disabled': ''}`, 
                               a_o:[
                                 {
                                   s_tag: "span",
                                   style: 'padding-right: 1rem',
-                                  innerText: `${(o_state.a_o_gpu_fan[0].b_manual_control == false) ? `auto` : 'manual'} ${o_window.o_gpu_property_value_last.n_nor}`,
+                                  innerText: `${(o_state.a_o_gpu_fan?.[0]?.b_manual_control == false) ? `auto` : 'manual'} ${o_window.o_gpu_property_value_last.n_nor}`,
                                 },
                                 {
                                   class: `fa-solid fa-fan`,
@@ -1593,7 +1593,7 @@ document.body.appendChild(
                               ],
                               onpointerdown: async ()=>{
                                 o_state.a_o_gpu_fan[0].b_manual_control = !o_state.a_o_gpu_fan[0].b_manual_control
-                                if(o_state.a_o_gpu_fan[0].b_manual_control == true){
+                                if(o_state.a_o_gpu_fan?.[0]?.b_manual_control == true){
                                   let o = await fetch(
                                     "./f_set_fan_control_manual_nvidia", 
                                   );

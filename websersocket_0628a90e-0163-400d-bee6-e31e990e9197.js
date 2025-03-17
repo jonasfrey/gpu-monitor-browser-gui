@@ -1,9 +1,9 @@
 import {
   f_websersocket_serve,
   f_v_before_return_response__fileserver,
-} from "https://deno.land/x/websersocket@1.0.3/mod.js";
+} from "https://deno.land/x/websersocket@6.0.1/mod.js";
 
-import { f_s_ymd_hms__from_n_ts_ms_utc } from "https://deno.land/x/date_functions@1.4/mod.js";
+import { f_s_ymd_hms__from_n_ts_ms_utc } from "https://deno.land/x/date_functions@2.0.0/mod.js";
 import { f_o_command } from "https://deno.land/x/o_command@0.9/mod.js";
 import { O_ws_client } from "./classes.module.js";
 import {
@@ -17,7 +17,7 @@ import { f_o_config } from "./functions.module.js";
 import {
   f_o_number_value__from_s_input,
   f_a_o_number_value_temperature_from_s_temp,
-} from "https://deno.land/x/handyhelpers@4.1.5/mod.js";
+} from "https://deno.land/x/handyhelpers@5.1.95/mod.js";
 
 import {
   O_gpu_property_value,
@@ -95,6 +95,10 @@ let f_o_gpu_in_machine = async function () {
 let s_path_file_a_o_configuration = "./gitignored/a_o_configuration.json";
 
 let f_a_o_fan_available_nvidia = async function(){
+  let b = await f_b_nvidia_smi_installed();
+  if(!b){
+    return []
+  }
   let s_command = `nvidia-settings -q GPUFanTarget | grep -i "Attribute 'GPUFanTarget'"`
   let o = await f_o_command(s_command);
   let a_o_fan = o.s_stdout.split('\n').map(s=>s.trim()).map(s=>{
